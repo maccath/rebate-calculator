@@ -14,10 +14,10 @@ class Store
     protected $rebate;
 
     /**
-     * @param String $name
-     * @param Float  $rebate
+     * @param String          $name
+     * @param RebateInterface $rebate
      */
-    public function __construct(String $name, Float $rebate)
+    public function __construct(String $name, RebateInterface $rebate)
     {
         $this->name = $name;
         $this->rebate = $rebate;
