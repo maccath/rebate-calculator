@@ -1,5 +1,7 @@
 <?php
 
+namespace RebateCalculator;
+
 /**
  * Class card
  */
@@ -26,7 +28,7 @@ class Card
      * @param              $balance
      * @param              $minimumTopup
      */
-    function __construct(FeeInterface $fee, Float $balance, Float $minimumTopup)
+    function __construct(FeeInterface $fee, $balance, $minimumTopup = 0)
     {
         $this->fee = $fee;
         $this->balance = $balance;
@@ -79,5 +81,10 @@ class Card
     public function setFee(FeeInterface $fee)
     {
         $this->fee = fee;
+    }
+
+    public function topupCost($topup)
+    {
+        return $this->fee->calculate($topup);
     }
 }

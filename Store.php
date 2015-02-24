@@ -1,5 +1,7 @@
 <?php
 
+namespace RebateCalculator;
+
 class Store
 {
 
@@ -14,10 +16,10 @@ class Store
     protected $rebate;
 
     /**
-     * @param String          $name
+     * @param                 $name
      * @param RebateInterface $rebate
      */
-    public function __construct(String $name, RebateInterface $rebate)
+    public function __construct($name, RebateInterface $rebate)
     {
         $this->name = $name;
         $this->rebate = $rebate;
@@ -40,7 +42,7 @@ class Store
     }
 
     /**
-     * @return Rebate
+     * @return RebateInterface
      */
     public function getRebate()
     {
@@ -48,9 +50,9 @@ class Store
     }
 
     /**
-     * @param Rebate $rebate
+     * @param RebateInterface $rebate
      */
-    public function setRebate($rebate)
+    public function setRebate(Rebateinterface $rebate)
     {
         $this->rebate = $rebate;
     }
