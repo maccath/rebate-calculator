@@ -3,7 +3,9 @@
 namespace RebateCalculator;
 
 /**
- * Class card
+ * Class Card
+ *
+ * @package RebateCalculator
  */
 class Card
 {
@@ -60,10 +62,16 @@ class Card
     }
 
     /**
-     * @param mixed $minimumTopup
+     * @param $minimumTopup
+     *
+     * @throws \Exception
      */
     public function setMinimumTopup($minimumTopup)
     {
+        if (!is_numeric($minimumTopup)) {
+            throw new \Exception('Minimum top-up must be a numeric value.');
+        }
+
         $this->minimumTopup = $minimumTopup;
     }
 
@@ -83,6 +91,11 @@ class Card
         $this->fee = fee;
     }
 
+    /**
+     * @param $topup
+     *
+     * @return mixed
+     */
     public function topupCost($topup)
     {
         return $this->fee->calculate($topup);
