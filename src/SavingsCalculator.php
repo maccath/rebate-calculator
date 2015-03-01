@@ -86,22 +86,14 @@ class SavingsCalculator
 
     /**
      * Calculate total cost to buy item
+     *
+     * @return mixed
      */
     public function calculateCost()
     {
         $itemCost = $this->item->getCost();
-        $currentBalance = $this->card->getBalance();
 
-        $additionalBalanceRequired = $itemCost - $currentBalance;
-        $minimumTopup = $this->card->getTopup()->getMinimum();
-
-        if ($additionalBalanceRequired < $minimumTopup)
-        {
-            $this->card->getTopup()->setAmount($minimumTopup);
-        } else {
-            $this->card->getTopup()->setAmount($additionalBalanceRequired);
-        }
-
+        $this->card->getTopup()->setAmount($this->calculateTopupRequired());
         $topupCost = $this->card->getTopup()->calculateTopupCost();
 
         $rebate = $this->store->getRebate()->calculate($itemCost);
@@ -109,5 +101,25 @@ class SavingsCalculator
         $totalCost = $itemCost + $topupCost - $rebate;
 
         return $totalCost;
+    }
+
+    /**
+     * Calculate topup required to purchase item
+     *
+     * @return mixed
+     */
+    public function calculateTopupRequired()
+    {
+        $itemCost = $this->item->getCost();
+        $currentBalance = $this->card->getBalance();
+
+        $additionalBalanceRequired = $itemCost - $currentBalance;
+        $minimumTopup = $this->card->getTopup()->getMinimum();
+
+        if ($additionalBalanceRequired < $minimumTopup) {
+            return $minimumTopup;
+        } else {
+            return $additionalBalanceRequired;
+        }
     }
 }
