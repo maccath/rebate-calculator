@@ -21,6 +21,21 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Valid values for topup/balance
+     *
+     * @return array
+     */
+    public function providerCurrencyAmounts()
+    {
+        return array(
+            array(25, 25),
+            array('25', 25),
+            array(-10, -10),
+            array(1.234, 1.234)
+        );
+    }
+
+    /**
      * @param $input
      * @param $expectedBalance
      *
@@ -47,41 +62,6 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Valid values for topup/balance
-     *
-     * @return array
-     */
-    public function providerCurrencyAmounts()
-    {
-        return array(
-            array(25, 25),
-            array('25', 25),
-            array(-10, -10),
-            array(1.234, 1.234)
-        );
-    }
-
-    /**
-     * @expectedException \Exception
-     *
-     * @dataProvider providerCurrencyAmountsException
-     */
-    public function testBalanceException($balance)
-    {
-        $this->card->setBalance($balance);
-    }
-
-    /**
-     * @expectedException \Exception
-     *
-     * @dataProvider providerCurrencyAmountsException
-     */
-    public function testMinimumTopupException($topup)
-    {
-        $this->card->setMinimumTopup($topup);
-    }
-
-    /**
      * Values for topup/balance that should throw an exception
      *
      * @return array
@@ -93,5 +73,27 @@ class CardTest extends PHPUnit_Framework_TestCase
             array(false),
             array(null),
         );
+    }
+
+    /**
+     * @param $balance
+     *
+     * @expectedException \Exception
+     * @dataProvider providerCurrencyAmountsException
+     */
+    public function testBalanceException($balance)
+    {
+        $this->card->setBalance($balance);
+    }
+
+    /**
+     * @param $topup
+     *
+     * @expectedException \Exception
+     * @dataProvider providerCurrencyAmountsException
+     */
+    public function testMinimumTopupException($topup)
+    {
+        $this->card->setMinimumTopup($topup);
     }
 }
