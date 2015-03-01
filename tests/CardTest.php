@@ -1,51 +1,97 @@
 <?php
 
+/**
+ * Class CardTest
+ */
 class CardTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \RebateCalculator\Card
+     */
     protected $card;
 
+    /**
+     *  Set up a card instance
+     */
     protected function setUp()
     {
         // Set up card
-        $this->card = new \RebateCalculator\Card(new \RebateCalculator\PercentageFee(10), 100);
+        $fee = new \RebateCalculator\PercentageFee(10);
+        $this->card = new \RebateCalculator\Card($fee);
     }
 
-    public function testBalance()
+    /**
+     * @param $input
+     * @param $expectedBalance
+     *
+     * @dataProvider providerCurrencyAmounts
+     */
+    public function testBalance($input, $expectedBalance)
     {
-        $this->assertEquals(100, $this->card->getBalance());
+        $this->card->setBalance($input);
 
-        $this->card->setBalance(25);
-
-        $this->assertEquals(25, $this->card->getBalance());
+        $this->assertEquals($expectedBalance, $this->card->getBalance());
     }
 
-    public function testMinimumTopup()
+    /**
+     * @param $input
+     * @param $expectedMinimumTopup
+     *
+     * @dataProvider providerCurrencyAmounts
+     */
+    public function testMinimumTopup($input, $expectedMinimumTopup)
     {
-        $this->assertEquals(0, $this->card->getMinimumTopup());
+        $this->card->setMinimumTopup($input);
 
-        $this->card->setMinimumTopup(25);
-
-        $this->assertEquals(25, $this->card->getMinimumTopup());
+        $this->assertEquals($expectedMinimumTopup, $this->card->getMinimumTopup());
     }
 
-    public function testFee()
+    /**
+     * Valid values for topup/balance
+     *
+     * @return array
+     */
+    public function providerCurrencyAmounts()
     {
-        $this->assertInstanceOf('\RebateCalculator\FeeInterface', $this->card->getFee());
+        return array(
+            array(25, 25),
+            array('25', 25),
+            array(-10, -10),
+            array(1.234, 1.234)
+        );
     }
 
     /**
      * @expectedException \Exception
+     *
+     * @dataProvider providerCurrencyAmountsException
      */
-    public function testTopupException()
+    public function testBalanceException($balance)
     {
-        $this->card->setMinimumTopup("djkdjlasd");
+        $this->card->setBalance($balance);
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \Exception
+     *
+     * @dataProvider providerCurrencyAmountsException
      */
-    public function testFeeException()
+    public function testMinimumTopupException($topup)
     {
-        $this->card->setFee("djkdjlasd");
+        $this->card->setMinimumTopup($topup);
+    }
+
+    /**
+     * Values for topup/balance that should throw an exception
+     *
+     * @return array
+     */
+    public function providerCurrencyAmountsException()
+    {
+        return array(
+            array('abc'),
+            array(false),
+            array(null),
+        );
     }
 }
