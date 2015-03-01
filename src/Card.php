@@ -21,7 +21,7 @@ class Card
     protected $minimumTopup;
 
     /**
-     * @var topup fee
+     * @var FeeInterface topup fee
      */
     protected $fee;
 
@@ -30,7 +30,7 @@ class Card
      * @param              $balance
      * @param              $minimumTopup
      */
-    function __construct(FeeInterface $fee, $balance, $minimumTopup = 0)
+    function __construct(FeeInterface $fee, $balance = 0, $minimumTopup = 0)
     {
         $this->fee = $fee;
         $this->balance = $balance;
@@ -46,10 +46,16 @@ class Card
     }
 
     /**
-     * @param mixed $balance
+     * @param $balance
+     *
+     * @throws \Exception
      */
     public function setBalance($balance)
     {
+        if (!is_numeric($balance)) {
+            throw new \Exception('Balance must be a numeric value.');
+        }
+
         $this->balance = $balance;
     }
 
@@ -88,7 +94,7 @@ class Card
      */
     public function setFee(FeeInterface $fee)
     {
-        $this->fee = fee;
+        $this->fee = $fee;
     }
 
     /**
