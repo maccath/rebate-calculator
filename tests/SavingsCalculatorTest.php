@@ -40,6 +40,30 @@ class SavingsCalculatorTest extends PHPUnit_Framework_TestCase
                 new \RebateCalculator\Item(20),
                 20
             ),
+            array(
+                new \RebateCalculator\PercentageFee(0),
+                new \RebateCalculator\PercentageRebate(10),
+                new \RebateCalculator\Item(20),
+                18
+            ),
+            array(
+                new \RebateCalculator\FlatFee(2),
+                new \RebateCalculator\PercentageRebate(10),
+                new \RebateCalculator\Item(20),
+                20
+            ),
+            array(
+                new \RebateCalculator\FlatFee(0),
+                new \RebateCalculator\PercentageRebate(5),
+                new \RebateCalculator\Item(20),
+                19
+            ),
+            array(
+                new \RebateCalculator\FlatFee(2),
+                new \RebateCalculator\PercentageRebate(10),
+                new \RebateCalculator\Item(15),
+                15.5
+            ),
         );
     }
 }

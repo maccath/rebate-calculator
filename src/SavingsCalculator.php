@@ -87,6 +87,16 @@ class SavingsCalculator
      */
     public function calculateCost()
     {
-        return 20;
+        $itemCost = $this->item->getCost();
+        $currentBalance = $this->card->getBalance();
+
+        $topupRequired = $itemCost - $currentBalance;
+
+        $topupFee = $this->card->getFee()->calculate($topupRequired);
+        $rebate = $this->store->getRebate()->calculate($itemCost);
+
+        $totalCost = $itemCost + $topupFee - $rebate;
+
+        return $totalCost;
     }
 }
