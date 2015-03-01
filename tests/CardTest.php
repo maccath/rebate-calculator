@@ -17,7 +17,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     {
         // Set up card
         $fee = new \RebateCalculator\PercentageFee(10);
-        $this->card = new \RebateCalculator\Card($fee);
+        $topup = new \RebateCalculator\Topup($fee);
+        $this->card = new \RebateCalculator\Card($topup);
     }
 
     /**
@@ -49,19 +50,6 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $input
-     * @param $expectedMinimumTopup
-     *
-     * @dataProvider providerCurrencyAmounts
-     */
-    public function testMinimumTopup($input, $expectedMinimumTopup)
-    {
-        $this->card->setMinimumTopup($input);
-
-        $this->assertEquals($expectedMinimumTopup, $this->card->getMinimumTopup());
-    }
-
-    /**
      * Values for topup/balance that should throw an exception
      *
      * @return array
@@ -84,16 +72,5 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testBalanceException($balance)
     {
         $this->card->setBalance($balance);
-    }
-
-    /**
-     * @param $topup
-     *
-     * @expectedException \Exception
-     * @dataProvider providerCurrencyAmountsException
-     */
-    public function testMinimumTopupException($topup)
-    {
-        $this->card->setMinimumTopup($topup);
     }
 }

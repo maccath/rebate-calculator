@@ -13,10 +13,12 @@ class SavingsCalculator
      * @var Card
      */
     protected $card;
+
     /**
      * @var Store
      */
     protected $store;
+
     /**
      * @var Item
      */
@@ -90,12 +92,21 @@ class SavingsCalculator
         $itemCost = $this->item->getCost();
         $currentBalance = $this->card->getBalance();
 
-        $topupRequired = $itemCost - $currentBalance;
+        $additionalBalanceRequired = $itemCost - $currentBalance;
+        $minimumTopup = $this->card->getTopup()->getMinimum();
 
-        $topupFee = $this->card->getFee()->calculate($topupRequired);
+        if ($additionalBalanceRequired < $minimumTopup)
+        {
+            $this->card->getTopup()->setAmount($minimumTopup);
+        } else {
+            $this->card->getTopup()->setAmount($additionalBalanceRequired);
+        }
+
+        $topupCost = $this->card->getTopup()->calculateTopupCost();
+
         $rebate = $this->store->getRebate()->calculate($itemCost);
 
-        $totalCost = $itemCost + $topupFee - $rebate;
+        $totalCost = $itemCost + $topupCost - $rebate;
 
         return $totalCost;
     }

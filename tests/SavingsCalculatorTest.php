@@ -20,7 +20,8 @@ class SavingsCalculatorTest extends PHPUnit_Framework_TestCase
         $expectedCost
     ) {
         // Set up calculator
-        $card = new \RebateCalculator\Card($fee);
+        $topup = new \RebateCalculator\Topup($fee, 0, 0);
+        $card = new \RebateCalculator\Card($topup);
         $store = new \RebateCalculator\Store("Sainsbury's", $rebate);
         $calculator = new \RebateCalculator\SavingsCalculator($card, $store,
             $item);

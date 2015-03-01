@@ -16,25 +16,18 @@ class Card
     protected $balance;
 
     /**
-     * @var minimum topup
+     * @var Topup topup
      */
-    protected $minimumTopup;
+    protected $topup;
 
     /**
-     * @var FeeInterface topup fee
+     * @param Topup $topup
+     * @param int   $balance
      */
-    protected $fee;
-
-    /**
-     * @param FeeInterface $fee
-     * @param              $balance
-     * @param              $minimumTopup
-     */
-    function __construct(FeeInterface $fee, $balance = 0, $minimumTopup = 0)
+    function __construct(Topup $topup, $balance = 0)
     {
-        $this->fee = $fee;
+        $this->topup = $topup;
         $this->balance = $balance;
-        $this->minimumTopup = $minimumTopup;
     }
 
     /**
@@ -60,50 +53,18 @@ class Card
     }
 
     /**
-     * @return mixed
+     * @return Topup
      */
-    public function getMinimumTopup()
+    public function getTopup()
     {
-        return $this->minimumTopup;
+        return $this->topup;
     }
 
     /**
-     * @param $minimumTopup
-     *
-     * @throws \Exception
+     * @param Topup $topup
      */
-    public function setMinimumTopup($minimumTopup)
+    public function setTopup(Topup $topup)
     {
-        if (!is_numeric($minimumTopup)) {
-            throw new \Exception('Minimum top-up must be a numeric value.');
-        }
-
-        $this->minimumTopup = $minimumTopup;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFee()
-    {
-        return $this->fee;
-    }
-
-    /**
-     * @param FeeInterface $fee
-     */
-    public function setFee(FeeInterface $fee)
-    {
-        $this->fee = $fee;
-    }
-
-    /**
-     * @param $topup
-     *
-     * @return mixed
-     */
-    public function topupCost($topup)
-    {
-        return $this->fee->calculate($topup);
+        $this->$topup = $topup;
     }
 }
