@@ -30,7 +30,9 @@ class TopupTest extends PHPUnit_Framework_TestCase
         return array(
             array(25, 25),
             array('25', 25),
-            array(1.234, 1.234)
+            array(1.234, 1.234),
+            array(false, 0),
+            array(null, 0),
         );
     }
 
@@ -69,8 +71,6 @@ class TopupTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array('abc'),
-            array(false),
-            array(null),
             array(-10),
         );
     }
