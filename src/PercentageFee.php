@@ -44,6 +44,6 @@ class PercentageFee implements FeeInterface
      */
     public function calculate($topup = 0)
     {
-        return (float)$topup / 100 * (float)$this->amount;
+        return round($topup / 100 * $this->amount, 2);
     }
 }

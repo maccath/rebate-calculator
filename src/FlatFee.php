@@ -44,6 +44,6 @@ class FlatFee implements FeeInterface
      */
     public function calculate($topup = 0)
     {
-        return (float)$this->amount;
+        return round($this->amount, 2);
     }
 }
