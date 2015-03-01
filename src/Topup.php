@@ -14,8 +14,14 @@ class Topup
      */
     protected $fee;
 
+    /**
+     * @var
+     */
     protected $minimum;
 
+    /**
+     * @var
+     */
     protected $amount;
 
     /**
@@ -25,19 +31,11 @@ class Topup
      *
      * @throws \Exception
      */
-    function __construct(FeeInterface $fee, $minimum, $amount)
+    function __construct(FeeInterface $fee, $minimum = 0, $amount = 0)
     {
-        if (!is_numeric($minimum)) {
-            throw new \Exception('Minimum must be a numeric value.');
-        }
-
-        if (!is_numeric($amount)) {
-            throw new \Exception('Amount must be a numeric value.');
-        }
-
-        $this->fee = $fee;
-        $this->minimum = $minimum;
-        $this->amount = $amount;
+        $this->setFee($fee);
+        $this->setMinimum($minimum);
+        $this->setAmount($amount);
     }
 
     /**
@@ -71,8 +69,13 @@ class Topup
      */
     public function setMinimum($minimum)
     {
-        if (!is_numeric($minimum)) {
-            throw new \Exception('Amount must be a numeric value.');
+        if (!is_numeric($minimum) || $minimum < 0) {
+            throw new \Exception(
+                sprintf(
+                    'Minimum (%s) must be a positive numeric value.',
+                    $minimum
+                )
+            );
         }
 
         $this->minimum = $minimum;
@@ -93,15 +96,34 @@ class Topup
      */
     public function setAmount($amount)
     {
-        if (!is_numeric($amount)) {
-            throw new \Exception('Amount must be a numeric value.');
+        if (!is_numeric($amount) || $amount < 0) {
+            throw new \Exception(
+                sprintf(
+                    'Amount (%s) must be a positive numeric value.',
+                    $amount
+                )
+            );
+        }
+
+        if ($amount < $this->minimum)
+        {
+            throw new \Exception(
+                sprintf(
+                    'Amount (%s) must be greater than or equal to the minimum (%s).',
+                    $amount,
+                    $this->minimum
+                )
+            );
         }
 
         $this->amount = $amount;
     }
 
+    /**
+     * @return mixed
+     */
     public function calculateTopupCost()
     {
-
+        return $this->fee->calculate($this->amount);
     }
 }

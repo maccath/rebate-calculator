@@ -30,7 +30,6 @@ class TopupTest extends PHPUnit_Framework_TestCase
         return array(
             array(25, 25),
             array('25', 25),
-            array(-10, -10),
             array(1.234, 1.234)
         );
     }
@@ -72,6 +71,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
             array('abc'),
             array(false),
             array(null),
+            array(-10),
         );
     }
 
@@ -95,5 +95,86 @@ class TopupTest extends PHPUnit_Framework_TestCase
     public function testMinimumException($minimum)
     {
         $this->topup->setMinimum($minimum);
+    }
+
+    /**
+     * @return array
+     */
+    public function providerCalculatorConfiguration()
+    {
+        return array(
+            array(
+                new \RebateCalculator\PercentageFee(0),
+                0,
+                20,
+                0
+            ),
+            array(
+                new \RebateCalculator\FlatFee(2),
+                20,
+                20,
+                2
+            ),
+            array(
+                new \RebateCalculator\FlatFee(0),
+                15,
+                20,
+                0
+            ),
+            array(
+                new \RebateCalculator\PercentageFee(2),
+                10,
+                15,
+                0.3
+            ),
+        );
+    }
+
+    /**
+     * @param $fee
+     * @param $minimum
+     * @param $amount
+     * @param $expectedCost
+     *
+     * @dataProvider providerCalculatorConfiguration
+     */
+    public function testCalculateTopupCost($fee, $minimum, $amount, $expectedCost)
+    {
+        $this->topup->setFee($fee);
+        $this->topup->setMinimum($minimum);
+        $this->topup->setAmount($amount);
+
+        $this->assertEquals($expectedCost, $this->topup->calculateTopupCost());
+    }
+
+    /**
+     * @return array
+     */
+    public function providerCalculatorConfigurationException()
+    {
+        return array(
+            array(
+                new \RebateCalculator\PercentageFee(10),
+                25,
+                20
+            )
+        );
+    }
+
+    /**
+     * @param $fee
+     * @param $minimum
+     * @param $amount
+     *
+     * @expectedException \Exception
+     * @dataProvider providerCalculatorConfigurationException
+     */
+    public function testCalculateTopupCostException($fee, $minimum, $amount)
+    {
+        $this->topup->setFee($fee);
+        $this->topup->setMinimum($minimum);
+        $this->topup->setAmount($amount);
+
+        $this->topup->calculateTopupCost();
     }
 }
