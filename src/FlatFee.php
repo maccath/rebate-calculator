@@ -4,10 +4,11 @@ namespace RebateCalculator;
 
 /**
  * Class FlatFee
+ *
+ * @package RebateCalculator
  */
 class FlatFee implements FeeInterface
 {
-
     /**
      * @var float
      */
@@ -31,19 +32,46 @@ class FlatFee implements FeeInterface
 
     /**
      * @param $amount
+     *
+     * @throws \Exception
      */
     public function setAmount($amount)
     {
+        if (!$amount) {
+            $this->amount = 0;
+
+            return;
+        }
+
+        if (!is_numeric($amount) || $amount < 0) {
+            throw new \Exception(
+                sprintf(
+                    'Amount (%s) must be a positive numeric value.',
+                    $amount
+                )
+            );
+        }
+
         $this->amount = $amount;
     }
 
     /**
-     * @param $topup
+     * @param int $topup
      *
-     * @return mixed
+     * @return float
+     * @throws \Exception
      */
     public function calculate($topup = 0)
     {
+        if ($topup && (!is_numeric($topup) || $topup < 0)) {
+            throw new \Exception(
+                sprintf(
+                    "Topup (%s) must be a positive numeric value.",
+                    $topup
+                )
+            );
+        }
+
         return round($this->amount, 2);
     }
 }
