@@ -6,6 +6,19 @@
 class ItemTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * @var \RebateCalculator\Item
+     */
+    protected $item;
+
+    /**
+     *  Set up an item instance
+     */
+    protected function setUp()
+    {
+        $this->item = new \RebateCalculator\Item(0);
+    }
+
+    /**
      * @return array
      */
     public function providerCosts()
@@ -24,9 +37,9 @@ class ItemTest extends PHPUnit_Framework_TestCase
      */
     public function testCost($input, $expectedCost)
     {
-        $item = new \RebateCalculator\Item($input);
+        $this->item->setCost($input);
 
-        $this->assertEquals($expectedCost, $item->getCost());
+        $this->assertEquals($expectedCost, $this->item->getCost());
     }
 
     /**
@@ -50,5 +63,16 @@ class ItemTest extends PHPUnit_Framework_TestCase
     public function testCostExceptions($input)
     {
         new \RebateCalculator\Item($input);
+    }
+
+    /**
+     * @param $input
+     *
+     * @expectedException \Exception
+     * @dataProvider providerCostsException
+     */
+    public function testSetCostExceptions($input)
+    {
+       $this->item->setCost($input);
     }
 }
