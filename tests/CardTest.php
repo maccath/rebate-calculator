@@ -42,7 +42,7 @@ class CardTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider providerCurrencyAmounts
      */
-    public function testBalance($input, $expectedBalance)
+    public function testGetSetBalance($input, $expectedBalance)
     {
         $this->card->setBalance($input);
 
@@ -72,5 +72,44 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testBalanceException($balance)
     {
         $this->card->setBalance($balance);
+    }
+
+    /**
+     * Test setting and getting of topup
+     */
+    public function testGetSetTopup()
+    {
+        $topup = new \RebateCalculator\Topup(new \RebateCalculator\PercentageFee(10), 0, 25);
+
+        $this->card->setTopup($topup);
+
+        $this->assertInstanceOf('\RebateCalculator\Topup', $this->card->getTopup());
+        $this->assertEquals($topup, $this->card->getTopup());
+    }
+
+    /**
+     * Values for topup that should throw an exception
+     *
+     * @return array
+     */
+    public function providerTopupException()
+    {
+        return array(
+            array('abc'),
+            array(false),
+            array(null),
+            array(0),
+        );
+    }
+
+    /**
+     * @param $topup
+     *
+     * @expectedException PHPUnit_Framework_Error
+     * @dataProvider providerTopupException
+     */
+    public function testSetTopupException($topup)
+    {
+        $this->card->setTopup($topup);
     }
 }
