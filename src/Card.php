@@ -65,6 +65,6 @@ class Card
      */
     public function setTopup(Topup $topup)
     {
-        $this->$topup = $topup;
+        $this->topup = $topup;
     }
 }
