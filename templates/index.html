@@ -1,1 +1,113 @@
-Hello, World!
+{% extends "layout.html" %}
+
+{% block js %}
+<script src="assets/js/calculator.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <legend>Card Details</legend>
+
+                <div class="form-group" id="current_balance_control">
+                    <label for="current_balance" class="col-sm-2 control-label">Current Balance</label>
+
+                    <div class="input-group col-md-2">
+                        <div class="input-group-addon">£</div>
+                        <input type="number" class="form-control" id="current_balance" name="current_balance"
+                               placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group" id="minimum_topup_control">
+                    <label for="minimum_topup" class="col-sm-2 control-label">Minimum Top-up</label>
+
+                    <div class="input-group col-md-2">
+                        <div class="input-group-addon">£</div>
+                        <input type="number" class="form-control" id="minimum_topup" name="minimum_topup"
+                               placeholder="0.00">
+                    </div>
+                </div>
+
+                <div class="form-group" id="topup_fee_control">
+                    <label for="fee_none" class="col-sm-2 control-label">Topup Fee Type</label>
+
+                    <div class="input-group col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" name="topup_fee" id="fee_none" value="none" checked> No fee
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="topup_fee" id="fee_percentage" value="percentage"> Percentage
+                            value
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="topup_fee" id="fee_flat" value="flat"> Flat cost
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="flat_fee_amount_control">
+                    <label for="flat_fee_amount" class="col-sm-2 control-label">Fee Amount</label>
+
+                    <div class="input-group col-md-2">
+                        <div class="input-group-addon">£</div>
+                        <input type="number" class="form-control" id="flat_fee_amount" name="flat_fee_amount"
+                               placeholder="0.00"/>
+                    </div>
+                </div>
+
+                <div class="form-group" id="percentage_fee_amount_control">
+                    <label for="percentage_fee_amount" class="col-sm-2 control-label">Fee Percentage</label>
+
+                    <div class="input-group col-md-2">
+                        <input type="number" min="0" max="100" class="form-control" id="percentage_fee_amount"
+                               name="percentage_fee_amount" placeholder="0"/>
+
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Store Details</legend>
+
+                <div class="form-group" id="store_name_control">
+                    <label for="store_name" class="col-sm-2 control-label">Store Name</label>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="store_name" name="store_name" placeholder="Name"/>
+                    </div>
+                </div>
+
+                <div class="form-group" id="percentage_rebate_control">
+                    <label for="percentage_rebate_amount" class="col-sm-2 control-label">Rebate Percentage</label>
+
+                    <div class="input-group col-md-2">
+                        <input type="number" min="0" max="100" class="form-control" id="percentage_rebate_amount"
+                               name="percentage_rebate_amount" placeholder="0"/>
+
+                        <div class="input-group-addon">%</div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Item Details</legend>
+
+                <div class="form-group" id="item_cost_control">
+                    <label for="item_cost" class="col-sm-2 control-label">Item Cost</label>
+
+                    <div class="input-group col-md-2">
+                        <div class="input-group-addon">£</div>
+                        <input type="number" class="form-control" id="item_cost" name="item_cost" placeholder="0.00"/>
+                    </div>
+                </div>
+            </fieldset>
+
+            <button class="btn btn-default btn-primary" type="submit">Calculate</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
