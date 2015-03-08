@@ -108,7 +108,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
 
         $this->topup->setFee($fee);
 
-        $this->assertInstanceOf('\RebateCalculator\Fee', $this->topup->getFee());
+        $this->assertInstanceOf('\RebateCalculator\FeeInterface', $this->topup->getFee());
         $this->assertEquals($fee, $this->topup->getFee());
     }
 
