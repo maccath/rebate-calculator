@@ -4,5 +4,8 @@
   },
   "autoload": {
     "psr-4": {"RebateCalculator\\": "src/"}
+  },
+  "require": {
+    "twig/twig": "~1.0"
   }
 }
