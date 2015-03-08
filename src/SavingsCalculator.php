@@ -95,8 +95,7 @@ class SavingsCalculator
 
         $this->card->getTopup()->setAmount($this->calculateTopupRequired());
         $topupCost = $this->card->getTopup()->calculateTopupCost();
-
-        $rebate = $this->store->getRebate()->calculate($itemCost);
+        $rebate = $this->calculateRebateAmount();
 
         $totalCost = $itemCost + $topupCost - $rebate;
 
@@ -121,5 +120,28 @@ class SavingsCalculator
         } else {
             return $additionalBalanceRequired;
         }
+    }
+
+    /**
+     * Calculate balance that will remain in card account after rebate processed
+     *
+     * @return mixed
+     */
+    public function calculateRemainingBalance()
+    {
+        $topup = $this->calculateTopupRequired();
+        $rebate = $this->calculateRebateAmount();
+
+        return $this->card->getBalance() + $topup - $this->item->getCost() + $rebate;
+    }
+
+    /**
+     * Calculate rebate
+     *
+     * @return mixed
+     */
+    public function calculateRebateAmount()
+    {
+        return $this->store->getRebate()->calculate($this->item->getCost());
     }
 }
