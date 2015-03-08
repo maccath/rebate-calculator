@@ -51,3 +51,10 @@ crashlytics-build.properties
 composer.phar
 vendor/
 
+## Application ignores
+
+# Template cache
+cache/
+
+# Local configuration
+config/local.config.php
