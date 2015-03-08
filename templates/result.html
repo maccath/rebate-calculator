@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="row" id="results">
+    <div class="col-md-12">
+        {% if result is defined %}
+        <p class="bg-primary">
+            To buy the item for £{{ item.getCost|number_format(2, '.', ',') }}, you would need to top up
+            £{{ result.topupRequired|number_format(2, '.', ',') }} and would get
+            £{{ result.rebate|number_format(2, '.', ',') }} rebate for a total remaining card balance of
+            £{{ result.remainingBalance|number_format(2, '.',',') }}.
+        </p>
+
+        {% if result.saving > 0 %}
+        <p class="text-success bg-success">
+            <strong>Total savings:</strong> £{{ result.saving|number_format(2, '.', ',')}}
+        </p>
+        {% elseif result.saving == 0 %}
+        <p class="text-warning bg-warning">
+            There would be no saving on this purchase.
+        </p>
+        {% else %}
+        <p class="text-danger bg-danger">
+            <strong>Total loss:</strong> £{{ result.saving|number_format(2, '.', ',') }}
+        </p>
+        {% endif %}
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            {% if error is defined %}
+            {{ error }}
+            {% else %}
+            No result!
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% if result is defined %}
+<div class="row">
+    <div class="col-md-4">
+        <h2>Card Details</h2>
+        <dl class="dl-horizontal">
+            <dt>Current Balance</dt>
+            <dd>£{{ card.getBalance|number_format(2, '.', ',') }}</dd>
+
+            <dt>Minimum Top-up</dt>
+            <dd>£{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
+
+            <dt>Top up fee</dt>
+            {% if card.getTopup.getFee.getAmount %}
+            <dd>{{ card.getTopup.getFee.getAmount }}</dd>
+            {% else %}
+            <dd>None</dd>
+            {% endif %}
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <h2>Store Details</h2>
+        <dl class="dl-horizontal">
+            <dt>Store Name</dt>
+            <dd>{{ store.getName }}</dd>
+
+            <dt>Rebate</dt>
+            <dd>{{ store.getRebate.getAmount }}%</dd>
+        </dl>
+    </div>
+    <div class="col-md-4">
+        <h2>Item Details</h2>
+        <dl class="dl-horizontal">
+            <dt>Item Cost</dt>
+            <dd>£{{ item.getCost|number_format(2, '.', ',') }}</dd>
+        </dl>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
