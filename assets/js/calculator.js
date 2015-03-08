@@ -4,7 +4,7 @@ $(function () {
     var $topupFlatFee = $('#flat_fee_amount_control');
     var $topupPercentageFee = $('#percentage_fee_amount_control');
 
-    var showHideTopupFeeTypes = function() {
+    var showHideTopupFeeTypes = function () {
         switch ($topupFeeType.filter(':checked').val()) {
             case 'percentage':
                 $topupFlatFee.hide();
