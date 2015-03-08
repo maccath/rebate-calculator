@@ -13,4 +13,8 @@ if (file_exists('config/local.config.php')) {
 $loader = new Twig_Loader_Filesystem('templates');
 $twig = new Twig_Environment($loader, $config['twig']);
 
-echo $twig->render('index.html', array());
+$data = array(
+    'application' => $config['application'],
+);
+
+echo $twig->render('index.html', array_merge(array('title' => 'Calculator'), $data));
