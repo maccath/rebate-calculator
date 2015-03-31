@@ -11,7 +11,7 @@ class Store
     protected $name;
 
     /**
-     * @var Rebate percentage
+     * @var float Rebate percentage
      */
     protected $rebate;
 

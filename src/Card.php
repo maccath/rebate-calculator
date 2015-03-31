@@ -11,7 +11,7 @@ class Card
 {
 
     /**
-     * @var current balance
+     * @var float current balance
      */
     protected $balance;
 
@@ -69,7 +69,9 @@ class Card
     }
 
     /**
-     * Calculate topup required to purchase item
+     * Calculate top up required to purchase item
+     *
+     * @param Item $item
      *
      * @return mixed
      */
@@ -89,7 +91,7 @@ class Card
     }
 
     /**
-     * Top up the card based on the required amount to purchase item
+     * Top up the card based on the required amount to purchase $item
      *
      * @param Item $item
      *
@@ -104,6 +106,11 @@ class Card
         $this->amendBalance($topupAmount);
     }
 
+    /**
+     * @param Item $item
+     *
+     * @throws \Exception
+     */
     public function payFor(Item $item)
     {
         if ($this->getBalance() >= $item->getCost()) {
