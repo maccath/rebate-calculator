@@ -56,4 +56,14 @@ class Store
     {
         $this->rebate = $rebate;
     }
+
+    /**
+     * @param Item $item
+     *
+     * @return mixed
+     */
+    public function calculateRebateAmount(Item $item)
+    {
+        return $this->getRebate()->calculate($item->getCost());
+    }
 }

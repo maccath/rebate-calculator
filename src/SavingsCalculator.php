@@ -142,6 +142,6 @@ class SavingsCalculator
      */
     public function calculateRebateAmount()
     {
-        return $this->store->getRebate()->calculate($this->item->getCost());
+        return $this->store->calculateRebateAmount($this->getItem());
     }
 }
