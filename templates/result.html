@@ -6,10 +6,11 @@
     <div class="col-md-12">
         {% if result is defined %}
         <p class="bg-primary">
-            To buy the item for £{{ item.getCost|number_format(2, '.', ',') }}, you would need to top up
-            £{{ result.topupRequired|number_format(2, '.', ',') }} and would get
-            £{{ result.rebate|number_format(2, '.', ',') }} rebate for a total remaining card balance of
-            £{{ result.remainingBalance|number_format(2, '.',',') }}.
+            To buy the item for £{{ item.getCost|number_format(2, '.', ',') }},
+            you would need to top up £{{ result.topupRequired|number_format(2, '.', ',') }}
+            for a cost of £{{ result.topupCost|number_format(2, '.', ',') }}
+            and would get £{{ result.rebate|number_format(2, '.', ',') }} rebate
+            for a remaining card balance of £{{ result.remainingBalance|number_format(2, '.',',') }}.
         </p>
 
         {% if result.saving > 0 %}

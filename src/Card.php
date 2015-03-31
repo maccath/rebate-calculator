@@ -95,9 +95,25 @@ class Card
      *
      * @throws \Exception
      */
-    public function topup(Item $item)
+    public function topUp(Item $item)
     {
         $topupAmount = $this->calculateTopupRequired($item);
+
         $this->getTopup()->setAmount($topupAmount);
+
+        $this->setBalance($this->getBalance() + $topupAmount);
+    }
+
+    public function payFor(Item $item)
+    {
+        if ($this->getBalance() >= $item->getCost()) {
+            $this->setBalance($this->getBalance() - $item->getCost());
+        } else {
+            throw new \Exception(sprintf(
+                "There isn't sufficient balance (£%s) to purchase the item for %s",
+                $this->getBalance(),
+                $item->getCost()
+            ));
+        }
     }
 }

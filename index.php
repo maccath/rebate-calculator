@@ -78,25 +78,27 @@ if ($action == 'calculate') {
         // Construct item
         $item = new \RebateCalculator\Item($itemCost);
 
-        // Calculate savings
-        $calculator = new \RebateCalculator\SavingsCalculator($card, $store, $item);
+        $card->topUp($item);
+        $card->payFor($item);
 
-        $overallCost = $calculator->calculateCost();
-        $topupRequired = $card->calculateTopupRequired($item);
-        $rebate = $calculator->calculateRebateAmount();
-        $remainingBalance = $calculator->calculateRemainingBalance();
-        $saving = $item->getCost() - $overallCost;
+        // Process rebate
+        // Todo: refactor this into separate function
+        $rebate = $store->calculateRebateAmount($item);
+        $card->setBalance($card->getBalance() + $rebate);
+
+        $overallCost = $item->getCost() + $card->getTopup()->calculateTopupCost() - $rebate;
 
         $data = array_merge($data, array(
             'item' => $item,
             'store' => $store,
             'card' => $card,
             'result' => array(
+                'topupCost' => $card->getTopup()->calculateTopupCost(),
                 'overallCost' => $overallCost,
-                'topupRequired' => $topupRequired,
+                'topupRequired' => $card->getTopup()->getAmount(),
                 'rebate' => $rebate,
-                'remainingBalance' => $remainingBalance,
-                'saving' => $saving,
+                'remainingBalance' => $card->getBalance(),
+                'saving' => $item->getCost() - $overallCost,
             ),
         ));
     } catch (\Exception $e) {
