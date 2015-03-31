@@ -67,4 +67,37 @@ class Card
     {
         $this->topup = $topup;
     }
+
+    /**
+     * Calculate topup required to purchase item
+     *
+     * @return mixed
+     */
+    public function calculateTopupRequired(Item $item)
+    {
+        $itemCost = $item->getCost();
+        $currentBalance = $this->getBalance();
+
+        $additionalBalanceRequired = $itemCost - $currentBalance;
+        $minimumTopup = $this->getTopup()->getMinimum();
+
+        if ($additionalBalanceRequired < $minimumTopup) {
+            return $minimumTopup;
+        } else {
+            return $additionalBalanceRequired;
+        }
+    }
+
+    /**
+     * Top up the card based on the required amount to purchase item
+     *
+     * @param Item $item
+     *
+     * @throws \Exception
+     */
+    public function topup(Item $item)
+    {
+        $topupAmount = $this->calculateTopupRequired($item);
+        $this->getTopup()->setAmount($topupAmount);
+    }
 }

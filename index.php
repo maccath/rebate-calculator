@@ -82,7 +82,7 @@ if ($action == 'calculate') {
         $calculator = new \RebateCalculator\SavingsCalculator($card, $store, $item);
 
         $overallCost = $calculator->calculateCost();
-        $topupRequired = $calculator->calculateTopupRequired();
+        $topupRequired = $card->calculateTopupRequired($item);
         $rebate = $calculator->calculateRebateAmount();
         $remainingBalance = $calculator->calculateRemainingBalance();
         $saving = $item->getCost() - $overallCost;

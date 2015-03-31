@@ -103,6 +103,37 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return array
+     */
+    public function providerCalculateTopupRequired() {
+        // item cost, current balance, minimum topup, expected topup
+        return array(
+            array(10, 0, 25, 25),
+            array(30, 0, 25, 30),
+            array(30, 10, 25, 25),
+            array(30, 10, 0, 20),
+        );
+    }
+
+    /**
+     * @param $cost
+     * @param $balance
+     * @param $minimumTopup
+     * @param $expectedTopupRequired
+     *
+     * @dataProvider providerCalculateTopupRequired
+     */
+    public function testCalculateTopupRequired($cost, $balance, $minimumTopup, $expectedTopupRequired)
+    {
+        $item = new \RebateCalculator\Item($cost);
+
+        $this->card->setBalance($balance);
+        $this->card->getTopup()->setMinimum($minimumTopup);
+
+        $this->assertEquals($expectedTopupRequired, $this->card->calculateTopupRequired($item));
+    }
+
+    /**
      * @param $topup
      *
      * @expectedException PHPUnit_Framework_Error

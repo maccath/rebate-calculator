@@ -143,35 +143,7 @@ class SavingsCalculatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCost, $this->calculator->calculateCost());
     }
 
-    /**
-     * @return array
-     */
-    public function providerCalculateTopupRequired() {
-        // item cost, current balance, minimum topup, expected topup
-        return array(
-            array(10, 0, 25, 25),
-            array(30, 0, 25, 30),
-            array(30, 10, 25, 25),
-            array(30, 10, 0, 20),
-        );
-    }
 
-    /**
-     * @param $cost
-     * @param $balance
-     * @param $minimumTopup
-     * @param $expectedTopupRequired
-     *
-     * @dataProvider providerCalculateTopupRequired
-     */
-    public function testCalculateTopupRequired($cost, $balance, $minimumTopup, $expectedTopupRequired)
-    {
-        $this->calculator->getItem()->setCost($cost);
-        $this->calculator->getCard()->setBalance($balance);
-        $this->calculator->getCard()->getTopup()->setMinimum($minimumTopup);
-
-        $this->assertEquals($expectedTopupRequired, $this->calculator->calculateTopupRequired());
-    }
 
     /**
      * @return array
