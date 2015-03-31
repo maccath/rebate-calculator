@@ -81,7 +81,7 @@ class Card
         $additionalBalanceRequired = $itemCost - $currentBalance;
         $minimumTopup = $this->getTopup()->getMinimum();
 
-        if ($additionalBalanceRequired < $minimumTopup) {
+        if ($additionalBalanceRequired && $additionalBalanceRequired < $minimumTopup) {
             return $minimumTopup;
         } else {
             return $additionalBalanceRequired;

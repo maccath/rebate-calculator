@@ -112,6 +112,7 @@ class CardTest extends PHPUnit_Framework_TestCase
             array(30, 0, 25, 30),
             array(30, 10, 25, 25),
             array(30, 10, 0, 20),
+            array(100, 100, 10, 0),
         );
     }
 
