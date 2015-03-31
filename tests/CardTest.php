@@ -144,4 +144,30 @@ class CardTest extends PHPUnit_Framework_TestCase
     {
         $this->card->setTopup($topup);
     }
+
+    /**
+     * Amend the card balance by a positive value
+     *
+     * @throws Exception
+     */
+    public function testAmendBalancePositive()
+    {
+        $this->card->setBalance(90);
+        $this->card->amendBalance(10);
+
+        $this->assertEquals(100, $this->card->getBalance());
+    }
+
+    /**
+     * Amend the card balance by a negative value
+     *
+     * @throws Exception
+     */
+    public function testAmendBalanceNegative()
+    {
+        $this->card->setBalance(90);
+        $this->card->amendBalance(-10);
+
+        $this->assertEquals(80, $this->card->getBalance());
+    }
 }

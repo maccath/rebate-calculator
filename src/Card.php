@@ -101,13 +101,13 @@ class Card
 
         $this->getTopup()->setAmount($topupAmount);
 
-        $this->setBalance($this->getBalance() + $topupAmount);
+        $this->amendBalance($topupAmount);
     }
 
     public function payFor(Item $item)
     {
         if ($this->getBalance() >= $item->getCost()) {
-            $this->setBalance($this->getBalance() - $item->getCost());
+            $this->amendBalance(-$item->getCost());
         } else {
             throw new \Exception(sprintf(
                 "There isn't sufficient balance (£%s) to purchase the item for %s",
@@ -125,6 +125,16 @@ class Card
      */
     public function receiveRebate(Item $item, Store $store)
     {
-        $this->setBalance($this->getBalance() + $store->calculateRebateAmount($item));
+        $this->amendBalance($store->calculateRebateAmount($item));
+    }
+
+    /**
+     * Amend the card balance by the given amount
+     *
+     * @param $amount
+     */
+    public function amendBalance($amount)
+    {
+        $this->setBalance($this->getBalance() + $amount);
     }
 }
