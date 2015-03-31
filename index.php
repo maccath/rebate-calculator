@@ -80,25 +80,21 @@ if ($action == 'calculate') {
 
         $card->topUp($item);
         $card->payFor($item);
+        $card->receiveRebate($item, $store);
 
-        // Process rebate
-        // Todo: refactor this into separate function
-        $rebate = $store->calculateRebateAmount($item);
-        $card->setBalance($card->getBalance() + $rebate);
-
-        $overallCost = $item->getCost() + $card->getTopup()->calculateTopupCost() - $rebate;
-
+        $topupCost = $card->getTopup()->calculateTopupCost();
+        $rebateValue = $store->calculateRebateAmount($item);
+        
         $data = array_merge($data, array(
             'item' => $item,
             'store' => $store,
             'card' => $card,
             'result' => array(
-                'topupCost' => $card->getTopup()->calculateTopupCost(),
-                'overallCost' => $overallCost,
+                'topupCost' => $topupCost,
                 'topupRequired' => $card->getTopup()->getAmount(),
-                'rebate' => $rebate,
+                'rebate' => $rebateValue,
                 'remainingBalance' => $card->getBalance(),
-                'saving' => $item->getCost() - $overallCost,
+                'saving' => $rebateValue - $topupCost,
             ),
         ));
     } catch (\Exception $e) {

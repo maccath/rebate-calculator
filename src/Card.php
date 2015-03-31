@@ -116,4 +116,15 @@ class Card
             ));
         }
     }
+
+    /**
+     * Receive rebate for buying $item from $store
+     *
+     * @param Item  $item
+     * @param Store $store
+     */
+    public function receiveRebate(Item $item, Store $store)
+    {
+        $this->setBalance($this->getBalance() + $store->calculateRebateAmount($item));
+    }
 }
