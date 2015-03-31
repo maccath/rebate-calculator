@@ -1,24 +1,25 @@
 $(function () {
     // Topup fee type show/hide
     var $topupFeeType = $('[name="topup_fee"]');
-    var $topupFlatFee = $('#flat_fee_amount_control');
-    var $topupPercentageFee = $('#percentage_fee_amount_control');
+    var $topupFeeAmount = $('#fee_amount_control');
+    var $topupFeeAmountAddons = $topupFeeAmount.find('.input-group-addon');
 
     var showHideTopupFeeTypes = function () {
         switch ($topupFeeType.filter(':checked').val()) {
             case 'percentage':
-                $topupFlatFee.hide();
-                $topupPercentageFee.show();
+                $topupFeeAmount.show();
+                $topupFeeAmountAddons.hide();
+                $topupFeeAmountAddons.filter(':last').show();
                 break;
 
             case 'flat':
-                $topupFlatFee.show();
-                $topupPercentageFee.hide();
+                $topupFeeAmount.show();
+                $topupFeeAmountAddons.hide();
+                $topupFeeAmountAddons.filter(':first').show();
                 break;
 
             default:
-                $topupFlatFee.hide();
-                $topupPercentageFee.hide();
+                $topupFeeAmount.hide();
                 break;
         }
     };

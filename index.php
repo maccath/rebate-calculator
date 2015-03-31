@@ -49,18 +49,15 @@ if ($action == 'calculate') {
             : 0;
 
         // Construct fee
-        if (isset($_POST['topup_fee']) &&  $_POST['topup_fee'] == 'flat') {
-            $feeAmount =  isset($_POST['flat_fee_amount'])
-                ? round(floatval($_POST['flat_fee_amount']), 2)
-                : 0;
-            $fee = new \RebateCalculator\FlatFee($feeAmount);
-        } else if (isset($_POST['topup_fee']) && $_POST['topup_fee'] == 'percentage') {
-            $feeAmount =  isset($_POST['percentage_fee_amount'])
-                ? round(floatval($_POST['percentage_fee_amount']), 2)
-                : 0;
+        $feeAmount =  isset($_POST['fee_amount'])
+            ? round(floatval($_POST['fee_amount']), 2)
+            : 0;
+
+
+        if (isset($_POST['topup_fee']) && $_POST['topup_fee'] == 'percentage') {
             $fee = new \RebateCalculator\PercentageFee($feeAmount);
         } else {
-            $fee = new \RebateCalculator\FlatFee(0);
+            $fee = new \RebateCalculator\FlatFee($feeAmount);
         }
 
         // Construct topup facility
