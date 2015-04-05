@@ -90,6 +90,7 @@ if ($action == 'calculate') {
                 'topupCost' => $topupCost,
                 'topupRequired' => $card->getTopup()->getAmount(),
                 'rebate' => $rebateValue,
+                'previousBalance' => $cardBalance,
                 'remainingBalance' => $card->getBalance(),
                 'saving' => $rebateValue - $topupCost,
             ),

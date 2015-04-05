@@ -43,8 +43,11 @@
     <div class="col-md-4">
         <h2>Card Details</h2>
         <dl class="dl-horizontal">
+            <dt>Previous Balance</dt>
+            <dd>£{{ result.previousBalance|number_format(2, '.', ',') }}</dd>
+
             <dt>Current Balance</dt>
-            <dd>£{{ card.getBalance|number_format(2, '.', ',') }}</dd>
+            <dd>£{{ result.remainingBalance|number_format(2, '.', ',') }}</dd>
 
             <dt>Minimum Top-up</dt>
             <dd>£{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
