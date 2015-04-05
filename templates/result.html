@@ -12,24 +12,24 @@
 
         {% if result is defined %}
         <p class="bg-primary">
-            To buy the item for £{{ item.getCost|number_format(2, '.', ',') }},
+            To buy the item for &pound;{{ item.getCost|number_format(2, '.', ',') }},
 
             {% if result.topupRequired %}
-            a top up of £{{ result.topupRequired|number_format(2, '.', ',') }}
-            for a cost of £{{ result.topupCost|number_format(2, '.', ',') }}
+            a top up of &pound;{{ result.topupRequired|number_format(2, '.', ',') }}
+            for a cost of &pound;{{ result.topupCost|number_format(2, '.', ',') }}
             would be required,
             {% else %}
             no top up would be required,
             {% endif %}
 
-            and you would receive a £{{ result.rebate|number_format(2, '.', ',') }} rebate
+            and you would receive a &pound;{{ result.rebate|number_format(2, '.', ',') }} rebate
 
-            for a remaining card balance of £{{ result.remainingBalance|number_format(2, '.',',') }}.
+            for a remaining card balance of &pound;{{ result.remainingBalance|number_format(2, '.',',') }}.
         </p>
 
         {% if result.saving > 0 %}
         <p class="text-success bg-success">
-            <strong>Total savings:</strong> £{{ result.saving|number_format(2, '.', ',')}}
+            <strong>Total savings:</strong> &pound;{{ result.saving|number_format(2, '.', ',')}}
         </p>
         {% elseif result.saving == 0 %}
         <p class="text-warning bg-warning">
@@ -37,7 +37,7 @@
         </p>
         {% else %}
         <p class="text-danger bg-danger">
-            <strong>Total loss:</strong> £{{ result.saving|number_format(2, '.', ',') }}
+            <strong>Total loss:</strong> &pound;{{ result.saving|number_format(2, '.', ',') }}
         </p>
         {% endif %}
         {% endif %}
@@ -50,15 +50,15 @@
         <h2>Card Details</h2>
         <dl class="dl-horizontal">
             <dt>Previous Balance</dt>
-            <dd>{{ result.previousBalance|number_format(2, '.', ',') }}</dd>
+            <dd>&pound;{{ result.previousBalance|number_format(2, '.', ',') }}</dd>
 
             <dt>Current Balance</dt>
-            <dd>£{{ result.remainingBalance|number_format(2, '.', ',') }}</dd>
+            <dd>&pound;{{ result.remainingBalance|number_format(2, '.', ',') }}</dd>
         </dl>
         <h3>Top up facility</h3>
         <dl class="dl-horizontal">
             <dt>Minimum Top-up</dt>
-            <dd>£{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
+            <dd>&pound;{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
 
             <dt>Top up fee</dt>
             {% if card.getTopup.getFee.getAmount %}
@@ -82,7 +82,7 @@
         <h2>Item Details</h2>
         <dl class="dl-horizontal">
             <dt>Item Cost</dt>
-            <dd>£{{ item.getCost|number_format(2, '.', ',') }}</dd>
+            <dd>&pound;{{ item.getCost|number_format(2, '.', ',') }}</dd>
         </dl>
     </div>
 </div>
