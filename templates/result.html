@@ -7,9 +7,14 @@
         {% if result is defined %}
         <p class="bg-primary">
             To buy the item for £{{ item.getCost|number_format(2, '.', ',') }},
-            you would need to top up £{{ result.topupRequired|number_format(2, '.', ',') }}
+            {% if result.topupRequired %}
+            a top up of £{{ result.topupRequired|number_format(2, '.', ',') }}
             for a cost of £{{ result.topupCost|number_format(2, '.', ',') }}
-            and would get £{{ result.rebate|number_format(2, '.', ',') }} rebate
+            would be required,
+            {% else %}
+            no top up would be required,
+            {% endif %}
+            and you would receive a £{{ result.rebate|number_format(2, '.', ',') }} rebate
             for a remaining card balance of £{{ result.remainingBalance|number_format(2, '.',',') }}.
         </p>
 
