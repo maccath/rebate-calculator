@@ -1,26 +1,30 @@
 $(function () {
     // Topup fee type show/hide
     var $topupFeeType = $('[name="topup_fee"]');
-    var $topupFeeAmount = $('#fee_amount_control');
-    var $topupFeeAmountAddons = $topupFeeAmount.find('.input-group-addon');
+    var $feeAmountInput = $('#fee_amount');
+    var $feeAmountControl = $('#fee_amount_control');
+
+    var $poundSign = $feeAmountControl.find('.input-group-addon:first');
+    var $percentageSign = $feeAmountControl.find('.input-group-addon:last');
 
     var showHideTopupFeeTypes = function () {
-        switch ($topupFeeType.filter(':checked').val()) {
-            case 'percentage':
-                $topupFeeAmount.show();
-                $topupFeeAmountAddons.hide();
-                $topupFeeAmountAddons.filter(':last').show();
-                break;
+        var feeType = $topupFeeType.filter(':checked').val();
 
-            case 'flat':
-                $topupFeeAmount.show();
-                $topupFeeAmountAddons.hide();
-                $topupFeeAmountAddons.filter(':first').show();
-                break;
+        $poundSign.hide();
+        $percentageSign.hide();
 
-            default:
-                $topupFeeAmount.hide();
-                break;
+        if (feeType == 'none') {
+            $feeAmountControl.hide();
+            $feeAmountInput.prop('disabled', true);
+        } else {
+            $feeAmountControl.show();
+            $feeAmountInput.prop('disabled', false);
+
+            if (feeType == 'percentage') {
+                $percentageSign.show();
+            } else if (feeType == 'flat') {
+                $poundSign.show();
+            }
         }
     };
 
