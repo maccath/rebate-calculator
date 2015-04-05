@@ -4,9 +4,16 @@
 
 <div class="row" id="results">
     <div class="col-md-12">
+        {% if result is not defined %}
+        <div class="alert alert-danger" role="alert">
+            {{ error is defined ? error : 'An error occurred, please try again later.' }}
+        </div>
+        {% endif %}
+
         {% if result is defined %}
         <p class="bg-primary">
             To buy the item for £{{ item.getCost|number_format(2, '.', ',') }},
+
             {% if result.topupRequired %}
             a top up of £{{ result.topupRequired|number_format(2, '.', ',') }}
             for a cost of £{{ result.topupCost|number_format(2, '.', ',') }}
@@ -14,7 +21,9 @@
             {% else %}
             no top up would be required,
             {% endif %}
+
             and you would receive a £{{ result.rebate|number_format(2, '.', ',') }} rebate
+
             for a remaining card balance of £{{ result.remainingBalance|number_format(2, '.',',') }}.
         </p>
 
@@ -31,14 +40,6 @@
             <strong>Total loss:</strong> £{{ result.saving|number_format(2, '.', ',') }}
         </p>
         {% endif %}
-        {% else %}
-        <div class="alert alert-danger" role="alert">
-            {% if error is defined %}
-            {{ error }}
-            {% else %}
-            No result!
-            {% endif %}
-        </div>
         {% endif %}
     </div>
 </div>
