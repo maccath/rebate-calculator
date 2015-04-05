@@ -218,4 +218,17 @@ class TopupTest extends PHPUnit_Framework_TestCase
 
         $this->topup->calculateTopupCost();
     }
+
+    /**
+     * Test that no flat topup fee is charged when top-up amount is zero
+     *
+     * @throws Exception
+     */
+    public function testCalculateTopupCostWithFlatFeeWhenAmountZero()
+    {
+        $this->topup->setFee(new \RebateCalculator\FlatFee(1));
+        $this->topup->setAmount(0);
+
+        $this->assertEquals($this->topup->calculateTopupCost(), 0);
+    }
 }

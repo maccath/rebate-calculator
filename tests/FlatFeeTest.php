@@ -84,10 +84,10 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
             array(1.252, 25,    1.25),
             array(false, 25,    0),
             array(null,  25,    0),
-            array(10,    0,     10),
+            array(10,    0,     0),
             array(10,    "25",  10),
-            array(10,    false, 10),
-            array(10,    null,  10),
+            array(10,    false, 0),
+            array(10,    null,  0),
         );
     }
 

@@ -63,7 +63,11 @@ class FlatFee implements FeeInterface
      */
     public function calculate($topup = 0)
     {
-        if ($topup && (!is_numeric($topup) || $topup < 0)) {
+        if (!$topup) {
+            return 0;
+        }
+
+        if (!is_numeric($topup) || $topup < 0) {
             throw new \Exception(
                 sprintf(
                     "Topup (%s) must be a positive numeric value.",
