@@ -135,39 +135,28 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $topup
-     *
-     * @expectedException PHPUnit_Framework_Error
-     * @dataProvider providerTopupException
+     * Test that an affordable item can be paid for
      */
-    public function testSetTopupException($topup)
+    public function testPayForItem()
     {
-        $this->card->setTopup($topup);
+        $item = new \RebateCalculator\Item(200);
+
+        $this->card->setBalance(300);
+        $this->card->payFor($item);
+
+        $this->assertEquals($this->card->getBalance(), 100);
     }
 
     /**
-     * Amend the card balance by a positive value
+     * Test that an unaffordable item cannot be paid for
      *
-     * @throws Exception
+     * @expectedException Exception
      */
-    public function testAmendBalancePositive()
+    public function testPayForItemExceptionIfInsufficientBalance()
     {
-        $this->card->setBalance(90);
-        $this->card->amendBalance(10);
+        $item = new \RebateCalculator\Item(200);
 
-        $this->assertEquals(100, $this->card->getBalance());
-    }
-
-    /**
-     * Amend the card balance by a negative value
-     *
-     * @throws Exception
-     */
-    public function testAmendBalanceNegative()
-    {
-        $this->card->setBalance(90);
-        $this->card->amendBalance(-10);
-
-        $this->assertEquals(80, $this->card->getBalance());
+        $this->card->setBalance(100);
+        $this->card->payFor($item);
     }
 }
