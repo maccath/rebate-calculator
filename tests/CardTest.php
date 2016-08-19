@@ -11,14 +11,19 @@ class CardTest extends PHPUnit_Framework_TestCase
     protected $card;
 
     /**
+     * @var \RebateCalculator\TopUpFacility
+     */
+    protected $topUpFacility;
+
+    /**
      *  Set up a card instance
      */
     protected function setUp()
     {
         // Set up card
         $fee = new \RebateCalculator\PercentageFee(10);
-        $topUpFacility = new \RebateCalculator\TopUpFacility($fee);
-        $this->card = new \RebateCalculator\Card($topUpFacility);
+        $this->topUpFacility = new \RebateCalculator\TopUpFacility($fee);
+        $this->card = new \RebateCalculator\Card($this->topUpFacility);
     }
 
     /**
@@ -37,14 +42,14 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $input
+     * @param $inputBalance float
      * @param $expectedBalance
      *
      * @dataProvider providerCurrencyAmounts
      */
-    public function testGetSetBalance($input, $expectedBalance)
+    public function testGetSetBalance($inputBalance, $expectedBalance)
     {
-        $this->card->setBalance($input);
+        $this->card = new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
 
         $this->assertEquals($expectedBalance, $this->card->getBalance());
     }
@@ -64,14 +69,14 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $balance
+     * @param mixed $inputBalance the balance to set the card to
      *
      * @expectedException \Exception
      * @dataProvider providerCurrencyAmountsException
      */
-    public function testBalanceException($balance)
+    public function testBalanceException($inputBalance)
     {
-        $this->card->setBalance($balance);
+        new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
     }
 
     /**
@@ -127,8 +132,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testCalculateTopupRequired($cost, $balance, $minimumTopup, $expectedTopupRequired)
     {
         $item = new \RebateCalculator\Item($cost);
+        $this->card = new \RebateCalculator\Card($this->topUpFacility, $balance);
 
-        $this->card->setBalance($balance);
         $this->card->getTopUpFacility()->setMinimum($minimumTopup);
 
         $this->assertEquals($expectedTopupRequired, $this->card->calculateTopupRequired($item));
@@ -140,8 +145,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testPayForItem()
     {
         $item = new \RebateCalculator\Item(200);
+        $this->card = new \RebateCalculator\Card($this->topUpFacility, 300);
 
-        $this->card->setBalance(300);
         $this->card->payFor($item);
 
         $this->assertEquals($this->card->getBalance(), 100);
@@ -155,8 +160,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testPayForItemExceptionIfInsufficientBalance()
     {
         $item = new \RebateCalculator\Item(200);
+        $this->card = new \RebateCalculator\Card($this->topUpFacility, 100);
 
-        $this->card->setBalance(100);
         $this->card->payFor($item);
     }
 }

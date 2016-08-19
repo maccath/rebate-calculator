@@ -9,16 +9,15 @@ namespace RebateCalculator;
  */
 class Card
 {
-
     /**
      * @var float current balance
      */
-    protected $balance;
+    private $balance;
 
     /**
      * @var TopUpFacility the card's top-up facility
      */
-    protected $topUpFacility;
+    private $topUpFacility;
 
     /**
      * @param TopUpFacility $topUpFacility
@@ -26,11 +25,13 @@ class Card
      */
     function __construct(TopUpFacility $topUpFacility, $balance = 0)
     {
-        $this->balance = $balance;
+        $this->setBalance($balance);
         $this->topUpFacility = $topUpFacility;
     }
 
     /**
+     * Get the current card balance
+     *
      * @return mixed
      */
     public function getBalance()
@@ -39,11 +40,13 @@ class Card
     }
 
     /**
+     * Set the card balance
+     *
      * @param $balance
      *
      * @throws \Exception
      */
-    public function setBalance($balance)
+    private function setBalance($balance)
     {
         if (!is_numeric($balance)) {
             throw new \Exception('Balance must be a numeric value.');
