@@ -10,52 +10,32 @@ namespace RebateCalculator;
 class TopUpFacility
 {
     /**
-     * @var FeeInterface topup fee
+     * @var FeeInterface the top-up fee
      */
-    protected $fee;
+    private $fee;
 
     /**
-     * @var
+     * @var float the minimum top-up amount
      */
-    protected $minimum;
+    private $minimum;
 
     /**
-     * @var
-     */
-    protected $amount;
-
-    /**
-     * @param FeeInterface $fee
-     * @param              $minimum
-     * @param              $amount
+     * TopUpFacility constructor
      *
-     * @throws \Exception
-     */
-    function __construct(FeeInterface $fee, $minimum = 0, $amount = 0)
-    {
-        $this->setFee($fee);
-        $this->setMinimum($minimum);
-        $this->setAmount($amount);
-    }
-
-    /**
-     * @return FeeInterface
-     */
-    public function getFee()
-    {
-        return $this->fee;
-    }
-
-    /**
      * @param FeeInterface $fee
+     * @param float $minimum the minimum top-up amount
+     * @throws \Exception if the minimum top-up amount is not numeric or negative
      */
-    public function setFee(FeeInterface $fee)
+    function __construct(FeeInterface $fee, $minimum = 0.0)
     {
         $this->fee = $fee;
+        $this->setMinimum($minimum);
     }
 
     /**
-     * @return mixed
+     * Get the minimum top-up amount
+     *
+     * @return float
      */
     public function getMinimum()
     {
@@ -63,11 +43,12 @@ class TopUpFacility
     }
 
     /**
-     * @param mixed $minimum
+     * Set the minimum top-up amount
      *
-     * @throws \Exception
+     * @param float $minimum
+     * @throws \Exception if the minimum top-up amount is not numeric or negative
      */
-    public function setMinimum($minimum)
+    private function setMinimum($minimum)
     {
         if (!is_numeric($minimum) || $minimum < 0) {
             throw new \Exception(
@@ -82,48 +63,54 @@ class TopUpFacility
     }
 
     /**
-     * @return mixed
+     * Get the actual value of the top-up
+     *
+     * @param float $amount the amount to top up by
+     * @return float the top-up value (after fees etc.)
+     * @throws \Exception if value is negative
      */
-    public function getAmount()
+    public function getTopUpValue($amount)
     {
-        return $this->amount;
+        $this->validateTopUpAmount($amount);
+
+        $fee = $this->fee->calculate($amount);
+
+        $topUpValue = $amount - $fee;
+
+        if ($topUpValue < 0) {
+            throw new \Exception(sprintf(
+                "The value of the top amount £%d is negative after a fee of £%d",
+                $amount,
+                $fee
+            ));
+        }
+
+        return $topUpValue;
     }
 
     /**
-     * @param mixed $amount
+     * Verify that the amount is a positive numeric value equal to or over the minimum top up amount
      *
+     * @param float $amount the amount to top up by
      * @throws \Exception
      */
-    public function setAmount($amount)
+    private function validateTopUpAmount($amount)
     {
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
-                    'Amount (%s) must be a positive numeric value.',
+                    'Top-up amount (£%d) must be a positive numeric value.',
                     $amount
                 )
             );
         }
 
-        if ($amount < $this->minimum)
-        {
-            throw new \Exception(
-                sprintf(
-                    'Amount (%s) must be greater than or equal to the minimum (%s).',
-                    $amount,
-                    $this->minimum
-                )
-            );
+        if ($amount < $this->getMinimum()) {
+            throw new \Exception(sprintf(
+                "Top-up amount £%d must exceed the minimum top-up amount of £%d",
+                $amount,
+                $this->getMinimum()
+            ));
         }
-
-        $this->amount = $amount;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function calculateTopupCost()
-    {
-        return $this->fee->calculate($this->amount);
     }
 }

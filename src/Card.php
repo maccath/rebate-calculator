@@ -64,41 +64,14 @@ class Card
     }
 
     /**
-     * Calculate top up required to purchase item
+     * Top up the card by the given amount
      *
-     * @param Item $item
-     *
-     * @return mixed
+     * @param float $amount the amount to top up
+     * @throws \Exception if card could not be topped up
      */
-    public function calculateTopupRequired(Item $item)
+    public function topUp($amount)
     {
-        $itemCost = $item->getCost();
-        $currentBalance = $this->getBalance();
-
-        $additionalBalanceRequired = $itemCost - $currentBalance;
-        $minimumTopup = $this->getTopUpFacility()->getMinimum();
-
-        if ($additionalBalanceRequired && $additionalBalanceRequired < $minimumTopup) {
-            return $minimumTopup;
-        } else {
-            return $additionalBalanceRequired;
-        }
-    }
-
-    /**
-     * Top up the card based on the required amount to purchase $item
-     *
-     * @param Item $item
-     *
-     * @throws \Exception
-     */
-    public function topUp(Item $item)
-    {
-        $topupAmount = $this->calculateTopupRequired($item);
-
-        $this->getTopUpFacility()->setAmount($topupAmount);
-
-        $this->adjustBalance($topupAmount);
+        $this->adjustBalance($this->getTopUpFacility()->getTopUpValue($amount));
     }
 
     /**

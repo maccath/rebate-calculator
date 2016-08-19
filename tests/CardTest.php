@@ -21,8 +21,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // Set up card
-        $fee = new \RebateCalculator\PercentageFee(10);
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($fee);
+        $this->fee = new \RebateCalculator\PercentageFee(10);
+        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee);
         $this->card = new \RebateCalculator\Card($this->topUpFacility);
     }
 
@@ -133,11 +133,10 @@ class CardTest extends PHPUnit_Framework_TestCase
     public function testCalculateTopupRequired($cost, $balance, $minimumTopup, $expectedTopupRequired)
     {
         $item = new \RebateCalculator\Item($cost);
+        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopup);
         $this->card = new \RebateCalculator\Card($this->topUpFacility, $balance);
 
-        $this->card->getTopUpFacility()->setMinimum($minimumTopup);
-
-        $this->assertEquals($expectedTopupRequired, $this->card->calculateTopupRequired($item));
+        $this->assertEquals($expectedTopupRequired, \RebateCalculator\TopUpCalculator::calculateTopUpRequired($this->card, $item));
     }
 
     /**

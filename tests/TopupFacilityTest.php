@@ -16,10 +16,10 @@ class TopupTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // Set up fee
-        $fee = new \RebateCalculator\PercentageFee(10);
+        $this->fee = new \RebateCalculator\PercentageFee(10);
 
         // Set up a topup
-        $this->topup = new \RebateCalculator\TopUpFacility($fee, 0, 0);
+        $this->topup = new \RebateCalculator\TopUpFacility($this->fee, 0);
     }
 
     /**
@@ -38,26 +38,13 @@ class TopupTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param $input
-     * @param $expectedValue
-     *
-     * @dataProvider providerCurrencyAmounts
-     */
-    public function testSetGetAmount($input, $expectedValue)
-    {
-        $this->topup->setAmount($input);
-
-        $this->assertEquals($expectedValue, $this->topup->getAmount());
-    }
-
-    /**
-     * @param $input
      * @param $expectedMinimumTopup
      *
      * @dataProvider providerCurrencyAmounts
      */
     public function testSetGetMinimum($input, $expectedMinimumTopup)
     {
-        $this->topup->setMinimum($input);
+        $this->topup = new \RebateCalculator\TopUpFacility($this->fee, $input);
 
         $this->assertEquals($expectedMinimumTopup, $this->topup->getMinimum());
     }
@@ -85,7 +72,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function testValueException($amount)
     {
-        $this->topup->setAmount($amount);
+        $this->topup->getTopUpValue($amount);
     }
 
     /**
@@ -96,20 +83,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function testMinimumException($minimum)
     {
-        $this->topup->setMinimum($minimum);
-    }
-
-    /**
-     * Test setting and getting of fee
-     */
-    public function testGetSetFee()
-    {
-        $fee = new \RebateCalculator\PercentageFee(10);
-
-        $this->topup->setFee($fee);
-
-        $this->assertInstanceOf('\RebateCalculator\FeeInterface', $this->topup->getFee());
-        $this->assertEquals($fee, $this->topup->getFee());
+        new \RebateCalculator\TopUpFacility($this->fee, $minimum);
     }
 
     /**
@@ -135,7 +109,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function testSetFeeException($fee)
     {
-        $this->topup->setFee($fee);
+        new \RebateCalculator\TopUpFacility($fee);
     }
 
     /**
@@ -148,25 +122,25 @@ class TopupTest extends PHPUnit_Framework_TestCase
                 new \RebateCalculator\PercentageFee(0),
                 0,
                 20,
-                0
+                20
             ),
             array(
                 new \RebateCalculator\FlatFee(2),
                 20,
                 20,
-                2
+                18
             ),
             array(
                 new \RebateCalculator\FlatFee(0),
                 15,
                 20,
-                0
+                20
             ),
             array(
                 new \RebateCalculator\PercentageFee(2),
                 10,
                 15,
-                0.3
+                14.70
             ),
         );
     }
@@ -175,17 +149,15 @@ class TopupTest extends PHPUnit_Framework_TestCase
      * @param $fee
      * @param $minimum
      * @param $amount
-     * @param $expectedCost
+     * @param $expectedValue
      *
      * @dataProvider providerCalculatorConfiguration
      */
-    public function testCalculateTopupCost($fee, $minimum, $amount, $expectedCost)
+    public function testCalculateTopupCost($fee, $minimum, $amount, $expectedValue)
     {
-        $this->topup->setFee($fee);
-        $this->topup->setMinimum($minimum);
-        $this->topup->setAmount($amount);
+        $this->topup = new \RebateCalculator\TopUpFacility($fee, $minimum);
 
-        $this->assertEquals($expectedCost, $this->topup->calculateTopupCost());
+        $this->assertEquals($expectedValue, $this->topup->getTopUpValue($amount), sprintf("Value of a top up of %d is %d not %d", $amount, $this->topup->getTopUpValue($amount), $expectedValue));
     }
 
     /**
@@ -210,13 +182,11 @@ class TopupTest extends PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @dataProvider providerCalculatorConfigurationException
      */
-    public function testCalculateTopupCostException($fee, $minimum, $amount)
+    public function testCalculateTopupValueException($fee, $minimum, $amount)
     {
-        $this->topup->setFee($fee);
-        $this->topup->setMinimum($minimum);
-        $this->topup->setAmount($amount);
+        $this->topup = new \RebateCalculator\TopUpFacility($fee, $minimum);
 
-        $this->topup->calculateTopupCost();
+        $this->topup->getTopUpValue($amount);
     }
 
     /**
@@ -226,9 +196,8 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculateTopupCostWithFlatFeeWhenAmountZero()
     {
-        $this->topup->setFee(new \RebateCalculator\FlatFee(1));
-        $this->topup->setAmount(0);
+        $this->topup = new \RebateCalculator\TopUpFacility(new \RebateCalculator\FlatFee(1));
 
-        $this->assertEquals($this->topup->calculateTopupCost(), 0);
+        $this->assertEquals($this->topup->getTopUpValue(0), 0);
     }
 }
