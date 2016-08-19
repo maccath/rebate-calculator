@@ -8,19 +8,17 @@ namespace RebateCalculator;
 interface FeeInterface
 {
     /**
-     * @return mixed
+     * Get the fee amount
+     *
+     * @return float
      */
     public function getAmount();
 
     /**
-     * @param $amount
-     */
-    public function setAmount($amount);
-
-    /**
-     * @param $topup
+     * Calculate the fee for the given top-up amount
      *
-     * @return mixed
+     * @param float $topUpAmount the amount to top up by
+     * @return float
      */
-    public function calculate($topup = 0);
+    public function calculate($topUpAmount = 0.0);
 }

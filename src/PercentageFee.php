@@ -10,7 +10,7 @@ namespace RebateCalculator;
 class PercentageFee implements FeeInterface
 {
     /**
-     * @var
+     * @var float the fee amount
      */
     protected $amount;
 
@@ -23,7 +23,9 @@ class PercentageFee implements FeeInterface
     }
 
     /**
-     * @return float
+     * Get the fee amount
+     *
+     * @return float the fee amount
      */
     public function getAmount()
     {
@@ -31,11 +33,12 @@ class PercentageFee implements FeeInterface
     }
 
     /**
-     * @param $amount
+     * Set the fee amount in a percentage
      *
-     * @throws \Exception
+     * @param float $amount the fee amount
+     * @throws \Exception if fee amount invalid
      */
-    public function setAmount($amount)
+    private function setAmount($amount)
     {
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
@@ -50,25 +53,26 @@ class PercentageFee implements FeeInterface
     }
 
     /**
-     * @param int $topup
+     * Calculate the fee for a given top-up amount
      *
-     * @return float
-     * @throws \Exception
+     * @param float $topUpAmount
+     * @return float the fee
+     * @throws \Exception if top-up amount invalid
      */
-    public function calculate($topup = 0)
+    public function calculate($topUpAmount = 0.0)
     {
-        if (!is_numeric($topup) || $topup < 0) {
+        if (!is_numeric($topUpAmount) || $topUpAmount < 0) {
             throw new \Exception(
                 sprintf(
                     "Topup (%s) must be a positive numeric value.",
-                    $topup
+                    $topUpAmount
                 )
             );
         }
 
         // No fee if no top-up
-        if (! $topup) return 0;
+        if (! $topUpAmount) return 0;
 
-        return round($topup / 100 * $this->amount, 2);
+        return round($topUpAmount / 100 * $this->amount, 2);
     }
 }

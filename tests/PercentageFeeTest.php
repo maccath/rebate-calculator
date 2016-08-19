@@ -40,7 +40,7 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testAmount($amount, $expectedValue)
     {
-        $this->fee->setAmount($amount);
+        $this->fee = new \RebateCalculator\PercentageFee($amount);
 
         $this->assertEquals($expectedValue, $this->fee->getAmount());
     }
@@ -68,7 +68,7 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testAmountException($amount)
     {
-        $this->fee->setAmount($amount);
+        new \RebateCalculator\PercentageFee($amount);
     }
 
     /**
@@ -95,7 +95,7 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculate($amount, $topup, $expectedResult)
     {
-        $this->fee->setAmount($amount);
+        $this->fee = new \RebateCalculator\PercentageFee($amount);
 
         $this->assertEquals($expectedResult, $this->fee->calculate($topup));
     }

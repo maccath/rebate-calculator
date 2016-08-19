@@ -10,12 +10,14 @@ namespace RebateCalculator;
 class FlatFee implements FeeInterface
 {
     /**
-     * @var float
+     * @var float the fee amount
      */
-    protected $amount;
+    private $amount;
 
     /**
-     * @param $amount
+     * FlatFee constructor
+     * 
+     * @param float $amount the fee amount
      */
     function __construct($amount)
     {
@@ -23,7 +25,9 @@ class FlatFee implements FeeInterface
     }
 
     /**
-     * @return float
+     * Get the fee amount
+     *
+     * @return float the fee amount
      */
     public function getAmount()
     {
@@ -31,11 +35,12 @@ class FlatFee implements FeeInterface
     }
 
     /**
-     * @param $amount
+     * Set the fee amount in flat currency
      *
-     * @throws \Exception
+     * @param float $amount the fee amount
+     * @throws \Exception if fee amount invalid
      */
-    public function setAmount($amount)
+    private function setAmount($amount)
     {
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
@@ -50,24 +55,25 @@ class FlatFee implements FeeInterface
     }
 
     /**
-     * @param int $topup
+     * Calculate the fee for a given top-up amount
      *
-     * @return float
-     * @throws \Exception
+     * @param float $topUpAmount
+     * @return float the fee
+     * @throws \Exception if top-up amount invalid
      */
-    public function calculate($topup = 0)
+    public function calculate($topUpAmount = 0.0)
     {
-        if (!is_numeric($topup) || $topup < 0) {
+        if (!is_numeric($topUpAmount) || $topUpAmount < 0) {
             throw new \Exception(
                 sprintf(
-                    "Topup (%s) must be a positive numeric value.",
-                    $topup
+                    "Top-up amount (£%d) must be a positive numeric value.",
+                    $topUpAmount
                 )
             );
         }
 
         // No fee if no top-up
-        if (! $topup) return 0;
+        if (! $topUpAmount) return 0;
 
         return round($this->amount, 2);
     }

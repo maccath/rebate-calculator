@@ -40,7 +40,7 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testAmount($amount, $expectedValue)
     {
-        $this->fee->setAmount($amount);
+        $this->fee = new \RebateCalculator\FlatFee($amount);
 
         $this->assertEquals($expectedValue, $this->fee->getAmount());
     }
@@ -68,7 +68,7 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testAmountException($amount)
     {
-        $this->fee->setAmount($amount);
+        new \RebateCalculator\FlatFee($amount);
     }
 
     /**
@@ -96,7 +96,7 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
      */
     public function testCalculate($amount, $topup, $expectedResult)
     {
-        $this->fee->setAmount($amount);
+        $this->fee = new \RebateCalculator\FlatFee($amount);
 
         $this->assertEquals($expectedResult, $this->fee->calculate($topup));
     }
