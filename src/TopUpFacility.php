@@ -69,11 +69,6 @@ class TopUpFacility
      */
     public function setMinimum($minimum)
     {
-        if (!$minimum) {
-            $this->minimum = 0;
-            return;
-        }
-
         if (!is_numeric($minimum) || $minimum < 0) {
             throw new \Exception(
                 sprintf(
@@ -101,11 +96,6 @@ class TopUpFacility
      */
     public function setAmount($amount)
     {
-        if (!$amount) {
-            $this->amount = 0;
-            return;
-        }
-
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(

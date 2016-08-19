@@ -29,8 +29,6 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
             array(25,    25),
             array('25',  25),
             array(1.234, 1.234),
-            array(false, 0),
-            array(null,  0),
         );
     }
 
@@ -57,6 +55,8 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
         return array(
             array('abc'),
             array(-10),
+            array(false, 0),
+            array(null,  0),
         );
     }
 
@@ -81,12 +81,8 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
             array(10,    25,    2.5),
             array("10",  25,    2.5),
             array(0,     25,    0),
-            array(false, 25,    0),
-            array(null,  25,    0),
             array(10,    0,     0),
             array(10,    "25",  2.5),
-            array(10,    false, 0),
-            array(10,    null,  0),
         );
     }
 

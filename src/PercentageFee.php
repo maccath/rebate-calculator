@@ -19,7 +19,7 @@ class PercentageFee implements FeeInterface
      */
     function __construct($amount)
     {
-        $this->amount = $amount;
+        $this->setAmount($amount);
     }
 
     /**
@@ -37,12 +37,6 @@ class PercentageFee implements FeeInterface
      */
     public function setAmount($amount)
     {
-        if (!$amount) {
-            $this->amount = 0;
-
-            return;
-        }
-
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
@@ -63,7 +57,7 @@ class PercentageFee implements FeeInterface
      */
     public function calculate($topup = 0)
     {
-        if ($topup && (!is_numeric($topup) || $topup < 0)) {
+        if (!is_numeric($topup) || $topup < 0) {
             throw new \Exception(
                 sprintf(
                     "Topup (%s) must be a positive numeric value.",
@@ -71,6 +65,9 @@ class PercentageFee implements FeeInterface
                 )
             );
         }
+
+        // No fee if no top-up
+        if (! $topup) return 0;
 
         return round($topup / 100 * $this->amount, 2);
     }

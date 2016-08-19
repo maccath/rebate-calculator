@@ -29,8 +29,6 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
             array(25,    25),
             array('25',  25),
             array(1.234, 1.234),
-            array(false, 0),
-            array(null,  0),
         );
     }
 
@@ -57,6 +55,8 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
         return array(
             array('abc'),
             array(-10),
+            array(false, 0),
+            array(null,  0),
         );
     }
 
@@ -82,12 +82,8 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
             array("10",  25,    10),
             array(0,     25,    0),
             array(1.252, 25,    1.25),
-            array(false, 25,    0),
-            array(null,  25,    0),
             array(10,    0,     0),
             array(10,    "25",  10),
-            array(10,    false, 0),
-            array(10,    null,  0),
         );
     }
 
