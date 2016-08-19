@@ -17,13 +17,17 @@ class TopUpCalculator
         $itemCost = $item->getCost();
         $currentBalance = $card->getBalance();
 
+        if ($itemCost <= $currentBalance) {
+            return 0;
+        }
+
         $additionalBalanceRequired = $itemCost - $currentBalance;
         $minimumTopup = $card->getTopUpFacility()->getMinimum();
 
-        if ($additionalBalanceRequired && $additionalBalanceRequired < $minimumTopup) {
+        if ($additionalBalanceRequired < $minimumTopup) {
             return $minimumTopup;
-        } else {
-            return $additionalBalanceRequired;
         }
+
+        return $additionalBalanceRequired;
     }
 }

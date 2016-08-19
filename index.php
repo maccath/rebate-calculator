@@ -77,7 +77,10 @@ if ($action == 'calculate') {
 
         $topupAmount = \RebateCalculator\TopUpCalculator::calculateTopUpRequired($card, $item);
 
-        $card->topUp($topupAmount);
+        if ($topupAmount > 0) {
+            $card->topUp($topupAmount);
+        }
+
         $card->payFor($item);
         $card->receiveRebate($item, $store);
 
