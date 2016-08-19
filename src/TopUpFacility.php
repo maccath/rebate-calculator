@@ -3,11 +3,11 @@
 namespace RebateCalculator;
 
 /**
- * Class Topup
+ * Class TopUpFacility
  *
  * @package RebateCalculator
  */
-class Topup
+class TopUpFacility
 {
     /**
      * @var FeeInterface topup fee

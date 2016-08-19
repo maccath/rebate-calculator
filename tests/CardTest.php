@@ -17,8 +17,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     {
         // Set up card
         $fee = new \RebateCalculator\PercentageFee(10);
-        $topup = new \RebateCalculator\Topup($fee);
-        $this->card = new \RebateCalculator\Card($topup);
+        $topUpFacility = new \RebateCalculator\TopUpFacility($fee);
+        $this->card = new \RebateCalculator\Card($topUpFacility);
     }
 
     /**
@@ -79,12 +79,12 @@ class CardTest extends PHPUnit_Framework_TestCase
      */
     public function testGetSetTopup()
     {
-        $topup = new \RebateCalculator\Topup(new \RebateCalculator\PercentageFee(10), 0, 25);
+        $topUpFacility = new \RebateCalculator\TopUpFacility(new \RebateCalculator\PercentageFee(10), 0, 25);
 
-        $this->card->setTopup($topup);
+        $this->card->setTopUpFacility($topUpFacility);
 
-        $this->assertInstanceOf('\RebateCalculator\Topup', $this->card->getTopup());
-        $this->assertEquals($topup, $this->card->getTopup());
+        $this->assertInstanceOf('\RebateCalculator\TopupFacility', $this->card->getTopUpFacility());
+        $this->assertEquals($topUpFacility, $this->card->getTopUpFacility());
     }
 
     /**
@@ -129,7 +129,7 @@ class CardTest extends PHPUnit_Framework_TestCase
         $item = new \RebateCalculator\Item($cost);
 
         $this->card->setBalance($balance);
-        $this->card->getTopup()->setMinimum($minimumTopup);
+        $this->card->getTopUpFacility()->setMinimum($minimumTopup);
 
         $this->assertEquals($expectedTopupRequired, $this->card->calculateTopupRequired($item));
     }

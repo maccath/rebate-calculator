@@ -6,7 +6,7 @@
 class TopupTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \RebateCalculator\Topup
+     * @var \RebateCalculator\TopUpFacility
      */
     protected $topup;
 
@@ -19,7 +19,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
         $fee = new \RebateCalculator\PercentageFee(10);
 
         // Set up a topup
-        $this->topup = new \RebateCalculator\Topup($fee, 0, 0);
+        $this->topup = new \RebateCalculator\TopUpFacility($fee, 0, 0);
     }
 
     /**

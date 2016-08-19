@@ -16,18 +16,18 @@ class Card
     protected $balance;
 
     /**
-     * @var Topup topup
+     * @var TopUpFacility the card's top-up facility
      */
-    protected $topup;
+    protected $topUpFacility;
 
     /**
-     * @param Topup $topup
-     * @param int   $balance
+     * @param TopUpFacility $topUpFacility
+     * @param int $balance
      */
-    function __construct(Topup $topup, $balance = 0)
+    function __construct(TopUpFacility $topUpFacility, $balance = 0)
     {
-        $this->topup = $topup;
         $this->balance = $balance;
+        $this->topUpFacility = $topUpFacility;
     }
 
     /**
@@ -53,19 +53,19 @@ class Card
     }
 
     /**
-     * @return Topup
+     * @return TopUpFacility
      */
-    public function getTopup()
+    public function getTopUpFacility()
     {
-        return $this->topup;
+        return $this->topUpFacility;
     }
 
     /**
-     * @param Topup $topup
+     * @param TopUpFacility $topUpFacility
      */
-    public function setTopup(Topup $topup)
+    public function setTopUpFacility(TopUpFacility $topUpFacility)
     {
-        $this->topup = $topup;
+        $this->topUpFacility = $topUpFacility;
     }
 
     /**
@@ -81,7 +81,7 @@ class Card
         $currentBalance = $this->getBalance();
 
         $additionalBalanceRequired = $itemCost - $currentBalance;
-        $minimumTopup = $this->getTopup()->getMinimum();
+        $minimumTopup = $this->getTopUpFacility()->getMinimum();
 
         if ($additionalBalanceRequired && $additionalBalanceRequired < $minimumTopup) {
             return $minimumTopup;
@@ -101,7 +101,7 @@ class Card
     {
         $topupAmount = $this->calculateTopupRequired($item);
 
-        $this->getTopup()->setAmount($topupAmount);
+        $this->getTopUpFacility()->setAmount($topupAmount);
 
         $this->adjustBalance($topupAmount);
     }

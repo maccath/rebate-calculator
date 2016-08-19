@@ -61,7 +61,7 @@ if ($action == 'calculate') {
         }
 
         // Construct topup facility
-        $topup = new \RebateCalculator\Topup($fee, $minimumTopup);
+        $topup = new \RebateCalculator\TopUpFacility($fee, $minimumTopup);
 
         // Construct card
         $card = new RebateCalculator\Card($topup, $cardBalance);
@@ -79,7 +79,7 @@ if ($action == 'calculate') {
         $card->payFor($item);
         $card->receiveRebate($item, $store);
 
-        $topupCost = $card->getTopup()->calculateTopupCost();
+        $topupCost = $card->getTopUpFacility()->calculateTopupCost();
         $rebateValue = $store->calculateRebateAmount($item);
         
         $data = array_merge($data, array(
@@ -88,7 +88,7 @@ if ($action == 'calculate') {
             'card' => $card,
             'result' => array(
                 'topupCost' => $topupCost,
-                'topupRequired' => $card->getTopup()->getAmount(),
+                'topupRequired' => $card->getTopUpFacility()->getAmount(),
                 'rebate' => $rebateValue,
                 'remainingBalance' => $card->getBalance(),
                 'saving' => $rebateValue - $topupCost,
