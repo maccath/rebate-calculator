@@ -91,6 +91,8 @@ if ($action == 'calculate') {
             'item' => $item,
             'store' => $store,
             'card' => $card,
+            'fee' => $fee,
+            'fee_type' => $_POST['topup_fee'] == 'percentage' ?: 'flat',
             'result' => array(
                 'topupCost' => $topupCost,
                 'topupRequired' => $topupAmount,

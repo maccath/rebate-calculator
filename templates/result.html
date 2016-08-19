@@ -47,13 +47,17 @@
             <dd>£{{ card.getBalance|number_format(2, '.', ',') }}</dd>
 
             <dt>Minimum Top-up</dt>
-            <dd>£{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
+            <dd>£{{ card.getTopUpFacility.getMinimum|number_format(2, '.', ',') }}</dd>
 
             <dt>Top up fee</dt>
-            {% if card.getTopup.getFee.getAmount %}
-            <dd>{{ card.getTopup.getFee.getAmount }}</dd>
+            {% if fee.getAmount %}
+                {% if fee_type == 'flat' %}
+                <dd>£{{ fee.getAmount|number_format(2, '.', ',') }}</dd>
+                {% elseif fee_type == 'percentage' %}
+                <dd>{{ fee.getAmount|number_format(2, '.', ',') }}%</dd>
+                {% endif %}
             {% else %}
-            <dd>None</dd>
+                <dd>None</dd>
             {% endif %}
         </dl>
     </div>
