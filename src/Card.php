@@ -64,14 +64,6 @@ class Card
     }
 
     /**
-     * @param TopUpFacility $topUpFacility
-     */
-    public function setTopUpFacility(TopUpFacility $topUpFacility)
-    {
-        $this->topUpFacility = $topUpFacility;
-    }
-
-    /**
      * Calculate top up required to purchase item
      *
      * @param Item $item

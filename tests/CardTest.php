@@ -80,13 +80,14 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setting and getting of topup
+     * Test setting and getting of top up facility
+     *
+     * Note: top up facility can only be set on construction
      */
     public function testGetSetTopup()
     {
         $topUpFacility = new \RebateCalculator\TopUpFacility(new \RebateCalculator\PercentageFee(10), 0, 25);
-
-        $this->card->setTopUpFacility($topUpFacility);
+        $this->card = new \RebateCalculator\Card($topUpFacility);
 
         $this->assertInstanceOf('\RebateCalculator\TopupFacility', $this->card->getTopUpFacility());
         $this->assertEquals($topUpFacility, $this->card->getTopUpFacility());
