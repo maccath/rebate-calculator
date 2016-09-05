@@ -27,7 +27,7 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Valid values for topup/balance
+     * Valid values for top-up/balance
      *
      * @return array
      */
@@ -55,7 +55,7 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Values for topup/balance that should throw an exception
+     * Values for top-up/balance that should throw an exception
      *
      * @return array
      */

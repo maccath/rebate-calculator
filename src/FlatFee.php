@@ -10,7 +10,9 @@ namespace RebateCalculator;
 class FlatFee implements FeeInterface
 {
     /**
-     * @var float the fee amount
+     * The fee amount
+     *
+     * @var float
      */
     private $amount;
 
@@ -42,7 +44,7 @@ class FlatFee implements FeeInterface
      */
     private function setAmount($amount)
     {
-        if (!is_numeric($amount) || $amount < 0) {
+        if ( ! is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Amount (%s) must be a positive numeric value.',
@@ -55,15 +57,15 @@ class FlatFee implements FeeInterface
     }
 
     /**
-     * Calculate the fee for a given top-up amount
+     * Calculate the fee charged for a given top-up amount
      *
-     * @param float $topUpAmount
-     * @return float the fee
+     * @param float $topUpAmount the amount to top up by
+     * @return float
      * @throws \Exception if top-up amount invalid
      */
     public function calculate($topUpAmount = 0.0)
     {
-        if (!is_numeric($topUpAmount) || $topUpAmount < 0) {
+        if ( ! is_numeric($topUpAmount) || $topUpAmount < 0) {
             throw new \Exception(
                 sprintf(
                     "Top-up amount (£%d) must be a positive numeric value.",
@@ -73,7 +75,7 @@ class FlatFee implements FeeInterface
         }
 
         // No fee if no top-up
-        if (! $topUpAmount) return 0;
+        if ( ! $topUpAmount) return 0;
 
         return round($this->amount, 2);
     }

@@ -7,8 +7,8 @@
         {% if result is defined %}
         <p class="bg-primary">
             To buy the item for £{{ item.getCost|number_format(2, '.', ',') }},
-            you would need to top up £{{ result.topupRequired|number_format(2, '.', ',') }}
-            for a cost of £{{ result.topupCost|number_format(2, '.', ',') }}
+            you would need to top up £{{ result.topUpRequired|number_format(2, '.', ',') }}
+            for a cost of £{{ result.topUpCost|number_format(2, '.', ',') }}
             and would get £{{ result.rebate|number_format(2, '.', ',') }} rebate
             for a remaining card balance of £{{ result.remainingBalance|number_format(2, '.',',') }}.
         </p>
@@ -47,7 +47,7 @@
             <dd>£{{ card.getBalance|number_format(2, '.', ',') }}</dd>
 
             <dt>Minimum Top-up</dt>
-            <dd>£{{ card.getTopUpFacility.getMinimum|number_format(2, '.', ',') }}</dd>
+            <dd>£{{ card.gettopUpFacility.getMinimum|number_format(2, '.', ',') }}</dd>
 
             <dt>Top up fee</dt>
             {% if fee.getAmount %}

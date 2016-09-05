@@ -4,6 +4,8 @@ namespace RebateCalculator;
 
 /**
  * Interface FeeInterface
+ *
+ * @package RebateCalculator
  */
 interface FeeInterface
 {

@@ -10,20 +10,24 @@ namespace RebateCalculator;
 class Card
 {
     /**
-     * @var float current balance
+     * The card's current balance
+     *
+     * @var float
      */
     private $balance;
 
     /**
-     * @var TopUpFacility the card's top-up facility
+     * The card's top-up facility
+     *
+     * @var TopUpFacility
      */
     private $topUpFacility;
 
     /**
-     * @param TopUpFacility $topUpFacility
-     * @param int $balance
+     * @param TopUpFacility $topUpFacility the card's top up facility
+     * @param float $balance the card's current balance
      */
-    function __construct(TopUpFacility $topUpFacility, $balance = 0)
+    function __construct(TopUpFacility $topUpFacility, $balance = 0.0)
     {
         $this->setBalance($balance);
         $this->topUpFacility = $topUpFacility;
@@ -32,7 +36,7 @@ class Card
     /**
      * Get the current card balance
      *
-     * @return mixed
+     * @return float
      */
     public function getBalance()
     {
@@ -42,13 +46,12 @@ class Card
     /**
      * Set the card balance
      *
-     * @param $balance
-     *
-     * @throws \Exception
+     * @param float $balance the current card balance
+     * @throws \Exception if balance not valid value
      */
     private function setBalance($balance)
     {
-        if (!is_numeric($balance)) {
+        if ( ! is_numeric($balance)) {
             throw new \Exception('Balance must be a numeric value.');
         }
 
@@ -58,7 +61,7 @@ class Card
     /**
      * Calculate the cost of topping up by the given amount
      *
-     * @param $amount
+     * @param float $amount the amount to top up by
      * @return float
      */
     public function getTopUpCost($amount)
@@ -85,33 +88,34 @@ class Card
     public function topUp($amount)
     {
         $this->topUpFacility->validateTopUp($amount);
-        
+
         $this->adjustBalance($amount);
     }
 
     /**
-     * @param Item $item
+     * Pay for the given item
      *
-     * @throws \Exception
+     * @param Item $item the item to pay for
+     * @throws \Exception if the item could not be paid for
      */
     public function payFor(Item $item)
     {
-        if ($this->getBalance() >= $item->getCost()) {
-            $this->adjustBalance(-$item->getCost());
-        } else {
+        if ($this->getBalance() < $item->getCost()) {
             throw new \Exception(sprintf(
-                "There isn't sufficient balance (£%s) to purchase the item for %s",
+                "There isn't sufficient balance (£%d) to purchase the item for %d",
                 $this->getBalance(),
                 $item->getCost()
             ));
         }
+
+        $this->adjustBalance(-$item->getCost());
     }
 
     /**
      * Receive rebate for buying $item from $store
      *
-     * @param Item  $item
-     * @param Store $store
+     * @param Item $item the item paid for
+     * @param Store $store the store item purchased from
      */
     public function receiveRebate(Item $item, Store $store)
     {
@@ -121,10 +125,10 @@ class Card
     /**
      * Adjust the card balance by the given amount
      *
-     * @param $amount
+     * @param float $amount the amount to adjust the card balance by
      */
     private function adjustBalance($amount)
     {
-        $this->setBalance($this->getBalance() + $amount);
+        $this->balance += $amount;
     }
 }

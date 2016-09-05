@@ -28,7 +28,7 @@ if ($action == 'calculate') {
         };
 
         // Fetch user input
-        $minimumTopup = isset($_POST['minimum_topup'])
+        $minimumTopUp = isset($_POST['minimum_topup'])
             ? round(floatval($_POST['minimum_topup']), 2)
             : 0;
 
@@ -60,11 +60,11 @@ if ($action == 'calculate') {
             $fee = new \RebateCalculator\FlatFee($feeAmount);
         }
 
-        // Construct topup facility
-        $topup = new \RebateCalculator\TopUpFacility($fee, $minimumTopup);
+        // Construct top-up facility
+        $topUp = new \RebateCalculator\TopUpFacility($fee, $minimumTopUp);
 
         // Construct card
-        $card = new RebateCalculator\Card($topup, $cardBalance);
+        $card = new RebateCalculator\Card($topUp, $cardBalance);
 
         // Construct rebate
         $rebate = new \RebateCalculator\PercentageRebate($rebateAmount);
@@ -98,8 +98,8 @@ if ($action == 'calculate') {
             'fee' => $fee,
             'fee_type' => $_POST['topup_fee'] == 'percentage' ?: 'flat',
             'result' => array(
-                'topupCost' => $topUpCost,
-                'topupRequired' => $topUpAmount,
+                'topUpCost' => $topUpCost,
+                'topUpRequired' => $topUpAmount,
                 'rebate' => $rebateValue,
                 'remainingBalance' => $card->getBalance(),
                 'saving' => $rebateValue - $topUpCost,

@@ -2,6 +2,11 @@
 
 namespace RebateCalculator;
 
+/**
+ * Class TopUpCalculator
+ * 
+ * @package RebateCalculator
+ */
 class TopUpCalculator
 {
     /**
@@ -19,10 +24,10 @@ class TopUpCalculator
     private $item;
 
     /**
-     * TopUpCalculator constructor.
+     * TopUpCalculator constructor
      *
      * @param Card $card the card to purchase item with
-     * @param Item $item the item to purcahse
+     * @param Item $item the item to purchase
      */
     public function __construct(Card $card, Item $item)
     {
@@ -41,10 +46,10 @@ class TopUpCalculator
 
         if ( ! $additionalFundingRequired) return 0;
 
-        $minimumTopup = $this->card->getMinimumTopUp();
+        $minimumTopUp = $this->card->getMinimumTopUp();
 
-        if ($additionalFundingRequired < $minimumTopup) {
-            return $minimumTopup;
+        if ($additionalFundingRequired < $minimumTopUp) {
+            return $minimumTopUp;
         }
 
         return $additionalFundingRequired;

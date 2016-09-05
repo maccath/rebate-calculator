@@ -76,7 +76,7 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
      */
     public function providerCalculateValues()
     {
-        // array(fee amount, topup value, expected cost)
+        // array(fee amount, top-up value, expected cost)
         return array(
             array(10,    25,    2.5),
             array("10",  25,    2.5),
@@ -88,16 +88,16 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param $amount
-     * @param $topup
+     * @param $topUp
      * @param $expectedResult
      *
      * @dataProvider providerCalculateValues
      */
-    public function testCalculate($amount, $topup, $expectedResult)
+    public function testCalculate($amount, $topUp, $expectedResult)
     {
         $this->fee = new \RebateCalculator\PercentageFee($amount);
 
-        $this->assertEquals($expectedResult, $this->fee->calculate($topup));
+        $this->assertEquals($expectedResult, $this->fee->calculate($topUp));
     }
 
     /**
@@ -112,13 +112,13 @@ class PercentageFeeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $topup
+     * @param $topUp
      *
      * @expectedException \Exception
      * @dataProvider providerCalculateValuesException
      */
-    public function testCalculateException($topup)
+    public function testCalculateException($topUp)
     {
-        $this->fee->calculate($topup);
+        $this->fee->calculate($topUp);
     }
 }

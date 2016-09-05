@@ -1,29 +1,29 @@
 <?php
 
 /**
- * Class TopupTest
+ * Class TopUpFacilityTest
  */
-class TopupTest extends PHPUnit_Framework_TestCase
+class TopUpFacilityTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\TopUpFacility
      */
-    protected $topup;
+    protected $topUp;
 
     /**
-     *  Set up a topup instance
+     *  Set up a top-up instance
      */
     protected function setUp()
     {
         // Set up fee
         $this->fee = new \RebateCalculator\PercentageFee(10);
 
-        // Set up a topup
-        $this->topup = new \RebateCalculator\TopUpFacility($this->fee, 0);
+        // Set up a top-up
+        $this->topUp = new \RebateCalculator\TopUpFacility($this->fee, 0);
     }
 
     /**
-     * Valid values for minimum topup/amount
+     * Valid values for minimum top-up/amount
      *
      * @return array
      */
@@ -38,19 +38,19 @@ class TopupTest extends PHPUnit_Framework_TestCase
 
     /**
      * @param $input
-     * @param $expectedMinimumTopup
+     * @param $expectedMinimumTopUp
      *
      * @dataProvider providerCurrencyAmounts
      */
-    public function testSetGetMinimum($input, $expectedMinimumTopup)
+    public function testSetGetMinimum($input, $expectedMinimumTopUp)
     {
-        $this->topup = new \RebateCalculator\TopUpFacility($this->fee, $input);
+        $this->topUp = new \RebateCalculator\TopUpFacility($this->fee, $input);
 
-        $this->assertEquals($expectedMinimumTopup, $this->topup->getMinimum());
+        $this->assertEquals($expectedMinimumTopUp, $this->topUp->getMinimum());
     }
 
     /**
-     * Values for minimum topup/amount that should throw an exception
+     * Values for minimum top-up/amount that should throw an exception
      *
      * @return array
      */

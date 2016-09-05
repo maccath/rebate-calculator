@@ -10,19 +10,23 @@ namespace RebateCalculator;
 class TopUpFacility
 {
     /**
-     * @var FeeInterface the top-up fee
+     * The top-up fee
+     *
+     * @var FeeInterface
      */
     private $fee;
 
     /**
-     * @var float the minimum top-up amount
+     * The minimum top-up amount
+     *
+     * @var float
      */
     private $minimum;
 
     /**
      * TopUpFacility constructor
      *
-     * @param FeeInterface $fee
+     * @param FeeInterface $fee the top-up fee
      * @param float $minimum the minimum top-up amount
      * @throws \Exception if the minimum top-up amount is not numeric or negative
      */
@@ -45,7 +49,7 @@ class TopUpFacility
     /**
      * Set the minimum top-up amount
      *
-     * @param float $minimum
+     * @param float $minimum the minimum top-up amount
      * @throws \Exception if the minimum top-up amount is not numeric or negative
      */
     private function setMinimum($minimum)
@@ -65,7 +69,7 @@ class TopUpFacility
     /**
      * Calculate the cost of a top-up of the given amount
      *
-     * @param $amount
+     * @param float $amount the amount to top up by
      * @return float
      */
     public function getTopUpCost($amount)
@@ -79,11 +83,11 @@ class TopUpFacility
      * Verify that the amount is a positive numeric value equal to or over the minimum top up amount
      *
      * @param float $amount the amount to top up by
-     * @throws \Exception
+     * @throws \Exception if top-up amount is not numeric, or falls short of the minimum top-up value
      */
     public function validateTopUp($amount)
     {
-        if (!is_numeric($amount) || $amount < 0) {
+        if ( ! is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Top-up amount (£%d) must be a positive numeric value.',

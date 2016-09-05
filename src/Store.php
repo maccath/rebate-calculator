@@ -52,7 +52,7 @@ class Store
     /**
      * @param RebateInterface $rebate
      */
-    public function setRebate(Rebateinterface $rebate)
+    public function setRebate(RebateInterface $rebate)
     {
         $this->rebate = $rebate;
     }
