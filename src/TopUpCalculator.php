@@ -5,29 +5,63 @@ namespace RebateCalculator;
 class TopUpCalculator
 {
     /**
-     * Calculate top up required to purchase item
+     * The card to purchase item with
      *
-     * @param Card $card the card to top up
-     * @param Item $item the item to purchase
+     * @var Card
+     */
+    private $card;
+
+    /**
+     * The item to purchase
+     *
+     * @var Item
+     */
+    private $item;
+
+    /**
+     * TopUpCalculator constructor.
+     *
+     * @param Card $card the card to purchase item with
+     * @param Item $item the item to purcahse
+     */
+    public function __construct(Card $card, Item $item)
+    {
+        $this->card = $card;
+        $this->item = $item;
+    }
+
+    /**
+     * Calculate top up required to purchase item
      *
      * @return mixed
      */
-    public static function calculateTopUpRequired(Card $card, Item $item)
+    public function calculateTopUpRequired()
     {
-        $itemCost = $item->getCost();
-        $currentBalance = $card->getBalance();
+        $additionalFundingRequired = $this->getAdditionalFundingRequiredForPurchase();
 
-        if ($itemCost <= $currentBalance) {
-            return 0;
-        }
+        if ( ! $additionalFundingRequired) return 0;
 
-        $additionalBalanceRequired = $itemCost - $currentBalance;
-        $minimumTopup = $card->getTopUpFacility()->getMinimum();
+        $minimumTopup = $this->card->getMinimumTopUp();
 
-        if ($additionalBalanceRequired < $minimumTopup) {
+        if ($additionalFundingRequired < $minimumTopup) {
             return $minimumTopup;
         }
 
-        return $additionalBalanceRequired;
+        return $additionalFundingRequired;
+    }
+
+    /**
+     * Calculate the additional funding required to purchase item
+     *
+     * @return int|mixed
+     */
+    private function getAdditionalFundingRequiredForPurchase()
+    {
+        $itemCost = $this->item->getCost();
+        $currentBalance = $this->card->getBalance();
+
+        if ($itemCost <= $currentBalance) return 0;
+
+        return $itemCost - $currentBalance;
     }
 }

@@ -56,11 +56,24 @@ class Card
     }
 
     /**
-     * @return TopUpFacility
+     * Calculate the cost of topping up by the given amount
+     *
+     * @param $amount
+     * @return float
      */
-    public function getTopUpFacility()
+    public function getTopUpCost($amount)
     {
-        return $this->topUpFacility;
+        return $this->topUpFacility->getTopUpCost($amount);
+    }
+
+    /**
+     * Get the card's minimum top-up amount
+     *
+     * @return float
+     */
+    public function getMinimumTopUp()
+    {
+        return $this->topUpFacility->getMinimum();
     }
 
     /**
@@ -71,7 +84,9 @@ class Card
      */
     public function topUp($amount)
     {
-        $this->adjustBalance($this->getTopUpFacility()->getTopUpValue($amount));
+        $this->topUpFacility->validateTopUp($amount);
+        
+        $this->adjustBalance($amount);
     }
 
     /**

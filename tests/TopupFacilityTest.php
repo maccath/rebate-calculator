@@ -72,7 +72,7 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function testValueException($amount)
     {
-        $this->topup->getTopUpValue($amount);
+        $this->topUp->validateTopUp($amount);
     }
 
     /**
@@ -117,30 +117,31 @@ class TopupTest extends PHPUnit_Framework_TestCase
      */
     public function providerCalculatorConfiguration()
     {
+        // $fee, $minimum, $amount, $expectedCost
         return array(
             array(
                 new \RebateCalculator\PercentageFee(0),
                 0,
                 20,
-                20
+                0
             ),
             array(
                 new \RebateCalculator\FlatFee(2),
                 20,
                 20,
-                18
+                2
             ),
             array(
                 new \RebateCalculator\FlatFee(0),
                 15,
                 20,
-                20
+                0
             ),
             array(
                 new \RebateCalculator\PercentageFee(2),
                 10,
                 15,
-                14.70
+                0.3
             ),
         );
     }
@@ -153,40 +154,11 @@ class TopupTest extends PHPUnit_Framework_TestCase
      *
      * @dataProvider providerCalculatorConfiguration
      */
-    public function testCalculateTopupCost($fee, $minimum, $amount, $expectedValue)
+    public function testCalculateTopUpCost($fee, $minimum, $amount, $expectedValue)
     {
-        $this->topup = new \RebateCalculator\TopUpFacility($fee, $minimum);
+        $this->topUp = new \RebateCalculator\TopUpFacility($fee, $minimum);
 
-        $this->assertEquals($expectedValue, $this->topup->getTopUpValue($amount), sprintf("Value of a top up of %d is %d not %d", $amount, $this->topup->getTopUpValue($amount), $expectedValue));
-    }
-
-    /**
-     * @return array
-     */
-    public function providerCalculatorConfigurationException()
-    {
-        return array(
-            array(
-                new \RebateCalculator\PercentageFee(10),
-                25,
-                20
-            )
-        );
-    }
-
-    /**
-     * @param $fee
-     * @param $minimum
-     * @param $amount
-     *
-     * @expectedException \Exception
-     * @dataProvider providerCalculatorConfigurationException
-     */
-    public function testCalculateTopupValueException($fee, $minimum, $amount)
-    {
-        $this->topup = new \RebateCalculator\TopUpFacility($fee, $minimum);
-
-        $this->topup->getTopUpValue($amount);
+        $this->assertEquals($expectedValue, $this->topUp->getTopUpCost($amount), sprintf("Cost of a top up of %d is %d not %d", $amount, $this->topUp->getTopUpCost($amount), $expectedValue));
     }
 
     /**
@@ -194,10 +166,10 @@ class TopupTest extends PHPUnit_Framework_TestCase
      *
      * @throws Exception
      */
-    public function testCalculateTopupCostWithFlatFeeWhenAmountZero()
+    public function testCalculateTopUpCostWithFlatFeeWhenAmountZero()
     {
-        $this->topup = new \RebateCalculator\TopUpFacility(new \RebateCalculator\FlatFee(1));
+        $this->topUp = new \RebateCalculator\TopUpFacility(new \RebateCalculator\FlatFee(1));
 
-        $this->assertEquals($this->topup->getTopUpValue(0), 0);
+        $this->assertEquals($this->topUp->getTopUpCost(0), 0);
     }
 }

@@ -75,7 +75,10 @@ if ($action == 'calculate') {
         // Construct item
         $item = new \RebateCalculator\Item($itemCost);
 
-        $topupAmount = \RebateCalculator\TopUpCalculator::calculateTopUpRequired($card, $item);
+        // Construct calculator
+        $topUpCalculator = new \RebateCalculator\TopUpCalculator($card, $item);
+
+        $topupAmount = $topUpCalculator->calculateTopUpRequired();
 
         if ($topupAmount > 0) {
             $card->topUp($topupAmount);
@@ -84,7 +87,7 @@ if ($action == 'calculate') {
         $card->payFor($item);
         $card->receiveRebate($item, $store);
 
-        $topupCost = $fee->calculate($topupAmount);
+        $topupCost = $card->getTopUpCost($topupAmount);
         $rebateValue = $store->calculateRebateAmount($item);
         
         $data = array_merge($data, array(

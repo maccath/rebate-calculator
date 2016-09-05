@@ -80,25 +80,11 @@ class CardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setting and getting of top up facility
-     *
-     * Note: top up facility can only be set on construction
-     */
-    public function testGetSetTopup()
-    {
-        $topUpFacility = new \RebateCalculator\TopUpFacility(new \RebateCalculator\PercentageFee(10), 0, 25);
-        $this->card = new \RebateCalculator\Card($topUpFacility);
-
-        $this->assertInstanceOf('\RebateCalculator\TopupFacility', $this->card->getTopUpFacility());
-        $this->assertEquals($topUpFacility, $this->card->getTopUpFacility());
-    }
-
-    /**
-     * Values for topup that should throw an exception
+     * Values for top-up that should throw an exception
      *
      * @return array
      */
-    public function providerTopupException()
+    public function providerTopUpException()
     {
         return array(
             array('abc'),
@@ -111,8 +97,8 @@ class CardTest extends PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function providerCalculateTopupRequired() {
-        // item cost, current balance, minimum topup, expected topup
+    public function providerCalculateTopUpRequired() {
+        // item cost, current balance, minimum top-up, expected top-up
         return array(
             array(10, 0, 25, 25),
             array(30, 0, 25, 30),
@@ -125,18 +111,20 @@ class CardTest extends PHPUnit_Framework_TestCase
     /**
      * @param $cost
      * @param $balance
-     * @param $minimumTopup
-     * @param $expectedTopupRequired
+     * @param $minimumTopUp
+     * @param $expectedTopUpRequired
      *
-     * @dataProvider providerCalculateTopupRequired
+     * @dataProvider providerCalculateTopUpRequired
      */
-    public function testCalculateTopupRequired($cost, $balance, $minimumTopup, $expectedTopupRequired)
+    public function testCalculateTopupRequired($cost, $balance, $minimumTopUp, $expectedTopUpRequired)
     {
         $item = new \RebateCalculator\Item($cost);
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopup);
+        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopUp);
         $this->card = new \RebateCalculator\Card($this->topUpFacility, $balance);
 
-        $this->assertEquals($expectedTopupRequired, \RebateCalculator\TopUpCalculator::calculateTopUpRequired($this->card, $item));
+        $topUpCalculator = new \RebateCalculator\TopUpCalculator($this->card, $item);
+
+        $this->assertEquals($expectedTopUpRequired, $topUpCalculator->calculateTopUpRequired());
     }
 
     /**

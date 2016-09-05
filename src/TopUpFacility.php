@@ -63,29 +63,16 @@ class TopUpFacility
     }
 
     /**
-     * Get the actual value of the top-up
+     * Calculate the cost of a top-up of the given amount
      *
-     * @param float $amount the amount to top up by
-     * @return float the top-up value (after fees etc.)
-     * @throws \Exception if value is negative
+     * @param $amount
+     * @return float
      */
-    public function getTopUpValue($amount)
+    public function getTopUpCost($amount)
     {
-        $this->validateTopUpAmount($amount);
+        $this->validateTopUp($amount);
 
-        $fee = $this->fee->calculate($amount);
-
-        $topUpValue = $amount - $fee;
-
-        if ($topUpValue < 0) {
-            throw new \Exception(sprintf(
-                "The value of the top amount £%d is negative after a fee of £%d",
-                $amount,
-                $fee
-            ));
-        }
-
-        return $topUpValue;
+        return $this->fee->calculate($amount);
     }
 
     /**
@@ -94,7 +81,7 @@ class TopUpFacility
      * @param float $amount the amount to top up by
      * @throws \Exception
      */
-    private function validateTopUpAmount($amount)
+    public function validateTopUp($amount)
     {
         if (!is_numeric($amount) || $amount < 0) {
             throw new \Exception(
