@@ -10,26 +10,27 @@ namespace RebateCalculator;
 class Item
 {
     /**
-     * @var
+     * The cost of the item
+     *
+     * @var float
      */
     protected $cost;
 
     /**
-     * @param $cost
+     * Item constructor
      *
-     * @throws \Exception
+     * @param float $cost the cost of the item
+     * @throws \Exception if the item cost is invalid
      */
     function __construct($cost)
     {
-        if (!is_numeric($cost)) {
-            throw new \Exception('Item cost must be a numeric value.');
-        }
-
-        $this->cost = $cost;
+        $this->setCost($cost);
     }
 
     /**
-     * @return mixed
+     * Get the item cost
+     *
+     * @return float
      */
     public function getCost()
     {
@@ -37,14 +38,20 @@ class Item
     }
 
     /**
-     * @param $cost
+     * Set the item cost
      *
-     * @throws \Exception
+     * @param float $cost the cost of the item
+     * @throws \Exception if the item cost is invalid
      */
     public function setCost($cost)
     {
-        if (!is_numeric($cost)) {
-            throw new \Exception('Item cost must be a numeric value.');
+        if ( ! is_numeric($cost) || $cost < 0) {
+            throw new \Exception(
+                sprintf(
+                    "Item cost (£%d) must be a positive numeric value.",
+                    $cost
+                )
+            );
         }
 
         $this->cost = $cost;

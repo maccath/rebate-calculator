@@ -4,24 +4,32 @@ namespace RebateCalculator;
 
 /**
  * Class PercentageRebate
+ *
+ * @package RebateCalculator
  */
 class PercentageRebate implements RebateInterface
 {
-
     /**
+     * The rebate amount
+     *
      * @var
      */
     protected $amount;
 
     /**
-     * @param $amount
+     * PercentageRebate constructor
+     *
+     * @param float $amount the rebate amount
+     * @throws \Exception if the amount is invalid
      */
     public function __construct($amount)
     {
-        $this->amount = $amount;
+        $this->setAmount($amount);
     }
 
     /**
+     * Get the rebate amount
+     *
      * @return float
      */
     public function getAmount()
@@ -30,19 +38,14 @@ class PercentageRebate implements RebateInterface
     }
 
     /**
-     * @param $amount
+     * Set the rebate amount as a percentage
      *
-     * @throws \Exception
+     * @param float $amount the rebate amount
+     * @throws \Exception if the amount is invalid
      */
     public function setAmount($amount)
     {
-        if (!$amount) {
-            $this->amount = 0;
-
-            return;
-        }
-
-        if (!is_numeric($amount) || $amount < 0) {
+        if ( ! is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Amount (%s) must be a positive numeric value.',
@@ -55,22 +58,23 @@ class PercentageRebate implements RebateInterface
     }
 
     /**
-     * @param $price
+     * Calculate rebate due for an item of given cost
      *
+     * @param float $cost the item cost
      * @return float
-     * @throws \Exception
+     * @throws \Exception if cost is invalid
      */
-    public function calculate($price)
+    public function calculate($cost)
     {
-        if ($price && (!is_numeric($price) || $price < 0)) {
+        if ( ! is_numeric($cost) || $cost < 0) {
             throw new \Exception(
                 sprintf(
-                    "Price (%s) must be a positive numeric value.",
-                    $price
+                    "Cost (%s) must be a positive numeric value.",
+                    $cost
                 )
             );
         }
 
-        return (Float)$price / 100 * (float)$this->amount;
+        return $cost / 100 * $this->amount;
     }
 }
