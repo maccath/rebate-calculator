@@ -78,18 +78,19 @@ if ($action == 'calculate') {
         // Construct calculator
         $topUpCalculator = new \RebateCalculator\TopUpCalculator($card, $item);
 
-        $topupAmount = $topUpCalculator->calculateTopUpRequired();
+        $topUpAmount = $topUpCalculator->calculateTopUpRequired();
 
-        if ($topupAmount > 0) {
-            $card->topUp($topupAmount);
+        $topUpCost = 0;
+        if ($topUpAmount > 0) {
+            $topUpCost = $card->getTopUpCost($topUpAmount);
+            $card->topUp($topUpAmount);
         }
+
+        $rebateValue = $store->calculateRebateAmount($item);
 
         $card->payFor($item);
         $card->receiveRebate($item, $store);
 
-        $topupCost = $card->getTopUpCost($topupAmount);
-        $rebateValue = $store->calculateRebateAmount($item);
-        
         $data = array_merge($data, array(
             'item' => $item,
             'store' => $store,
@@ -97,11 +98,11 @@ if ($action == 'calculate') {
             'fee' => $fee,
             'fee_type' => $_POST['topup_fee'] == 'percentage' ?: 'flat',
             'result' => array(
-                'topupCost' => $topupCost,
-                'topupRequired' => $topupAmount,
+                'topupCost' => $topUpCost,
+                'topupRequired' => $topUpAmount,
                 'rebate' => $rebateValue,
                 'remainingBalance' => $card->getBalance(),
-                'saving' => $rebateValue - $topupCost,
+                'saving' => $rebateValue - $topUpCost,
             ),
         ));
     } catch (\Exception $e) {
