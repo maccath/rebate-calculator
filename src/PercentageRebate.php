@@ -43,7 +43,7 @@ class PercentageRebate implements RebateInterface
      * @param float $amount the rebate amount
      * @throws \Exception if the amount is invalid
      */
-    public function setAmount($amount)
+    private function setAmount($amount)
     {
         if ( ! is_numeric($amount) || $amount < 0) {
             throw new \Exception(

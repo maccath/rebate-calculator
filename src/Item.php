@@ -43,7 +43,7 @@ class Item
      * @param float $cost the cost of the item
      * @throws \Exception if the item cost is invalid
      */
-    public function setCost($cost)
+    private function setCost($cost)
     {
         if ( ! is_numeric($cost) || $cost < 0) {
             throw new \Exception(

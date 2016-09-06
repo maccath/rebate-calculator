@@ -6,73 +6,58 @@
 class ItemTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var \RebateCalculator\Item
-     */
-    protected $item;
-
-    /**
-     *  Set up an item instance
-     */
-    protected function setUp()
-    {
-        $this->item = new \RebateCalculator\Item(0);
-    }
-
-    /**
-     * @return array
-     */
-    public function providerCosts()
-    {
-        return array(
-            array(10, 10),
-            array('25', 25),
-        );
-    }
-
-    /**
-     * @param $input
-     * @param $expectedCost
+     * Test that item cost is set correctly and can be fetched for valid values
      *
-     * @dataProvider providerCosts
+     * @param mixed $inputCost the input item cost
+     * @param float $expectedCost the actual item cost
+     *
+     * @dataProvider providerValidCosts
      */
-    public function testCost($input, $expectedCost)
+    public function testCost($inputCost, $expectedCost)
     {
-        $this->item->setCost($input);
+        $item = new \RebateCalculator\Item($inputCost);
 
-        $this->assertEquals($expectedCost, $this->item->getCost());
+        $this->assertEquals($expectedCost, $item->getCost());
     }
 
     /**
-     * @return array
-     */
-    public function providerCostsException()
-    {
-        return array(
-            array('abc'),
-            array(false),
-            array(null),
-        );
-    }
-
-    /**
-     * @param $input
+     * Test that balance can't be set to an invalid value
+     *
+     * @param mixed $cost the input item cost
      *
      * @expectedException \Exception
-     * @dataProvider providerCostsException
+     * @dataProvider providerInvalidCosts
      */
-    public function testCostExceptions($input)
+    public function testCostExceptions($cost)
     {
-        new \RebateCalculator\Item($input);
+        new \RebateCalculator\Item($cost);
     }
 
     /**
-     * @param $input
+     * Valid item costs
      *
-     * @expectedException \Exception
-     * @dataProvider providerCostsException
+     * @return array
      */
-    public function testSetCostExceptions($input)
+    public function providerValidCosts()
     {
-       $this->item->setCost($input);
+        return [
+            [10, 10],
+            ['25', 25],
+            [10.25, 10.25],
+        ];
+    }
+
+    /**
+     * Invalid item costs
+     *
+     * @return array
+     */
+    public function providerInvalidCosts()
+    {
+        return [
+            ['abc'],
+            [false],
+            [null],
+        ];
     }
 }

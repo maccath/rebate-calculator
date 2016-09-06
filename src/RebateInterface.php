@@ -15,11 +15,6 @@ interface RebateInterface
     public function getAmount();
 
     /**
-     * @param $amount
-     */
-    public function setAmount($amount);
-
-    /**
      * @param  $cost
      *
      * @return mixed
