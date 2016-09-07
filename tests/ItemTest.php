@@ -18,6 +18,7 @@ class ItemTest extends PHPUnit_Framework_TestCase
         $item = new \RebateCalculator\Item($inputCost);
 
         $this->assertEquals($expectedCost, $item->getCost());
+        $this->assertInternalType('float', $item->getCost());
     }
 
     /**

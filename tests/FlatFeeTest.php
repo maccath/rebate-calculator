@@ -11,7 +11,7 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     protected $fee;
 
     /**
-     *  Set up a flat fee instance
+     * Set up a default flat fee instance
      */
     protected function setUp()
     {
@@ -19,52 +19,28 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Valid values for fee amounts
+     * Test that fee amount is set correctly and can be fetched
      *
-     * @return array
-     */
-    public function providerFeeAmounts()
-    {
-        return array(
-            array(25,    25),
-            array('25',  25),
-            array(1.234, 1.234),
-        );
-    }
-
-    /**
-     * @param $amount
+     * @param mixed $amount the fee amount
      * @param $expectedValue
      *
-     * @dataProvider providerFeeAmounts
+     * @dataProvider providerValidFeeAmounts
      */
     public function testAmount($amount, $expectedValue)
     {
         $this->fee = new \RebateCalculator\FlatFee($amount);
 
         $this->assertEquals($expectedValue, $this->fee->getAmount());
+        $this->assertInternalType('float', $this->fee->getAmount());
     }
 
     /**
-     * Fee amounts that should throw an exception
+     * Test that invalid fee amounts throw an error
      *
-     * @return array
-     */
-    public function providerFeeAmountsException()
-    {
-        return array(
-            array('abc'),
-            array(-10),
-            array(false, 0),
-            array(null,  0),
-        );
-    }
-
-    /**
-     * @param $amount
+     * @param mixed $amount the fee amount
      *
      * @expectedException \Exception
-     * @dataProvider providerFeeAmountsException
+     * @dataProvider providerInvalidAmounts
      */
     public function testAmountException($amount)
     {
@@ -72,25 +48,11 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
-     */
-    public function providerCalculateValues()
-    {
-        // array(fee amount, top-up value, expected cost)
-        return array(
-            array(10,    25,    10),
-            array("10",  25,    10),
-            array(0,     25,    0),
-            array(1.252, 25,    1.25),
-            array(10,    0,     0),
-            array(10,    "25",  10),
-        );
-    }
-
-    /**
-     * @param $amount
-     * @param $topUp
-     * @param $expectedResult
+     * Test that fee values are calculated correctly
+     *
+     * @param mixed $amount the fee amount
+     * @param mixed $topUp the top-up amount
+     * @param float $expectedResult the expected fee cost
      *
      * @dataProvider providerCalculateValues
      */
@@ -102,24 +64,63 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return array
-     */
-    public function providerCalculateValuesException()
-    {
-        return array(
-            array("abc"),
-            array(-25),
-        );
-    }
-
-    /**
-     * @param $topUp
+     * Test that an invalid top-up amount throws an exception
+     *
+     * @param mixed $topUp the top-up amount
      *
      * @expectedException \Exception
-     * @dataProvider providerCalculateValuesException
+     * @dataProvider providerInvalidAmounts
      */
     public function testCalculateException($topUp)
     {
         $this->fee->calculate($topUp);
+    }
+
+    /**
+     * Valid values for fee amounts
+     *
+     * @return array
+     */
+    public function providerValidFeeAmounts()
+    {
+        return [
+            [25, 25],
+            ['25', 25],
+            [1.234, 1.234],
+            [0, 0]
+        ];
+    }
+
+    /**
+     * Invalid currency amounts that should throw an exception
+     *
+     * @return array
+     */
+    public function providerInvalidAmounts()
+    {
+        return [
+            ['abc'],
+            [-10],
+            [false],
+            [null],
+        ];
+    }
+
+    /**
+     * Values for fee amounts, top-up values and expected fee totals
+     *
+     * @return array
+     */
+    public function providerCalculateValues()
+    {
+        // fee amount, top-up amount, expected fee total
+        return [
+            [10,    25,    10],
+            ["10",  25,    10],
+            [0,     25,    0],
+            [1.252, 25,    1.25],
+            [10,    0,     0],
+            [10,    "25",  10],
+        ];
     }
 }

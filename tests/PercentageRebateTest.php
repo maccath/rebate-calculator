@@ -31,6 +31,7 @@ class PercentageRebateTest extends PHPUnit_Framework_TestCase
         $this->rebate = new \RebateCalculator\PercentageRebate($amount);
 
         $this->assertEquals($expectedValue, $this->rebate->getAmount());
+        $this->assertInternalType('float', $this->rebate->getAmount());
     }
 
     /**

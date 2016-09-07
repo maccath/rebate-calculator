@@ -16,115 +16,44 @@ class CardTest extends PHPUnit_Framework_TestCase
     protected $topUpFacility;
 
     /**
-     *  Set up a card instance
+     * Set up a default card instance
      */
     protected function setUp()
     {
-        // Set up card
-        $this->fee = new \RebateCalculator\PercentageFee(10);
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee);
+        $this->topUpFacility = $this->getMockBuilder(\RebateCalculator\TopUpFacility::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->card = new \RebateCalculator\Card($this->topUpFacility);
     }
 
     /**
-     * Valid values for top-up/balance
+     * Test that balance is set correctly and can be fetched for valid values
      *
-     * @return array
-     */
-    public function providerCurrencyAmounts()
-    {
-        return array(
-            array(25, 25),
-            array('25', 25),
-            array(-10, -10),
-            array(1.234, 1.234)
-        );
-    }
-
-    /**
-     * @param $inputBalance float
-     * @param $expectedBalance
+     * @param mixed $inputBalance the input card balance
+     * @param float $expectedBalance the expected actual card balance
      *
-     * @dataProvider providerCurrencyAmounts
+     * @dataProvider providerValidAmounts
      */
     public function testGetSetBalance($inputBalance, $expectedBalance)
     {
         $this->card = new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
 
         $this->assertEquals($expectedBalance, $this->card->getBalance());
+        $this->assertInternalType('float', $this->card->getBalance());
     }
 
     /**
-     * Values for top-up/balance that should throw an exception
-     *
-     * @return array
-     */
-    public function providerCurrencyAmountsException()
-    {
-        return array(
-            array('abc'),
-            array(false),
-            array(null),
-        );
-    }
-
-    /**
+     * Test that balance can't be set to an invalid value
+     * 
      * @param mixed $inputBalance the balance to set the card to
      *
      * @expectedException \Exception
-     * @dataProvider providerCurrencyAmountsException
+     * @dataProvider providerInvalidAmounts
      */
     public function testBalanceException($inputBalance)
     {
         new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
-    }
-
-    /**
-     * Values for top-up that should throw an exception
-     *
-     * @return array
-     */
-    public function providerTopUpException()
-    {
-        return array(
-            array('abc'),
-            array(false),
-            array(null),
-            array(0),
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function providerCalculateTopUpRequired() {
-        // item cost, current balance, minimum top-up, expected top-up
-        return array(
-            array(10, 0, 25, 25),
-            array(30, 0, 25, 30),
-            array(30, 10, 25, 25),
-            array(30, 10, 0, 20),
-            array(100, 100, 10, 0),
-        );
-    }
-
-    /**
-     * @param $cost
-     * @param $balance
-     * @param $minimumTopUp
-     * @param $expectedTopUpRequired
-     *
-     * @dataProvider providerCalculateTopUpRequired
-     */
-    public function testCalculateTopupRequired($cost, $balance, $minimumTopUp, $expectedTopUpRequired)
-    {
-        $item = new \RebateCalculator\Item($cost);
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopUp);
-        $this->card = new \RebateCalculator\Card($this->topUpFacility, $balance);
-
-        $topUpCalculator = new \RebateCalculator\TopUpCalculator($this->card, $item);
-
-        $this->assertEquals($expectedTopUpRequired, $topUpCalculator->calculateTopUpRequired());
     }
 
     /**
@@ -151,5 +80,115 @@ class CardTest extends PHPUnit_Framework_TestCase
         $this->card = new \RebateCalculator\Card($this->topUpFacility, 100);
 
         $this->card->payFor($item);
+    }
+
+    /**
+     * Test that a top-up can be applied to a card
+     *
+     * @param float $originalBalance the original balance
+     * @param float $amount the top-up amount
+     * @param float $newBalance the expected card balance after top-up
+     * @dataProvider providerValidTopUps
+     */
+    public function testBeToppedUp($originalBalance, $amount, $newBalance)
+    {
+        $this->card = new \RebateCalculator\Card($this->topUpFacility, $originalBalance);
+
+        $this->card->topUp($amount);
+
+        $this->assertEquals($this->card->getBalance(), $newBalance);
+    }
+
+    /**
+     * Test that the minimum top-up amount can be fetched
+     */
+    public function testGetMinimumTopUp()
+    {
+        $this->topUpFacility
+            ->expects($this->once())
+            ->method('getMinimum');
+
+        $this->card->getMinimumTopUp();
+    }
+
+    /**
+     * Test that a top-up cost can be calculated
+     *
+     * @param float $amount the top-up amount
+     * @dataProvider providerValidTopUps
+     */
+    public function testGetTopUpCosts($amount)
+    {
+        $this->topUpFacility
+            ->expects($this->once())
+            ->method('getTopUpCost')
+            ->with($amount);
+
+        $this->card->getTopUpCost($amount);
+    }
+
+    /**
+     * Test that a rebate for an item from a store can be received
+     */
+    public function testReceiveRebate()
+    {
+        $mockStore = $this->getMockBuilder(\RebateCalculator\Store::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['calculateRebateAmount'])
+            ->getMock();
+
+        $item = new \RebateCalculator\Item(200);
+
+        $mockStore->expects($this->once())->method('calculateRebateAmount')->willReturn('20');
+
+        $this->card->receiveRebate($item, $mockStore);
+
+        $this->assertEquals($this->card->getBalance(), 20);
+    }
+
+    /**
+     * Invalid values for balances/amounts that should throw an exception
+     *
+     * @return array
+     */
+    public function providerInvalidAmounts()
+    {
+        return [
+            ['abc'],
+            [false],
+            [null],
+        ];
+    }
+
+    /**
+     * Valid values for balances/amounts
+     *
+     * @return array
+     */
+    public function providerValidAmounts()
+    {
+        return [
+            [0, 0],
+            [25, 25],
+            ['25', 25],
+            [-10, -10],
+            [1.234, 1.234],
+        ];
+    }
+
+    /**
+     * Valid values for top-ups
+     *
+     * @return array
+     */
+    public function providerValidTopUps()
+    {
+        // Original balance, top-up amount, new balance
+        return [
+            [0, 20, 20],
+            [25, 25, 50],
+            [25, 0, 25],
+            [25, 1.25, 26.25],
+        ];
     }
 }
