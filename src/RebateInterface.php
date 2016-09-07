@@ -10,14 +10,17 @@ namespace RebateCalculator;
 interface RebateInterface
 {
     /**
-     * @return mixed
+     * Get the rebate amount
+     *
+     * @return float
      */
     public function getAmount();
 
     /**
-     * @param  $cost
+     * Calculate the rebate awarded
      *
-     * @return mixed
+     * @param Item $item the item to rebate for
+     * @return float
      */
-    public function calculate($cost);
+    public function calculate(Item $item);
 }

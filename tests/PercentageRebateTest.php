@@ -58,21 +58,9 @@ class PercentageRebateTest extends PHPUnit_Framework_TestCase
     public function testCalculate($amount, $cost, $expectedResult)
     {
         $this->rebate = new \RebateCalculator\PercentageRebate($amount);
+        $item = new \RebateCalculator\Item($cost);
 
-        $this->assertEquals($expectedResult, $this->rebate->calculate($cost));
-    }
-
-    /**
-     * Test that an invalid item cost throws an exception
-     *
-     * @param mixed $cost the item cost
-     *
-     * @expectedException \Exception
-     * @dataProvider providerInvalidValues
-     */
-    public function testCalculateException($cost)
-    {
-        $this->rebate->calculate($cost);
+        $this->assertEquals($expectedResult, $this->rebate->calculate($item));
     }
 
     /**

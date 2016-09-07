@@ -58,12 +58,13 @@ class Store
     }
 
     /**
-     * @param Item $item
+     * Calculate the rebate given by the store for given item
      *
-     * @return mixed
+     * @param Item $item the item to calculate rebate for
+     * @return float
      */
     public function calculateRebateAmount(Item $item)
     {
-        return $this->getRebate()->calculate($item->getCost());
+        return $this->rebate->calculate($item);
     }
 }

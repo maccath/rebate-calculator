@@ -60,21 +60,12 @@ class PercentageRebate implements RebateInterface
     /**
      * Calculate rebate due for an item of given cost
      *
-     * @param float $cost the item cost
+     * @param Item $item the item to rebate for
      * @return float
      * @throws \Exception if cost is invalid
      */
-    public function calculate($cost)
+    public function calculate(Item $item)
     {
-        if ( ! is_numeric($cost) || $cost < 0) {
-            throw new \Exception(
-                sprintf(
-                    "Cost (%s) must be a positive numeric value.",
-                    $cost
-                )
-            );
-        }
-
-        return $cost / 100 * $this->amount;
+        return $item->getCost() / 100 * $this->amount;
     }
 }
