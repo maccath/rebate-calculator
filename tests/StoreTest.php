@@ -11,15 +11,75 @@ class StoreTest extends PHPUnit_Framework_TestCase
     protected $store;
 
     /**
-     *  Set up a store
+     * @var \RebateCalculator\RebateInterface
+     */
+    protected $rebate;
+
+    /**
+     *  Set up a default store instance with 10% rebate
      */
     protected function setUp()
     {
-        // Set up rebate
-        $rebate = new \RebateCalculator\PercentageRebate(10);
+        $this->rebate = $this->getMockBuilder(\RebateCalculator\PercentageRebate::class)
+            ->setConstructorArgs([10])
+            ->getMock();
+        $this->store = new \RebateCalculator\Store("Store Name", $this->rebate);
+    }
 
-        // Set up store
-        $this->store = new \RebateCalculator\Store("Store Name", $rebate);
+    /**
+     * Test that store name is set correctly and can be fetched
+     *
+     * @param mixed $inputName the store name
+     * @param string $expectedName the actual store name
+     *
+     * @dataProvider providerValidNames
+     */
+    public function testSetGetName($inputName, $expectedName)
+    {
+        $this->store = new \RebateCalculator\Store($inputName, $this->rebate);
+
+        $this->assertEquals($expectedName, $this->store->getName());
+        $this->assertInternalType('string', $this->store->getName());
+    }
+
+    /**
+     * Test that store name is set correctly and can be fetched
+     *
+     * @param mixed $name the store name
+     *
+     * @expectedException \Exception
+     * @dataProvider providerInvalidNames
+     */
+    public function testSetInvalidName($name)
+    {
+        new \RebateCalculator\Store($name, $this->rebate);
+    }
+
+    /**
+     * Test setting of invalid rebate values
+     *
+     * @param $rebate
+     *
+     * @expectedException PHPUnit_Framework_Error
+     * @dataProvider providerInvalidRebates
+     */
+    public function testSetInvalidRebate($rebate)
+    {
+        new \RebateCalculator\Store('Some Store', $rebate);
+    }
+
+    /**
+     * Test that the rebate will be calculated by rebate class
+     */
+    public function testCalculateRebate()
+    {
+        $item = new \RebateCalculator\Item(200);
+
+        $this->rebate->expects($this->once())
+            ->method('calculate')
+            ->with($item);
+
+        $this->store->calculateRebateAmount($item);
     }
 
     /**
@@ -27,68 +87,41 @@ class StoreTest extends PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    public function providerNames()
+    public function providerValidNames()
     {
-        return array(
-            array('Store Name', 'Store Name'),
-            array(25, '25'),
-            array(-10, '-10'),
-            array('日本語','日本語')
-        );
+        return [
+            ['Store Name', 'Store Name'],
+            ['日本語', '日本語'],
+        ];
     }
 
     /**
-     * Test setting and getting of name
-     *
-     * @param $input
-     * @param $expectedName
-     *
-     * @dataProvider providerNames
-     */
-    public function testGetSetName($input, $expectedName)
-    {
-        $this->store->setName($input);
-
-        $this->assertEquals($expectedName, $this->store->getName());
-    }
-
-    /**
-     * Test setting and getting of rebate
-     */
-    public function testGetSetRebate()
-    {
-        $rebate = new \RebateCalculator\PercentageRebate(25);
-
-        $this->store->setRebate($rebate);
-
-        $this->assertInstanceOf('\RebateCalculator\RebateInterface', $this->store->getRebate());
-        $this->assertEquals($rebate, $this->store->getRebate());
-    }
-
-    /**
-     * Values for rebate that should throw an exception
+     * Invalid values for name
      *
      * @return array
      */
-    public function providerRebateException()
+    public function providerInvalidNames()
     {
-        return array(
-            array('abc'),
-            array(false),
-            array(null),
-            array(0),
-            array(new \RebateCalculator\PercentageFee(10)),
-        );
+        return [
+            [25, '25'],
+            [-10, '-10'],
+            [false, ''],
+        ];
     }
 
     /**
-     * @param $rebate
+     * Invalid values for rebate
      *
-     * @expectedException PHPUnit_Framework_Error
-     * @dataProvider providerRebateException
+     * @return array
      */
-    public function testSetRebateException($rebate)
+    public function providerInvalidRebates()
     {
-        $this->store->setRebate($rebate);
+        return [
+            ['abc'],
+            [false],
+            [null],
+            [0],
+            [new stdClass()],
+        ];
     }
 }

@@ -1,6 +1,6 @@
 $(function () {
     // Topup fee type show/hide
-    var $topupFeeType = $('[name="topup_fee"]');
+    var $topUpFeeType = $('[name="topup_fee"]');
     var $feeAmountInput = $('#fee_amount');
     var $feeAmountControl = $('#fee_amount_control');
 
@@ -8,7 +8,7 @@ $(function () {
     var $percentageSign = $feeAmountControl.find('.input-group-addon:last');
 
     var showHideTopupFeeTypes = function () {
-        var feeType = $topupFeeType.filter(':checked').val();
+        var feeType = $topUpFeeType.filter(':checked').val();
 
         $poundSign.hide();
         $percentageSign.hide();
@@ -29,7 +29,7 @@ $(function () {
     };
 
     showHideTopupFeeTypes();
-    $topupFeeType.on('change', function () {
+    $topUpFeeType.on('change', function () {
         showHideTopupFeeTypes();
     });
 });
