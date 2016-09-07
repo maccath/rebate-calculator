@@ -79,7 +79,19 @@ class StoreTest extends PHPUnit_Framework_TestCase
             ->method('calculate')
             ->with($item);
 
-        $this->store->calculateRebateAmount($item);
+        $this->store->calculateRebateValue($item);
+    }
+
+    /**
+     * Test that the rebate will be fetched from the rebate class
+     */
+    public function testGetRebate()
+    {
+        $this->rebate->expects($this->once())
+            ->method('getAmount')
+            ->willReturn('10');
+
+        $this->store->getRebateAmount();
     }
 
     /**

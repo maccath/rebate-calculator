@@ -134,12 +134,12 @@ class CardTest extends PHPUnit_Framework_TestCase
     {
         $mockStore = $this->getMockBuilder(\RebateCalculator\Store::class)
             ->disableOriginalConstructor()
-            ->setMethods(['calculateRebateAmount'])
+            ->setMethods(['calculateRebateValue'])
             ->getMock();
 
         $item = new \RebateCalculator\Item(200);
 
-        $mockStore->expects($this->once())->method('calculateRebateAmount')->willReturn('20');
+        $mockStore->expects($this->once())->method('calculateRebateValue')->willReturn('20');
 
         $this->card->receiveRebate($item, $mockStore);
 
