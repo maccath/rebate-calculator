@@ -54,6 +54,6 @@ class Item
             );
         }
 
-        $this->cost = $cost;
+        $this->cost = (float) $cost;
     }
 }

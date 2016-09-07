@@ -54,7 +54,7 @@ class PercentageRebate implements RebateInterface
             );
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**

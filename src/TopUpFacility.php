@@ -63,7 +63,7 @@ class TopUpFacility
             );
         }
 
-        $this->minimum = $minimum;
+        $this->minimum = (float) $minimum;
     }
 
     /**

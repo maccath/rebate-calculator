@@ -55,7 +55,7 @@ class Card
             throw new \Exception('Balance must be a numeric value.');
         }
 
-        $this->balance = $balance;
+        $this->balance = (float) $balance;
     }
 
     /**

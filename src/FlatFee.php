@@ -53,7 +53,7 @@ class FlatFee implements FeeInterface
             );
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**

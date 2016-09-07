@@ -53,7 +53,7 @@ class PercentageFee implements FeeInterface
             );
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**
