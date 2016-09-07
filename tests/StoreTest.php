@@ -79,7 +79,7 @@ class StoreTest extends PHPUnit_Framework_TestCase
             ->method('calculate')
             ->with($item);
 
-        $this->store->calculateRebateAmount($item);
+        $this->store->calculateRebateValue($item);
     }
 
     /**

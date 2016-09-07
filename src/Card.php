@@ -119,7 +119,7 @@ class Card
      */
     public function receiveRebate(Item $item, Store $store)
     {
-        $this->adjustBalance($store->calculateRebateAmount($item));
+        $this->adjustBalance($store->calculateRebateValue($item));
     }
 
     /**

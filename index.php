@@ -86,7 +86,7 @@ if ($action == 'calculate') {
             $card->topUp($topUpAmount);
         }
 
-        $rebateValue = $store->calculateRebateAmount($item);
+        $rebateValue = $store->calculateRebateValue($item);
 
         $card->payFor($item);
         $card->receiveRebate($item, $store);

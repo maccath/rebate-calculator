@@ -66,7 +66,7 @@ class Store
      * @param Item $item the item to calculate rebate for
      * @return float
      */
-    public function calculateRebateAmount(Item $item)
+    public function calculateRebateValue(Item $item)
     {
         return $this->rebate->calculate($item);
     }
