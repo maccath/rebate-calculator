@@ -83,6 +83,18 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that the rebate will be fetched from the rebate class
+     */
+    public function testGetRebate()
+    {
+        $this->rebate->expects($this->once())
+            ->method('getAmount')
+            ->willReturn('10');
+
+        $this->store->getRebateAmount();
+    }
+
+    /**
      * Valid values for name
      *
      * @return array
