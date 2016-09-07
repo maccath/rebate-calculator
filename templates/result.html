@@ -15,8 +15,8 @@
             To buy the item for &pound;{{ item.getCost|number_format(2, '.', ',') }},
 
             {% if result.topupRequired %}
-            a top up of &pound;{{ result.topupRequired|number_format(2, '.', ',') }}
-            for a cost of &pound;{{ result.topupCost|number_format(2, '.', ',') }}
+            a top up of &pound;{{ result.topUpRequired|number_format(2, '.', ',') }}
+            for a cost of &pound;{{ result.topUpCost|number_format(2, '.', ',') }}
             would be required,
             {% else %}
             no top up would be required,
@@ -58,13 +58,17 @@
         <h3>Top up facility</h3>
         <dl class="dl-horizontal">
             <dt>Minimum Top-up</dt>
-            <dd>&pound;{{ card.getTopup.getMinimum|number_format(2, '.', ',') }}</dd>
+            <dd>&pound;{{ card.getMinimumTopUp|number_format(2, '.', ',') }}</dd>
 
             <dt>Top up fee</dt>
-            {% if card.getTopup.getFee.getAmount %}
-            <dd>{{ card.getTopup.getFee.getAmount }}</dd>
+            {% if fee.getAmount %}
+                {% if fee_type == 'flat' %}
+                <dd>&pound;{{ fee.getAmount|number_format(2, '.', ',') }}</dd>
+                {% elseif fee_type == 'percentage' %}
+                <dd>{{ fee.getAmount|number_format(2, '.', ',') }}%</dd>
+                {% endif %}
             {% else %}
-            <dd>None</dd>
+                <dd>None</dd>
             {% endif %}
         </dl>
     </div>
@@ -75,7 +79,7 @@
             <dd>{{ store.getName }}</dd>
 
             <dt>Rebate</dt>
-            <dd>{{ store.getRebate.getAmount }}%</dd>
+            <dd>{{ store.getRebateAmount }}%</dd>
         </dl>
     </div>
     <div class="col-md-4">

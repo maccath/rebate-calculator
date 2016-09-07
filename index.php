@@ -28,7 +28,7 @@ if ($action == 'calculate') {
         };
 
         // Fetch user input
-        $minimumTopup = isset($_POST['minimum_topup'])
+        $minimumTopUp = isset($_POST['minimum_topup'])
             ? round(floatval($_POST['minimum_topup']), 2)
             : 0;
 
@@ -60,11 +60,11 @@ if ($action == 'calculate') {
             $fee = new \RebateCalculator\FlatFee($feeAmount);
         }
 
-        // Construct topup facility
-        $topup = new \RebateCalculator\Topup($fee, $minimumTopup);
+        // Construct top-up facility
+        $topUp = new \RebateCalculator\TopUpFacility($fee, $minimumTopUp);
 
         // Construct card
-        $card = new RebateCalculator\Card($topup, $cardBalance);
+        $card = new RebateCalculator\Card($topUp, $cardBalance);
 
         // Construct rebate
         $rebate = new \RebateCalculator\PercentageRebate($rebateAmount);
@@ -75,24 +75,35 @@ if ($action == 'calculate') {
         // Construct item
         $item = new \RebateCalculator\Item($itemCost);
 
-        $card->topUp($item);
+        // Construct calculator
+        $topUpCalculator = new \RebateCalculator\TopUpCalculator($card, $item);
+
+        $topUpAmount = $topUpCalculator->calculateTopUpRequired();
+
+        $topUpCost = 0;
+        if ($topUpAmount > 0) {
+            $topUpCost = $card->getTopUpCost($topUpAmount);
+            $card->topUp($topUpAmount);
+        }
+
+        $rebateValue = $store->calculateRebateAmount($item);
+
         $card->payFor($item);
         $card->receiveRebate($item, $store);
 
-        $topupCost = $card->getTopup()->calculateTopupCost();
-        $rebateValue = $store->calculateRebateAmount($item);
-        
         $data = array_merge($data, array(
             'item' => $item,
             'store' => $store,
             'card' => $card,
+            'fee' => $fee,
+            'fee_type' => $_POST['topup_fee'] == 'percentage' ?: 'flat',
             'result' => array(
-                'topupCost' => $topupCost,
-                'topupRequired' => $card->getTopup()->getAmount(),
+                'topUpCost' => $topUpCost,
+                'topUpRequired' => $topUpAmount,
                 'rebate' => $rebateValue,
                 'previousBalance' => $cardBalance,
                 'remainingBalance' => $card->getBalance(),
-                'saving' => $rebateValue - $topupCost,
+                'saving' => $rebateValue - $topUpCost,
             ),
         ));
     } catch (\Exception $e) {

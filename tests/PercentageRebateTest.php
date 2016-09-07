@@ -11,11 +11,57 @@ class PercentageRebateTest extends PHPUnit_Framework_TestCase
     protected $rebate;
 
     /**
-     *  Set up a percentage rebate instance
+     *  Set up a default percentage rebate instance
      */
     protected function setUp()
     {
         $this->rebate = new \RebateCalculator\PercentageRebate(10);
+    }
+
+    /**
+     * Test that rebate amount is set correctly and can be fetched
+     *
+     * @param mixed $amount the rebate amount
+     * @param float $expectedValue the actual rebate amount
+     *
+     * @dataProvider providerRebateAmounts
+     */
+    public function testAmount($amount, $expectedValue)
+    {
+        $this->rebate = new \RebateCalculator\PercentageRebate($amount);
+
+        $this->assertEquals($expectedValue, $this->rebate->getAmount());
+        $this->assertInternalType('float', $this->rebate->getAmount());
+    }
+
+    /**
+     * Test that invalid rebate amounts throw an error
+     *
+     * @param mixed $amount the rebate amount
+     *
+     * @expectedException \Exception
+     * @dataProvider providerInvalidValues
+     */
+    public function testAmountException($amount)
+    {
+        $this->rebate = new \RebateCalculator\PercentageRebate($amount);
+    }
+
+    /**
+     * Test that rebate values are calculated correctly
+     *
+     * @param mixed $amount the rebate amount
+     * @param mixed $cost the item cost
+     * @param float $expectedResult the expected fee cost
+     *
+     * @dataProvider providerCalculateValues
+     */
+    public function testCalculate($amount, $cost, $expectedResult)
+    {
+        $this->rebate = new \RebateCalculator\PercentageRebate($amount);
+        $item = new \RebateCalculator\Item($cost);
+
+        $this->assertEquals($expectedResult, $this->rebate->calculate($item));
     }
 
     /**
@@ -25,104 +71,42 @@ class PercentageRebateTest extends PHPUnit_Framework_TestCase
      */
     public function providerRebateAmounts()
     {
-        return array(
-            array(25,    25),
-            array('25',  25),
-            array(1.234, 1.234),
-            array(false, 0),
-            array(null,  0),
-        );
+        return [
+            [25, 25],
+            ['25', 25],
+            [1.234, 1.234],
+        ];
     }
 
     /**
-     * @param $amount
-     * @param $expectedValue
-     *
-     * @dataProvider providerRebateAmounts
-     */
-    public function testAmount($amount, $expectedValue)
-    {
-        $this->rebate->setAmount($amount);
-
-        $this->assertEquals($expectedValue, $this->rebate->getAmount());
-    }
-
-    /**
-     * Rebate amounts that should throw an exception
+     * Invalid values for rebate amounts
      *
      * @return array
      */
-    public function providerRebateAmountsException()
+    public function providerInvalidValues()
     {
-        return array(
-            array('abc'),
-            array(-10),
-        );
+        return [
+            ["abc"],
+            [-25],
+            [false],
+            [null],
+        ];
     }
 
     /**
-     * @param $amount
+     * Values for rebate amounts, item costs and expected rebate totals
      *
-     * @expectedException \Exception
-     * @dataProvider providerRebateAmountsException
-     */
-    public function testAmountException($amount)
-    {
-        $this->rebate->setAmount($amount);
-    }
-
-    /**
      * @return array
      */
     public function providerCalculateValues()
     {
-        // array(rebate amount, price, expected rebate)
-        return array(
-            array(10,    25,    2.5),
-            array("10",  25,    2.5),
-            array(0,     25,    0),
-            array(false, 25,    0),
-            array(null,  25,    0),
-            array(10,    0,     0),
-            array(10,    "25",  2.5),
-            array(10,    false, 0),
-            array(10,    null,  0),
-        );
-    }
-
-    /**
-     * @param $amount
-     * @param $price
-     * @param $expectedResult
-     *
-     * @dataProvider providerCalculateValues
-     */
-    public function testCalculate($amount, $price, $expectedResult)
-    {
-        $this->rebate->setAmount($amount);
-
-        $this->assertEquals($expectedResult, $this->rebate->calculate($price));
-    }
-
-    /**
-     * @return array
-     */
-    public function providerCalculateValuesException()
-    {
-        return array(
-            array("abc"),
-            array(-25),
-        );
-    }
-
-    /**
-     * @param $price
-     *
-     * @expectedException \Exception
-     * @dataProvider providerCalculateValuesException
-     */
-    public function testCalculateException($price)
-    {
-        $this->rebate->calculate($price);
+        // rebate amount, item cost, expected rebate
+        return [
+            [10,    25,    2.5],
+            ["10",  25,    2.5],
+            [0,     25,    0],
+            [10,    0,     0],
+            [10,    "25",  2.5],
+        ];
     }
 }

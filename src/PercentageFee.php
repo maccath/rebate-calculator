@@ -10,20 +10,26 @@ namespace RebateCalculator;
 class PercentageFee implements FeeInterface
 {
     /**
-     * @var
+     * The fee amount
+     *
+     * @var float
      */
     protected $amount;
 
     /**
-     * @param $amount
+     * PercentageFee constructor
+     *
+     * @param float $amount the fee amount
      */
     function __construct($amount)
     {
-        $this->amount = $amount;
+        $this->setAmount($amount);
     }
 
     /**
-     * @return float
+     * Get the fee amount
+     *
+     * @return float the fee amount
      */
     public function getAmount()
     {
@@ -31,19 +37,14 @@ class PercentageFee implements FeeInterface
     }
 
     /**
-     * @param $amount
+     * Set the fee percentage amount
      *
-     * @throws \Exception
+     * @param float $amount the fee amount
+     * @throws \Exception if fee amount invalid
      */
-    public function setAmount($amount)
+    private function setAmount($amount)
     {
-        if (!$amount) {
-            $this->amount = 0;
-
-            return;
-        }
-
-        if (!is_numeric($amount) || $amount < 0) {
+        if ( ! is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Amount (%s) must be a positive numeric value.',
@@ -52,26 +53,30 @@ class PercentageFee implements FeeInterface
             );
         }
 
-        $this->amount = $amount;
+        $this->amount = (float) $amount;
     }
 
     /**
-     * @param int $topup
+     * Calculate the fee charged for a given top-up amount
      *
+     * @param float $topUpAmount the amount to top up by
      * @return float
-     * @throws \Exception
+     * @throws \Exception if top-up amount invalid
      */
-    public function calculate($topup = 0)
+    public function calculate($topUpAmount = 0.0)
     {
-        if ($topup && (!is_numeric($topup) || $topup < 0)) {
+        if ( ! is_numeric($topUpAmount) || $topUpAmount < 0) {
             throw new \Exception(
                 sprintf(
-                    "Topup (%s) must be a positive numeric value.",
-                    $topup
+                    "Top-up (%s) must be a positive numeric value.",
+                    $topUpAmount
                 )
             );
         }
 
-        return round($topup / 100 * $this->amount, 2);
+        // No fee if no top-up
+        if ( ! $topUpAmount) return 0;
+
+        return round($topUpAmount / 100 * $this->amount, 2);
     }
 }

@@ -11,7 +11,7 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     protected $fee;
 
     /**
-     *  Set up a flat fee instance
+     * Set up a default flat fee instance
      */
     protected function setUp()
     {
@@ -19,111 +19,108 @@ class FlatFeeTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that fee amount is set correctly and can be fetched
+     *
+     * @param mixed $amount the fee amount
+     * @param $expectedValue
+     *
+     * @dataProvider providerValidFeeAmounts
+     */
+    public function testAmount($amount, $expectedValue)
+    {
+        $this->fee = new \RebateCalculator\FlatFee($amount);
+
+        $this->assertEquals($expectedValue, $this->fee->getAmount());
+        $this->assertInternalType('float', $this->fee->getAmount());
+    }
+
+    /**
+     * Test that invalid fee amounts throw an error
+     *
+     * @param mixed $amount the fee amount
+     *
+     * @expectedException \Exception
+     * @dataProvider providerInvalidAmounts
+     */
+    public function testAmountException($amount)
+    {
+        new \RebateCalculator\FlatFee($amount);
+    }
+
+    /**
+     * Test that fee values are calculated correctly
+     *
+     * @param mixed $amount the fee amount
+     * @param mixed $topUp the top-up amount
+     * @param float $expectedResult the expected fee cost
+     *
+     * @dataProvider providerCalculateValues
+     */
+    public function testCalculate($amount, $topUp, $expectedResult)
+    {
+        $this->fee = new \RebateCalculator\FlatFee($amount);
+
+        $this->assertEquals($expectedResult, $this->fee->calculate($topUp));
+    }
+
+    /**
+     * Test that an invalid top-up amount throws an exception
+     *
+     * @param mixed $topUp the top-up amount
+     *
+     * @expectedException \Exception
+     * @dataProvider providerInvalidAmounts
+     */
+    public function testCalculateException($topUp)
+    {
+        $this->fee->calculate($topUp);
+    }
+
+    /**
      * Valid values for fee amounts
      *
      * @return array
      */
-    public function providerFeeAmounts()
+    public function providerValidFeeAmounts()
     {
-        return array(
-            array(25,    25),
-            array('25',  25),
-            array(1.234, 1.234),
-            array(false, 0),
-            array(null,  0),
-        );
+        return [
+            [25, 25],
+            ['25', 25],
+            [1.234, 1.234],
+            [0, 0]
+        ];
     }
 
     /**
-     * @param $amount
-     * @param $expectedValue
-     *
-     * @dataProvider providerFeeAmounts
-     */
-    public function testAmount($amount, $expectedValue)
-    {
-        $this->fee->setAmount($amount);
-
-        $this->assertEquals($expectedValue, $this->fee->getAmount());
-    }
-
-    /**
-     * Fee amounts that should throw an exception
+     * Invalid currency amounts that should throw an exception
      *
      * @return array
      */
-    public function providerFeeAmountsException()
+    public function providerInvalidAmounts()
     {
-        return array(
-            array('abc'),
-            array(-10),
-        );
+        return [
+            ['abc'],
+            [-10],
+            [false],
+            [null],
+        ];
     }
 
     /**
-     * @param $amount
+     * Values for fee amounts, top-up values and expected fee totals
      *
-     * @expectedException \Exception
-     * @dataProvider providerFeeAmountsException
-     */
-    public function testAmountException($amount)
-    {
-        $this->fee->setAmount($amount);
-    }
-
-    /**
      * @return array
      */
     public function providerCalculateValues()
     {
-        // array(fee amount, topup value, expected cost)
-        return array(
-            array(10,    25,    10),
-            array("10",  25,    10),
-            array(0,     25,    0),
-            array(1.252, 25,    1.25),
-            array(false, 25,    0),
-            array(null,  25,    0),
-            array(10,    0,     0),
-            array(10,    "25",  10),
-            array(10,    false, 0),
-            array(10,    null,  0),
-        );
-    }
-
-    /**
-     * @param $amount
-     * @param $topup
-     * @param $expectedResult
-     *
-     * @dataProvider providerCalculateValues
-     */
-    public function testCalculate($amount, $topup, $expectedResult)
-    {
-        $this->fee->setAmount($amount);
-
-        $this->assertEquals($expectedResult, $this->fee->calculate($topup));
-    }
-
-    /**
-     * @return array
-     */
-    public function providerCalculateValuesException()
-    {
-        return array(
-            array("abc"),
-            array(-25),
-        );
-    }
-
-    /**
-     * @param $topup
-     *
-     * @expectedException \Exception
-     * @dataProvider providerCalculateValuesException
-     */
-    public function testCalculateException($topup)
-    {
-        $this->fee->calculate($topup);
+        // fee amount, top-up amount, expected fee total
+        return [
+            [10,    25,    10],
+            ["10",  25,    10],
+            [0,     25,    0],
+            [1.252, 25,    1.25],
+            [10,    0,     0],
+            [10,    "25",  10],
+        ];
     }
 }
