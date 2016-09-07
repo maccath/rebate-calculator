@@ -2,59 +2,62 @@
 
 namespace RebateCalculator;
 
+/**
+ * Class Store
+ *
+ * @package RebateCalculator
+ */
 class Store
 {
-
     /**
-     * @var Store name
+     * The store name
+     *
+     * @var string
      */
     protected $name;
 
     /**
-     * @var float Rebate percentage
+     * The store rebate facility
+     *
+     * @var RebateInterface
      */
     protected $rebate;
 
     /**
-     * @param                 $name
-     * @param RebateInterface $rebate
+     * Store constructor
+     *
+     * @param string $name the store name
+     * @param RebateInterface $rebate the store rebate facility
      */
     public function __construct($name, RebateInterface $rebate)
     {
-        $this->name = $name;
+        $this->setName($name);
         $this->rebate = $rebate;
     }
 
     /**
-     * @return store
+     * Set the store name
+     *
+     * @param string $name the name string
+     * @throws \Exception when name not a string
+     */
+    private function setName($name)
+    {
+        if ( ! $name || ! is_string($name)) {
+            throw new \Exception(sprintf("The given store name (%s) is not a string.", $name));
+        }
+
+        $this->name = $name;
+    }
+
+    /**
+     * Get the store name
+     *
+     * @return string
      */
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param store $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return RebateInterface
-     */
-    public function getRebate()
-    {
-        return $this->rebate;
-    }
-
-    /**
-     * @param RebateInterface $rebate
-     */
-    public function setRebate(RebateInterface $rebate)
-    {
-        $this->rebate = $rebate;
     }
 
     /**
