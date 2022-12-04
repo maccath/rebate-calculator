@@ -14,7 +14,7 @@
         <p class="bg-primary">
             To buy the item for &pound;{{ item.getCost|number_format(2, '.', ',') }},
 
-            {% if result.topupRequired %}
+            {% if result.topUpRequired %}
             a top up of &pound;{{ result.topUpRequired|number_format(2, '.', ',') }}
             for a cost of &pound;{{ result.topUpCost|number_format(2, '.', ',') }}
             would be required,
