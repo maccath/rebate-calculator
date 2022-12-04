@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class PercentageRebateTest
  */
-class PercentageRebateTest extends \PHPUnit_Framework_TestCase
+class PercentageRebateTest extends TestCase
 {
     /**
      * @var \RebateCalculator\PercentageRebate
@@ -15,7 +17,7 @@ class PercentageRebateTest extends \PHPUnit_Framework_TestCase
     /**
      *  Set up a default percentage rebate instance
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->rebate = new \RebateCalculator\PercentageRebate(10);
     }
@@ -33,7 +35,7 @@ class PercentageRebateTest extends \PHPUnit_Framework_TestCase
         $this->rebate = new \RebateCalculator\PercentageRebate($amount);
 
         $this->assertEquals($expectedValue, $this->rebate->getAmount());
-        $this->assertInternalType('float', $this->rebate->getAmount());
+        $this->assertIsFloat($this->rebate->getAmount());
     }
 
     /**
@@ -46,6 +48,8 @@ class PercentageRebateTest extends \PHPUnit_Framework_TestCase
      */
     public function testAmountException($amount)
     {
+        $this->expectException(\Exception::class);
+
         $this->rebate = new \RebateCalculator\PercentageRebate($amount);
     }
 

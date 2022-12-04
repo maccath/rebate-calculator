@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class StoreTest
  */
-class StoreTest extends \PHPUnit_Framework_TestCase
+class StoreTest extends TestCase
 {
     /**
      * @var \RebateCalculator\Store
@@ -20,7 +22,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
     /**
      *  Set up a default store instance with 10% rebate
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->rebate = $this->getMockBuilder(\RebateCalculator\PercentageRebate::class)
             ->setConstructorArgs([10])
@@ -41,7 +43,7 @@ class StoreTest extends \PHPUnit_Framework_TestCase
         $this->store = new \RebateCalculator\Store($inputName, $this->rebate);
 
         $this->assertEquals($expectedName, $this->store->getName());
-        $this->assertInternalType('string', $this->store->getName());
+        $this->assertIsString($this->store->getName());
     }
 
     /**
@@ -49,11 +51,12 @@ class StoreTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $name the store name
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidNames
      */
     public function testSetInvalidName($name)
     {
+        $this->expectException(\Exception::class);
+
         new \RebateCalculator\Store($name, $this->rebate);
     }
 

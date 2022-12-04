@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class TopUpCalculatorTest
  */
-class TopUpCalculatorTest extends \PHPUnit_Framework_TestCase
+class TopUpCalculatorTest extends TestCase
 {
     /**
      * @var \RebateCalculator\Card
@@ -20,7 +22,7 @@ class TopUpCalculatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up default card and item instances
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->card = $this->getMockBuilder(\RebateCalculator\Card::class)
             ->disableOriginalConstructor()

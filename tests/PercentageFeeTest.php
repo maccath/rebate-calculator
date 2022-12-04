@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class PercentageFeeTest
  */
-class PercentageFeeTest extends \PHPUnit_Framework_TestCase
+class PercentageFeeTest extends TestCase
 {
     /**
      * @var \RebateCalculator\PercentageFee
@@ -15,7 +17,7 @@ class PercentageFeeTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up a default percentage fee instance
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->fee = new \RebateCalculator\PercentageFee(10);
     }
@@ -33,7 +35,7 @@ class PercentageFeeTest extends \PHPUnit_Framework_TestCase
         $this->fee = new \RebateCalculator\PercentageFee($amount);
 
         $this->assertEquals($expectedValue, $this->fee->getAmount());
-        $this->assertInternalType('float', $this->fee->getAmount());
+        $this->assertIsFloat($this->fee->getAmount());
     }
 
     /**
@@ -41,11 +43,12 @@ class PercentageFeeTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $amount the fee amount
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidAmounts
      */
     public function testAmountException($amount)
     {
+        $this->expectException(\Exception::class);
+
         new \RebateCalculator\PercentageFee($amount);
     }
 
@@ -70,11 +73,12 @@ class PercentageFeeTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $topUp the top-up amount
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidAmounts
      */
     public function testCalculateException($topUp)
     {
+        $this->expectException(\Exception::class);
+
         $this->fee->calculate($topUp);
     }
 

@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class TopUpFacilityTest
  */
-class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
+class TopupFacilityTest extends TestCase
 {
     /**
      * @var \RebateCalculator\TopUpFacility
@@ -20,11 +22,9 @@ class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up a default top-up instance
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->fee = $this->getMockBuilder(\RebateCalculator\FeeInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['calculate', 'getAmount'])
             ->getMock();
 
         $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, 0);
@@ -42,7 +42,7 @@ class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
     {
         $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopUp);
 
-        $this->assertInternalType('float', $this->topUpFacility->getMinimum());
+        $this->assertIsFloat($this->topUpFacility->getMinimum());
         $this->assertEquals($expectedMinimumTopUp, $this->topUpFacility->getMinimum());
     }
 
@@ -51,11 +51,11 @@ class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $amount the top-up amount
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidAmounts
      */
     public function testValueException($amount)
     {
+        $this->expectException(\Exception::class);
         $this->topUpFacility->validateTopUp($amount);
     }
 
@@ -65,11 +65,12 @@ class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
      * @param float $amount the top-up amount
      * @param float $minimum the minimum top-up amount
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidMinimumAndTopUpAmounts
      */
     public function testMinimumTopUpAmountsException($amount, $minimum)
     {
+        $this->expectException(\Exception::class);
+
         $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimum);
 
         $this->topUpFacility->validateTopUp($amount);
@@ -80,11 +81,12 @@ class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $minimum the minimum top-up
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidAmounts
      */
     public function testMinimumException($minimum)
     {
+        $this->expectException(\Exception::class);
+
         new \RebateCalculator\TopUpFacility($this->fee, $minimum);
     }
 

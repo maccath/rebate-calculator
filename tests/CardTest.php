@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class CardTest
  */
-class CardTest extends \PHPUnit_Framework_TestCase
+class CardTest extends TestCase
 {
     /**
      * @var \RebateCalculator\Card
@@ -20,7 +22,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
     /**
      * Set up a default card instance
      */
-    protected function setUp()
+    public function setUp(): void
     {
         $this->topUpFacility = $this->getMockBuilder(\RebateCalculator\TopUpFacility::class)
             ->disableOriginalConstructor()
@@ -42,7 +44,7 @@ class CardTest extends \PHPUnit_Framework_TestCase
         $this->card = new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
 
         $this->assertEquals($expectedBalance, $this->card->getBalance());
-        $this->assertInternalType('float', $this->card->getBalance());
+        $this->assertIsFloat($this->card->getBalance());
     }
 
     /**
@@ -50,11 +52,12 @@ class CardTest extends \PHPUnit_Framework_TestCase
      * 
      * @param mixed $inputBalance the balance to set the card to
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidAmounts
      */
     public function testBalanceException($inputBalance)
     {
+        $this->expectException(\Exception::class);
+
         new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
     }
 
@@ -73,11 +76,11 @@ class CardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that an unaffordable item cannot be paid for
-     *
-     * @expectedException Exception
      */
     public function testPayForItemExceptionIfInsufficientBalance()
     {
+        $this->expectException(\Exception::class);
+
         $item = new \RebateCalculator\Item(200);
         $this->card = new \RebateCalculator\Card($this->topUpFacility, 100);
 

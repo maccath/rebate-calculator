@@ -2,10 +2,12 @@
 
 namespace RebateCalculator\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class ItemTest
  */
-class ItemTest extends \PHPUnit_Framework_TestCase
+class ItemTest extends TestCase
 {
     /**
      * Test that item cost is set correctly and can be fetched for valid values
@@ -20,7 +22,7 @@ class ItemTest extends \PHPUnit_Framework_TestCase
         $item = new \RebateCalculator\Item($inputCost);
 
         $this->assertEquals($expectedCost, $item->getCost());
-        $this->assertInternalType('float', $item->getCost());
+        $this->assertIsFloat($item->getCost());
     }
 
     /**
@@ -28,11 +30,12 @@ class ItemTest extends \PHPUnit_Framework_TestCase
      *
      * @param mixed $cost the input item cost
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidCosts
      */
     public function testCostExceptions($cost)
     {
+        $this->expectException(\Exception::class);
+
         new \RebateCalculator\Item($cost);
     }
 
