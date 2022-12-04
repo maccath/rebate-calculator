@@ -56,19 +56,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setting of invalid rebate values
-     *
-     * @param $rebate
-     *
-     * @expectedException PHPUnit_Framework_Error
-     * @dataProvider providerInvalidRebates
-     */
-    public function testSetInvalidRebate($rebate)
-    {
-        new \RebateCalculator\Store('Some Store', $rebate);
-    }
-
-    /**
      * Test that the rebate will be calculated by rebate class
      */
     public function testCalculateRebate()
@@ -118,22 +105,6 @@ class StoreTest extends PHPUnit_Framework_TestCase
             [25, '25'],
             [-10, '-10'],
             [false, ''],
-        ];
-    }
-
-    /**
-     * Invalid values for rebate
-     *
-     * @return array
-     */
-    public function providerInvalidRebates()
-    {
-        return [
-            ['abc'],
-            [false],
-            [null],
-            [0],
-            [new stdClass()],
         ];
     }
 }

@@ -87,19 +87,6 @@ class TopUpFacilityTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test that fee can't be set to an invalid value
-     *
-     * @param mixed $fee the fee
-     *
-     * @expectedException PHPUnit_Framework_Error
-     * @dataProvider providerInvalidFees
-     */
-    public function testSetFeeException($fee)
-    {
-        new \RebateCalculator\TopUpFacility($fee);
-    }
-
-    /**
      * Test that the top-up cost is calculated according to given fee
      *
      * @param $amount
@@ -164,20 +151,5 @@ class TopUpFacilityTest extends PHPUnit_Framework_TestCase
             [10, 20],
             [15, 50],
         ];
-    }
-
-    /**
-     * Invalid values for fee
-     *
-     * @return array
-     */
-    public function providerInvalidFees()
-    {
-        return array(
-            ['abc'],
-            [false],
-            [null],
-            [0],
-        );
     }
 }

@@ -1,11 +1,14 @@
 {
+  "name": "maccath/rebate-calculator",
+  "type": "project",
+  "require": {
+    "php": "^7.4",
+    "twig/twig": "~1.0"
+  },
   "require-dev": {
     "phpunit/phpunit": "4.5.*"
   },
   "autoload": {
     "psr-4": {"RebateCalculator\\": "src/"}
-  },
-  "require": {
-    "twig/twig": "~1.0"
   }
 }
