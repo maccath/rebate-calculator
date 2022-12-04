@@ -1,12 +1,12 @@
 <?php
 
-$config = array_merge($config, array(
-    'application' => array(
+return [
+    'application' => [
       'title' => 'Rebate Calculator',
-    ),
+    ],
     // Array to be passed into Twig_Environment constructor
-    'twig' => array(
+    'twig' => [
         'cache' => 'cache',
         'debug' => false,
-    ),
-));
+    ],
+];

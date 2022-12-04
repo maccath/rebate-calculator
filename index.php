@@ -3,10 +3,9 @@
 include('vendor/autoload.php');
 
 // Set up configuration options
-$config = array();
-include('config/config.php');
+$config = include('config/config.php');
 if (file_exists('config/local.config.php')) {
-    include('config/local.config.php');
+    $config = array_merge($config, include('config/local.config.php'));
 }
 
 // Load Twig templating engine
