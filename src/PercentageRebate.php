@@ -2,18 +2,11 @@
 
 namespace RebateCalculator;
 
-/**
- * Class PercentageRebate
- *
- * @package RebateCalculator
- */
 class PercentageRebate implements RebateInterface
 {
     protected float $amount;
 
     /**
-     * PercentageRebate constructor
-     *
      * @throws \Exception if the amount is invalid
      */
     public function __construct(float $amount)
@@ -21,7 +14,7 @@ class PercentageRebate implements RebateInterface
         if ($amount < 0) {
             throw new \Exception(
                 sprintf(
-                    'Amount (%s) must be a positive numeric value.',
+                    'Amount (%s) must be a positive value.',
                     $amount
                 )
             );
@@ -30,9 +23,6 @@ class PercentageRebate implements RebateInterface
         $this->amount = $amount;
     }
 
-    /**
-     * Get the rebate amount
-     */
     public function getAmount(): float
     {
         return $this->amount;

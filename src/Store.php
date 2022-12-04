@@ -2,11 +2,6 @@
 
 namespace RebateCalculator;
 
-/**
- * Class Store
- *
- * @package RebateCalculator
- */
 class Store
 {
     protected string $name;
@@ -18,19 +13,11 @@ class Store
         $this->rebate = $rebate;
     }
 
-    /**
-     * Get the store name
-     *
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Get the store's rebate amount
-     */
     public function getRebateAmount(): float
     {
         return $this->rebate->getAmount();

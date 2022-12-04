@@ -2,11 +2,6 @@
 
 namespace RebateCalculator;
 
-/**
- * Class Card
- *
- * @package RebateCalculator
- */
 class Card
 {
     private float $balance;
@@ -35,9 +30,6 @@ class Card
         return $this->topUpFacility->getTopUpCost($amount);
     }
 
-    /**
-     * Get the card's minimum top-up amount
-     */
     public function getMinimumTopUp(): float
     {
         return $this->topUpFacility->getMinimum();
@@ -46,7 +38,6 @@ class Card
     /**
      * Top up the card by the given amount
      *
-     * @param float $amount the amount to top up
      * @throws \Exception if card could not be topped up
      */
     public function topUp(float $amount): void
@@ -59,7 +50,6 @@ class Card
     /**
      * Pay for the given item
      *
-     * @param Item $item the item to pay for
      * @throws \Exception if the item could not be paid for
      */
     public function payFor(Item $item): void

@@ -2,11 +2,6 @@
 
 namespace RebateCalculator;
 
-/**
- * Interface RebateInterface
- *
- * @package RebateCalculator
- */
 interface RebateInterface
 {
     public function getAmount(): float;

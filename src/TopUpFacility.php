@@ -2,19 +2,12 @@
 
 namespace RebateCalculator;
 
-/**
- * Class TopUpFacility
- *
- * @package RebateCalculator
- */
 class TopUpFacility
 {
     private FeeInterface $fee;
     private float $minimum;
 
     /**
-     * TopUpFacility constructor
-     *
      * @throws \Exception if the minimum top-up amount is not numeric or negative
      */
     function __construct(FeeInterface $fee, float $minimum = 0.0)
@@ -50,8 +43,6 @@ class TopUpFacility
     }
 
     /**
-     * Verify that the amount is a positive numeric value equal to or over the minimum top up amount
-     *
      * @throws \Exception if top-up amount is not positive, or falls short of the minimum top-up value
      */
     public function validateTopUp(float $amount): void

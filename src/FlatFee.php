@@ -2,17 +2,11 @@
 
 namespace RebateCalculator;
 
-/**
- * Class FlatFee
- *
- * @package RebateCalculator
- */
 class FlatFee implements FeeInterface
 {
     private float $amount;
 
     /**
-     * FlatFee constructor
      */
     function __construct(float $amount)
     {

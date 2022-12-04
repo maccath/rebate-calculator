@@ -2,11 +2,6 @@
 
 namespace RebateCalculator;
 
-/**
- * Class TopUpCalculator
- *
- * @package RebateCalculator
- */
 class TopUpCalculator
 {
     private Card $card;
@@ -20,8 +15,6 @@ class TopUpCalculator
 
     /**
      * Calculate top up required to purchase item
-     *
-     * @return mixed
      */
     public function calculateTopUpRequired(): float
     {

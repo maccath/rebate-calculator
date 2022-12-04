@@ -2,18 +2,11 @@
 
 namespace RebateCalculator;
 
-/**
- * Class Item
- *
- * @package RebateCalculator
- */
 class Item
 {
     protected float $cost;
 
     /**
-     * Item constructor
-     *
      * @throws \Exception if the item cost is invalid
      */
     function __construct(float $cost)
@@ -30,9 +23,6 @@ class Item
         $this->cost = $cost;
     }
 
-    /**
-     * Get the item cost
-     */
     public function getCost(): float
     {
         return $this->cost;
