@@ -101,7 +101,7 @@ class TopupFacilityTest extends TestCase
     {
         $mockFee = $this->getMockBuilder(\RebateCalculator\FeeInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['calculate', 'getAmount'])
+            ->setMethods(['calculate'])
             ->getMock();
 
         $mockFee

@@ -14,13 +14,8 @@ class Store
 
     public function __construct(string $name, RebateInterface $rebate)
     {
-        $this->setName($name);
-        $this->rebate = $rebate;
-    }
-
-    private function setName(string $name): void
-    {
         $this->name = $name;
+        $this->rebate = $rebate;
     }
 
     /**

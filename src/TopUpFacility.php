@@ -19,33 +19,22 @@ class TopUpFacility
      */
     function __construct(FeeInterface $fee, float $minimum = 0.0)
     {
-        $this->fee = $fee;
-        $this->setMinimum($minimum);
-    }
-
-    public function getMinimum(): float
-    {
-        return $this->minimum;
-    }
-
-    /**
-     * Set the minimum top-up amount
-     *
-     * @param float $minimum the minimum top-up amount
-     * @throws \Exception if the minimum top-up amount is not numeric or negative
-     */
-    private function setMinimum(float $minimum): void
-    {
         if ($minimum < 0) {
             throw new \Exception(
                 sprintf(
-                    'Minimum (%s) must be a positive numeric value.',
+                    'Minimum (%s) must be a positive value.',
                     $minimum
                 )
             );
         }
 
         $this->minimum = $minimum;
+        $this->fee = $fee;
+    }
+
+    public function getMinimum(): float
+    {
+        return $this->minimum;
     }
 
     /**

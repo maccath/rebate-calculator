@@ -18,18 +18,13 @@ class Card
      */
     function __construct(TopUpFacility $topUpFacility, float $balance = 0.0)
     {
-        $this->setBalance($balance);
+        $this->balance = $balance;
         $this->topUpFacility = $topUpFacility;
     }
 
     public function getBalance(): float
     {
         return $this->balance;
-    }
-
-    private function setBalance(float $balance): void
-    {
-        $this->balance = $balance;
     }
 
     /**
@@ -58,7 +53,7 @@ class Card
     {
         $this->topUpFacility->validateTopUp($amount);
 
-        $this->adjustBalance($amount);
+        $this->balance += $amount;
     }
 
     /**
@@ -77,7 +72,7 @@ class Card
             ));
         }
 
-        $this->adjustBalance(-$item->getCost());
+        $this->balance -= $item->getCost();
     }
 
     /**
@@ -88,16 +83,6 @@ class Card
      */
     public function receiveRebate(Item $item, Store $store): void
     {
-        $this->adjustBalance($store->calculateRebateValue($item));
-    }
-
-    /**
-     * Adjust the card balance by the given amount
-     *
-     * @param float $amount the amount to adjust the card balance by
-     */
-    private function adjustBalance(float $amount): void
-    {
-        $this->balance += $amount;
+        $this->balance += $store->calculateRebateValue($item);
     }
 }

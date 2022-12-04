@@ -9,8 +9,6 @@ namespace RebateCalculator;
  */
 interface FeeInterface
 {
-    public function getAmount(): float;
-
     /**
      * Calculate the fee for the given top-up amount
      */

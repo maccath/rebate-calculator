@@ -23,22 +23,6 @@ class PercentageFeeTest extends TestCase
     }
 
     /**
-     * Test that fee amount is set correctly and can be fetched
-     *
-     * @param mixed $amount the fee amount
-     * @param float $expectedValue the actual fee amount
-     *
-     * @dataProvider providerValidFeeAmounts
-     */
-    public function testAmount($amount, $expectedValue)
-    {
-        $this->fee = new \RebateCalculator\PercentageFee($amount);
-
-        $this->assertEquals($expectedValue, $this->fee->getAmount());
-        $this->assertIsFloat($this->fee->getAmount());
-    }
-
-    /**
      * Test that invalid fee amounts throw an error
      *
      * @param mixed $amount the fee amount

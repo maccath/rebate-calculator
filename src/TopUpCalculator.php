@@ -52,6 +52,6 @@ class TopUpCalculator
             return 0.0;
         }
 
-        return (float) $itemCost - $currentBalance;
+        return $itemCost - $currentBalance;
     }
 }

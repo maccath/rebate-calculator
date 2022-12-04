@@ -16,21 +16,6 @@ class PercentageFee implements FeeInterface
      */
     function __construct(float $amount)
     {
-        $this->setAmount($amount);
-    }
-
-    public function getAmount(): float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Set the fee percentage amount
-     *
-     * @throws \Exception if fee amount invalid
-     */
-    private function setAmount(float $amount): void
-    {
         if ($amount < 0) {
             throw new \Exception(
                 sprintf(

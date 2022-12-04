@@ -16,22 +16,6 @@ class FlatFee implements FeeInterface
      */
     function __construct(float $amount)
     {
-        $this->setAmount($amount);
-    }
-
-    /**
-     * Get the fee amount
-     */
-    public function getAmount(): float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Set the fee amount in flat currency
-     */
-    private function setAmount(float $amount)
-    {
         if ($amount < 0) {
             throw new \Exception(
                 sprintf(

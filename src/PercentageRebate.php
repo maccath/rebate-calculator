@@ -18,24 +18,6 @@ class PercentageRebate implements RebateInterface
      */
     public function __construct(float $amount)
     {
-        $this->setAmount($amount);
-    }
-
-    /**
-     * Get the rebate amount
-     */
-    public function getAmount(): float
-    {
-        return $this->amount;
-    }
-
-    /**
-     * Set the rebate amount as a percentage
-     *
-     * @throws \Exception if the amount is invalid
-     */
-    private function setAmount(float $amount): void
-    {
         if ($amount < 0) {
             throw new \Exception(
                 sprintf(
@@ -46,6 +28,14 @@ class PercentageRebate implements RebateInterface
         }
 
         $this->amount = $amount;
+    }
+
+    /**
+     * Get the rebate amount
+     */
+    public function getAmount(): float
+    {
+        return $this->amount;
     }
 
     /**

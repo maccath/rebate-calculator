@@ -18,24 +18,6 @@ class Item
      */
     function __construct(float $cost)
     {
-        $this->setCost($cost);
-    }
-
-    /**
-     * Get the item cost
-     */
-    public function getCost(): float
-    {
-        return $this->cost;
-    }
-
-    /**
-     * Set the item cost
-     *
-     * @throws \Exception if the item cost is invalid
-     */
-    private function setCost(float $cost): void
-    {
         if ($cost < 0) {
             throw new \Exception(
                 sprintf(
@@ -46,5 +28,13 @@ class Item
         }
 
         $this->cost = $cost;
+    }
+
+    /**
+     * Get the item cost
+     */
+    public function getCost(): float
+    {
+        return $this->cost;
     }
 }
