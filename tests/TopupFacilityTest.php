@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class TopUpFacilityTest
  */
-class TopUpFacilityTest extends PHPUnit_Framework_TestCase
+class TopUpFacilityTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\TopUpFacility

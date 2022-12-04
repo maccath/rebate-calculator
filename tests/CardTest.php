@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class CardTest
  */
-class CardTest extends PHPUnit_Framework_TestCase
+class CardTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\Card

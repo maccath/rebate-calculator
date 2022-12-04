@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class ItemTest
  */
-class ItemTest extends PHPUnit_Framework_TestCase
+class ItemTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test that item cost is set correctly and can be fetched for valid values

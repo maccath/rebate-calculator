@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class StoreTest
  */
-class StoreTest extends PHPUnit_Framework_TestCase
+class StoreTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\Store

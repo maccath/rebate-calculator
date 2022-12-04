@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class FlatFeeTest
  */
-class FlatFeeTest extends PHPUnit_Framework_TestCase
+class FlatFeeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\FlatFee

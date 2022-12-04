@@ -1,9 +1,11 @@
 <?php
 
+namespace RebateCalculator\Tests;
+
 /**
  * Class PercentageFeeTest
  */
-class PercentageFeeTest extends PHPUnit_Framework_TestCase
+class PercentageFeeTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \RebateCalculator\PercentageFee
