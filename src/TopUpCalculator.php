@@ -4,7 +4,7 @@ namespace RebateCalculator;
 
 /**
  * Class TopUpCalculator
- * 
+ *
  * @package RebateCalculator
  */
 class TopUpCalculator
@@ -44,7 +44,9 @@ class TopUpCalculator
     {
         $additionalFundingRequired = $this->getAdditionalFundingRequiredForPurchase();
 
-        if ( ! $additionalFundingRequired) return 0;
+        if (! $additionalFundingRequired) {
+            return 0;
+        }
 
         $minimumTopUp = $this->card->getMinimumTopUp();
 
@@ -65,7 +67,9 @@ class TopUpCalculator
         $itemCost = $this->item->getCost();
         $currentBalance = $this->card->getBalance();
 
-        if ($itemCost <= $currentBalance) return 0;
+        if ($itemCost <= $currentBalance) {
+            return 0;
+        }
 
         return $itemCost - $currentBalance;
     }

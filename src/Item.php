@@ -45,7 +45,7 @@ class Item
      */
     private function setCost($cost)
     {
-        if ( ! is_numeric($cost) || $cost < 0) {
+        if (! is_numeric($cost) || $cost < 0) {
             throw new \Exception(
                 sprintf(
                     "Item cost (£%d) must be a positive numeric value.",

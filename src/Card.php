@@ -51,7 +51,7 @@ class Card
      */
     private function setBalance($balance)
     {
-        if ( ! is_numeric($balance)) {
+        if (! is_numeric($balance)) {
             throw new \Exception('Balance must be a numeric value.');
         }
 

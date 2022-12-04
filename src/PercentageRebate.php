@@ -45,7 +45,7 @@ class PercentageRebate implements RebateInterface
      */
     private function setAmount($amount)
     {
-        if ( ! is_numeric($amount) || $amount < 0) {
+        if (! is_numeric($amount) || $amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Amount (%s) must be a positive numeric value.',

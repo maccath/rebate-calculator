@@ -43,7 +43,7 @@ class Store
      */
     private function setName($name)
     {
-        if ( ! $name || ! is_string($name)) {
+        if (! $name || ! is_string($name)) {
             throw new \Exception(sprintf("The given store name (%s) is not a string.", $name));
         }
 
