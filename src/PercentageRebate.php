@@ -2,17 +2,19 @@
 
 namespace RebateCalculator;
 
+use Exception;
+
 class PercentageRebate implements RebateInterface
 {
     protected float $amount;
 
     /**
-     * @throws \Exception if the amount is invalid
+     * @throws Exception If amount is non-positive
      */
     public function __construct(float $amount)
     {
         if ($amount < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     'Amount (%s) must be a positive value.',
                     $amount

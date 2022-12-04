@@ -2,19 +2,21 @@
 
 namespace RebateCalculator;
 
+use Exception;
+
 class Item
 {
     protected float $cost;
 
     /**
-     * @throws \Exception if the item cost is invalid
+     * @throws Exception If cost is non-positive
      */
     function __construct(float $cost)
     {
         if ($cost < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
-                    "Item cost (£%d) must be a positive numeric value.",
+                    "Item cost (£%d) must be a positive value.",
                     $cost
                 )
             );

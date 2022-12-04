@@ -2,18 +2,20 @@
 
 namespace RebateCalculator;
 
+use Exception;
+
 class TopUpFacility
 {
     private FeeInterface $fee;
     private float $minimum;
 
     /**
-     * @throws \Exception if the minimum top-up amount is not numeric or negative
+     * @throws Exception if the minimum top-up amount is non-positive
      */
     function __construct(FeeInterface $fee, float $minimum = 0.0)
     {
         if ($minimum < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     'Minimum (%s) must be a positive value.',
                     $minimum
@@ -33,7 +35,7 @@ class TopUpFacility
     /**
      * Calculate the cost of a top-up of the given amount
      *
-     * @throws \Exception if top-up amount is not positive, or falls short of the minimum top-up value
+     * @throws Exception if top-up amount is not positive, or falls short of the minimum top-up value
      */
     public function getTopUpCost(float $amount): float
     {
@@ -43,12 +45,12 @@ class TopUpFacility
     }
 
     /**
-     * @throws \Exception if top-up amount is not positive, or falls short of the minimum top-up value
+     * @throws Exception if top-up amount is not positive, or falls short of the minimum top-up value
      */
     public function validateTopUp(float $amount): void
     {
         if ($amount < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     'Top-up amount (£%d) must be a positive value.',
                     $amount
@@ -57,7 +59,7 @@ class TopUpFacility
         }
 
         if ($amount < $this->getMinimum()) {
-            throw new \Exception(sprintf(
+            throw new Exception(sprintf(
                 "Top-up amount £%d must exceed the minimum top-up amount of £%d",
                 $amount,
                 $this->getMinimum()

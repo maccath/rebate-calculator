@@ -2,6 +2,8 @@
 
 namespace RebateCalculator;
 
+use Exception;
+
 class Card
 {
     private float $balance;
@@ -24,6 +26,8 @@ class Card
 
     /**
      * Calculate the cost of topping up by the given amount
+     *
+     * @throws Exception if top-up amount is not positive, or falls short of the minimum top-up value
      */
     public function getTopUpCost(float $amount): float
     {
@@ -38,7 +42,7 @@ class Card
     /**
      * Top up the card by the given amount
      *
-     * @throws \Exception if card could not be topped up
+     * @throws Exception if card could not be topped up
      */
     public function topUp(float $amount): void
     {
@@ -50,12 +54,12 @@ class Card
     /**
      * Pay for the given item
      *
-     * @throws \Exception if the item could not be paid for
+     * @throws Exception if the item could not be paid for
      */
     public function payFor(Item $item): void
     {
         if ($this->getBalance() < $item->getCost()) {
-            throw new \Exception(sprintf(
+            throw new Exception(sprintf(
                 "There isn't sufficient balance (£%d) to purchase the item for %d",
                 $this->getBalance(),
                 $item->getCost()

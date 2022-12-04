@@ -2,16 +2,19 @@
 
 namespace RebateCalculator;
 
+use Exception;
+
 class FlatFee implements FeeInterface
 {
     private float $amount;
 
     /**
+     * @throws Exception If amount is non-positive
      */
     function __construct(float $amount)
     {
         if ($amount < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     "Fee amount (£%d) must be a positive value.",
                     $amount
@@ -25,12 +28,12 @@ class FlatFee implements FeeInterface
     /**
      * Calculate the fee charged for a given top-up amount
      *
-     * @throws \Exception if top-up amount is not a positive value
+     * @throws Exception if top-up amount is not a positive value
      */
     public function calculate(float $topUpAmount = 0.0): float
     {
         if ($topUpAmount < 0) {
-            throw new \Exception(
+            throw new Exception(
                 sprintf(
                     "Top-up amount (£%d) must be a positive value.",
                     $topUpAmount
