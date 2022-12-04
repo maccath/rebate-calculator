@@ -18,11 +18,6 @@ class Store
         return $this->name;
     }
 
-    public function getRebateAmount(): float
-    {
-        return $this->rebate->getAmount();
-    }
-
     /**
      * Calculate the rebate given by the store for given item
      */

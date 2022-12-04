@@ -4,8 +4,6 @@ namespace RebateCalculator;
 
 interface RebateInterface
 {
-    public function getAmount(): float;
-
     /**
      * Calculate the rebate awarded
      */

@@ -61,18 +61,6 @@ class StoreTest extends TestCase
     }
 
     /**
-     * Test that the rebate will be fetched from the rebate class
-     */
-    public function testGetRebate()
-    {
-        $this->rebate->expects($this->once())
-            ->method('getAmount')
-            ->willReturn(10.0);
-
-        $this->store->getRebateAmount();
-    }
-
-    /**
      * Valid values for name
      *
      * @return array

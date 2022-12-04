@@ -24,16 +24,6 @@ class Card
         return $this->balance;
     }
 
-    /**
-     * Calculate the cost of topping up by the given amount
-     *
-     * @throws Exception if top-up amount is not positive, or falls short of the minimum top-up value
-     */
-    public function getTopUpCost(float $amount): float
-    {
-        return $this->topUpFacility->getTopUpCost($amount);
-    }
-
     public function getMinimumTopUp(): float
     {
         return $this->topUpFacility->getMinimum();

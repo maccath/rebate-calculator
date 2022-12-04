@@ -103,22 +103,6 @@ class CardTest extends TestCase
     }
 
     /**
-     * Test that a top-up cost can be calculated
-     *
-     * @param float $amount the top-up amount
-     * @dataProvider providerValidTopUps
-     */
-    public function testGetTopUpCosts($amount)
-    {
-        $this->topUpFacility
-            ->expects($this->once())
-            ->method('getTopUpCost')
-            ->with($amount);
-
-        $this->card->getTopUpCost($amount);
-    }
-
-    /**
      * Test that a rebate for an item from a store can be received
      */
     public function testReceiveRebate()

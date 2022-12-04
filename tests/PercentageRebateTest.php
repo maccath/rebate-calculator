@@ -23,22 +23,6 @@ class PercentageRebateTest extends TestCase
     }
 
     /**
-     * Test that rebate amount is set correctly and can be fetched
-     *
-     * @param mixed $amount the rebate amount
-     * @param float $expectedValue the actual rebate amount
-     *
-     * @dataProvider providerRebateAmounts
-     */
-    public function testAmount($amount, $expectedValue)
-    {
-        $this->rebate = new \RebateCalculator\PercentageRebate($amount);
-
-        $this->assertEquals($expectedValue, $this->rebate->getAmount());
-        $this->assertIsFloat($this->rebate->getAmount());
-    }
-
-    /**
      * Test that invalid rebate amounts throw an error
      *
      * @param mixed $amount the rebate amount

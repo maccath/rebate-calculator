@@ -25,11 +25,6 @@ class PercentageRebate implements RebateInterface
         $this->amount = $amount;
     }
 
-    public function getAmount(): float
-    {
-        return $this->amount;
-    }
-
     /**
      * Calculate rebate due for an item of given cost
      */
