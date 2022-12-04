@@ -61,9 +61,7 @@ class ItemTest extends TestCase
     public function providerInvalidCosts()
     {
         return [
-            ['abc'],
-            [false],
-            [null],
+            [-10],
         ];
     }
 }

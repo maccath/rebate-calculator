@@ -9,72 +9,41 @@ namespace RebateCalculator;
  */
 class Card
 {
-    /**
-     * The card's current balance
-     *
-     * @var float
-     */
-    private $balance;
-
-    /**
-     * The card's top-up facility
-     *
-     * @var TopUpFacility
-     */
-    private $topUpFacility;
+    private float $balance;
+    private TopUpFacility $topUpFacility;
 
     /**
      * @param TopUpFacility $topUpFacility the card's top up facility
      * @param float $balance the card's current balance
      */
-    function __construct(TopUpFacility $topUpFacility, $balance = 0.0)
+    function __construct(TopUpFacility $topUpFacility, float $balance = 0.0)
     {
         $this->setBalance($balance);
         $this->topUpFacility = $topUpFacility;
     }
 
-    /**
-     * Get the current card balance
-     *
-     * @return float
-     */
-    public function getBalance()
+    public function getBalance(): float
     {
         return $this->balance;
     }
 
-    /**
-     * Set the card balance
-     *
-     * @param float $balance the current card balance
-     * @throws \Exception if balance not valid value
-     */
-    private function setBalance($balance)
+    private function setBalance(float $balance): void
     {
-        if (! is_numeric($balance)) {
-            throw new \Exception('Balance must be a numeric value.');
-        }
-
-        $this->balance = (float) $balance;
+        $this->balance = $balance;
     }
 
     /**
      * Calculate the cost of topping up by the given amount
-     *
-     * @param float $amount the amount to top up by
-     * @return float
      */
-    public function getTopUpCost($amount)
+    public function getTopUpCost(float $amount): float
     {
         return $this->topUpFacility->getTopUpCost($amount);
     }
 
     /**
      * Get the card's minimum top-up amount
-     *
-     * @return float
      */
-    public function getMinimumTopUp()
+    public function getMinimumTopUp(): float
     {
         return $this->topUpFacility->getMinimum();
     }
@@ -85,7 +54,7 @@ class Card
      * @param float $amount the amount to top up
      * @throws \Exception if card could not be topped up
      */
-    public function topUp($amount)
+    public function topUp(float $amount): void
     {
         $this->topUpFacility->validateTopUp($amount);
 
@@ -98,7 +67,7 @@ class Card
      * @param Item $item the item to pay for
      * @throws \Exception if the item could not be paid for
      */
-    public function payFor(Item $item)
+    public function payFor(Item $item): void
     {
         if ($this->getBalance() < $item->getCost()) {
             throw new \Exception(sprintf(
@@ -117,7 +86,7 @@ class Card
      * @param Item $item the item paid for
      * @param Store $store the store item purchased from
      */
-    public function receiveRebate(Item $item, Store $store)
+    public function receiveRebate(Item $item, Store $store): void
     {
         $this->adjustBalance($store->calculateRebateValue($item));
     }
@@ -127,7 +96,7 @@ class Card
      *
      * @param float $amount the amount to adjust the card balance by
      */
-    private function adjustBalance($amount)
+    private function adjustBalance(float $amount): void
     {
         $this->balance += $amount;
     }

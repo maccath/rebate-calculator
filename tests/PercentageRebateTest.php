@@ -43,7 +43,6 @@ class PercentageRebateTest extends TestCase
      *
      * @param mixed $amount the rebate amount
      *
-     * @expectedException \Exception
      * @dataProvider providerInvalidValues
      */
     public function testAmountException($amount)
@@ -92,10 +91,7 @@ class PercentageRebateTest extends TestCase
     public function providerInvalidValues()
     {
         return [
-            ["abc"],
             [-25],
-            [false],
-            [null],
         ];
     }
 

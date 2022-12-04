@@ -136,10 +136,7 @@ class TopupFacilityTest extends TestCase
     public function providerInvalidAmounts()
     {
         return [
-            ['abc'],
             [-10],
-            [false],
-            [null],
         ];
     }
 

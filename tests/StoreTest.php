@@ -47,20 +47,6 @@ class StoreTest extends TestCase
     }
 
     /**
-     * Test that store name is set correctly and can be fetched
-     *
-     * @param mixed $name the store name
-     *
-     * @dataProvider providerInvalidNames
-     */
-    public function testSetInvalidName($name)
-    {
-        $this->expectException(\Exception::class);
-
-        new \RebateCalculator\Store($name, $this->rebate);
-    }
-
-    /**
      * Test that the rebate will be calculated by rebate class
      */
     public function testCalculateRebate()
@@ -81,7 +67,7 @@ class StoreTest extends TestCase
     {
         $this->rebate->expects($this->once())
             ->method('getAmount')
-            ->willReturn('10');
+            ->willReturn(10.0);
 
         $this->store->getRebateAmount();
     }
@@ -96,17 +82,6 @@ class StoreTest extends TestCase
         return [
             ['Store Name', 'Store Name'],
             ['日本語', '日本語'],
-        ];
-    }
-
-    /**
-     * Invalid values for name
-     *
-     * @return array
-     */
-    public function providerInvalidNames()
-    {
-        return [
             [25, '25'],
             [-10, '-10'],
             [false, ''],

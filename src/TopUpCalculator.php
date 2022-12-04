@@ -9,26 +9,9 @@ namespace RebateCalculator;
  */
 class TopUpCalculator
 {
-    /**
-     * The card to purchase item with
-     *
-     * @var Card
-     */
-    private $card;
+    private Card $card;
+    private Item $item;
 
-    /**
-     * The item to purchase
-     *
-     * @var Item
-     */
-    private $item;
-
-    /**
-     * TopUpCalculator constructor
-     *
-     * @param Card $card the card to purchase item with
-     * @param Item $item the item to purchase
-     */
     public function __construct(Card $card, Item $item)
     {
         $this->card = $card;
@@ -40,12 +23,12 @@ class TopUpCalculator
      *
      * @return mixed
      */
-    public function calculateTopUpRequired()
+    public function calculateTopUpRequired(): float
     {
         $additionalFundingRequired = $this->getAdditionalFundingRequiredForPurchase();
 
         if (! $additionalFundingRequired) {
-            return 0;
+            return 0.0;
         }
 
         $minimumTopUp = $this->card->getMinimumTopUp();
@@ -59,18 +42,16 @@ class TopUpCalculator
 
     /**
      * Calculate the additional funding required to purchase item
-     *
-     * @return int|mixed
      */
-    private function getAdditionalFundingRequiredForPurchase()
+    private function getAdditionalFundingRequiredForPurchase(): float
     {
         $itemCost = $this->item->getCost();
         $currentBalance = $this->card->getBalance();
 
         if ($itemCost <= $currentBalance) {
-            return 0;
+            return 0.0;
         }
 
-        return $itemCost - $currentBalance;
+        return (float) $itemCost - $currentBalance;
     }
 }

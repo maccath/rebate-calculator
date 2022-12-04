@@ -48,20 +48,6 @@ class CardTest extends TestCase
     }
 
     /**
-     * Test that balance can't be set to an invalid value
-     * 
-     * @param mixed $inputBalance the balance to set the card to
-     *
-     * @dataProvider providerInvalidAmounts
-     */
-    public function testBalanceException($inputBalance)
-    {
-        $this->expectException(\Exception::class);
-
-        new \RebateCalculator\Card($this->topUpFacility, $inputBalance);
-    }
-
-    /**
      * Test that an affordable item can be paid for
      */
     public function testPayForItem()
@@ -144,25 +130,11 @@ class CardTest extends TestCase
 
         $item = new \RebateCalculator\Item(200);
 
-        $mockStore->expects($this->once())->method('calculateRebateValue')->willReturn('20');
+        $mockStore->expects($this->once())->method('calculateRebateValue')->willReturn(20.0);
 
         $this->card->receiveRebate($item, $mockStore);
 
         $this->assertEquals($this->card->getBalance(), 20);
-    }
-
-    /**
-     * Invalid values for balances/amounts that should throw an exception
-     *
-     * @return array
-     */
-    public function providerInvalidAmounts()
-    {
-        return [
-            ['abc'],
-            [false],
-            [null],
-        ];
     }
 
     /**

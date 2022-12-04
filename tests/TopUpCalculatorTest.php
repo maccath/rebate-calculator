@@ -63,11 +63,11 @@ class TopUpCalculatorTest extends TestCase
     public function providerCalculateTopUpRequired() {
         // item cost, current balance, minimum top-up, expected top-up required
         return [
-            [10, 0, 25, 25],
-            [30, 0, 25, 30],
-            [30, 10, 25, 25],
-            [30, 10, 0, 20],
-            [100, 100, 10, 0],
+            [10.0, 0.0, 25.0, 25.0],
+            [30.0, 0.0, 25.0, 30.0],
+            [30.0, 10.0, 25.0, 25.0],
+            [30.0, 10.0, 0.0, 20.0],
+            [100.0, 100.0, 10.0, 0.0],
         ];
     }
 }

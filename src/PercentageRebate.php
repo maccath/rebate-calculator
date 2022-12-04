@@ -9,30 +9,22 @@ namespace RebateCalculator;
  */
 class PercentageRebate implements RebateInterface
 {
-    /**
-     * The rebate amount
-     *
-     * @var
-     */
-    protected $amount;
+    protected float $amount;
 
     /**
      * PercentageRebate constructor
      *
-     * @param float $amount the rebate amount
      * @throws \Exception if the amount is invalid
      */
-    public function __construct($amount)
+    public function __construct(float $amount)
     {
         $this->setAmount($amount);
     }
 
     /**
      * Get the rebate amount
-     *
-     * @return float
      */
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
@@ -40,12 +32,11 @@ class PercentageRebate implements RebateInterface
     /**
      * Set the rebate amount as a percentage
      *
-     * @param float $amount the rebate amount
      * @throws \Exception if the amount is invalid
      */
-    private function setAmount($amount)
+    private function setAmount(float $amount): void
     {
-        if (! is_numeric($amount) || $amount < 0) {
+        if ($amount < 0) {
             throw new \Exception(
                 sprintf(
                     'Amount (%s) must be a positive numeric value.',
@@ -54,17 +45,13 @@ class PercentageRebate implements RebateInterface
             );
         }
 
-        $this->amount = (float) $amount;
+        $this->amount = $amount;
     }
 
     /**
      * Calculate rebate due for an item of given cost
-     *
-     * @param Item $item the item to rebate for
-     * @return float
-     * @throws \Exception if cost is invalid
      */
-    public function calculate(Item $item)
+    public function calculate(Item $item): float
     {
         return $item->getCost() / 100 * $this->amount;
     }
