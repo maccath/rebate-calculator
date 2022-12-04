@@ -2,38 +2,20 @@
 
 namespace RebateCalculator\Tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
+use RebateCalculator\PercentageFee;
 
-/**
- * Class PercentageFeeTest
- */
 class PercentageFeeTest extends TestCase
 {
     /**
-     * @var \RebateCalculator\PercentageFee
+     * Test that a negative fee amount throws an error
      */
-    protected $fee;
-
-    /**
-     * Set up a default percentage fee instance
-     */
-    public function setUp(): void
+    public function testAmountException(): void
     {
-        $this->fee = new \RebateCalculator\PercentageFee(10);
-    }
+        $this->expectException(Exception::class);
 
-    /**
-     * Test that invalid fee amounts throw an error
-     *
-     * @param mixed $amount the fee amount
-     *
-     * @dataProvider providerInvalidAmounts
-     */
-    public function testAmountException($amount)
-    {
-        $this->expectException(\Exception::class);
-
-        new \RebateCalculator\PercentageFee($amount);
+        new PercentageFee(-10);
     }
 
     /**
@@ -45,59 +27,29 @@ class PercentageFeeTest extends TestCase
      *
      * @dataProvider providerCalculateValues
      */
-    public function testCalculate($amount, $topUp, $expectedResult)
+    public function testCalculate($amount, $topUp, float $expectedResult): void
     {
-        $this->fee = new \RebateCalculator\PercentageFee($amount);
+        $fee = new PercentageFee($amount);
 
-        $this->assertEquals($expectedResult, $this->fee->calculate($topUp));
-    }
-
-    /**
-     * Test that an invalid top-up amount throws an exception
-     *
-     * @param mixed $topUp the top-up amount
-     *
-     * @dataProvider providerInvalidAmounts
-     */
-    public function testCalculateException($topUp)
-    {
-        $this->expectException(\Exception::class);
-
-        $this->fee->calculate($topUp);
+        $this->assertEquals($expectedResult, $fee->calculate($topUp));
     }
 
     /**
      * Valid values for fee amounts
-     *
-     * @return array
      */
-    public function providerValidFeeAmounts()
+    public function providerValidFeeAmounts(): array
     {
-        return array(
+        return [
             [25,    25],
             ['25',  25],
             [1.234, 1.234],
-        );
-    }
-
-    /**
-     * Invalid values for fee amounts
-     *
-     * @return array
-     */
-    public function providerInvalidAmounts()
-    {
-        return [
-            [-10],
         ];
     }
 
     /**
      * Values for fee amounts, top-up values and expected fee totals
-     *
-     * @return array
      */
-    public function providerCalculateValues()
+    public function providerCalculateValues(): array
     {
         // fee amount, top-up value, expected total fee
         return [

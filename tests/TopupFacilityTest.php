@@ -2,155 +2,69 @@
 
 namespace RebateCalculator\Tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
+use RebateCalculator\FeeInterface;
+use RebateCalculator\TopUpFacility;
 
-/**
- * Class TopUpFacilityTest
- */
 class TopupFacilityTest extends TestCase
 {
-    /**
-     * @var \RebateCalculator\TopUpFacility
-     */
-    protected $topUpFacility;
+    protected FeeInterface $fee;
 
-    /**
-     * @var \RebateCalculator\FeeInterface
-     */
-    protected $fee;
-
-    /**
-     * Set up a default top-up instance
-     */
     public function setUp(): void
     {
-        $this->fee = $this->getMockBuilder(\RebateCalculator\FeeInterface::class)
+        $this->fee = $this->getMockBuilder(FeeInterface::class)
             ->getMock();
+    }
 
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, 0);
+    public function testSetGetMinimum(): void
+    {
+        $topUpFacility = new TopUpFacility($this->fee, 23.5);
+
+        $this->assertEquals(23.5, $topUpFacility->getMinimum());
     }
 
     /**
-     * Test that minimum top-up amount is set correctly and can be fetched for valid values
-     *
-     * @param mixed $minimumTopUp the input minimum top-up value
-     * @param float $expectedMinimumTopUp the actual minimum top-up value
-     *
-     * @dataProvider providerValidAmounts
+     * Test that negative top-up amounts can't be validated
      */
-    public function testSetGetMinimum($minimumTopUp, $expectedMinimumTopUp)
+    public function testValueException(): void
     {
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimumTopUp);
+        $topUpFacility = new TopUpFacility($this->fee, 0);
 
-        $this->assertIsFloat($this->topUpFacility->getMinimum());
-        $this->assertEquals($expectedMinimumTopUp, $this->topUpFacility->getMinimum());
-    }
+        $this->expectException(Exception::class);
 
-    /**
-     * Test that invalid top-up amounts can't be validated
-     *
-     * @param mixed $amount the top-up amount
-     *
-     * @dataProvider providerInvalidAmounts
-     */
-    public function testValueException($amount)
-    {
-        $this->expectException(\Exception::class);
-        $this->topUpFacility->validateTopUp($amount);
+        $topUpFacility->validateTopUp(-10);
     }
 
     /**
      * Check that top-up amounts must exceed the minimum top-up amount
-     *
-     * @param float $amount the top-up amount
-     * @param float $minimum the minimum top-up amount
-     *
-     * @dataProvider providerInvalidMinimumAndTopUpAmounts
      */
-    public function testMinimumTopUpAmountsException($amount, $minimum)
+    public function testMinimumTopUpAmountsException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($this->fee, $minimum);
+        $topUpFacility = new TopUpFacility($this->fee, 20);
 
-        $this->topUpFacility->validateTopUp($amount);
+        $topUpFacility->validateTopUp(10);
     }
 
     /**
-     * Test that minimum can't be set to an invalid value
-     *
-     * @param mixed $minimum the minimum top-up
-     *
-     * @dataProvider providerInvalidAmounts
+     * Test that minimum can't be set to a negative value
      */
-    public function testMinimumException($minimum)
+    public function testMinimumException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
-        new \RebateCalculator\TopUpFacility($this->fee, $minimum);
+        new TopUpFacility($this->fee, -10);
     }
 
     /**
      * Test that the top-up cost is calculated according to given fee
-     *
-     * @param $amount
-     *
-     * @dataProvider providerValidAmounts
      */
-    public function testCalculateTopUpCost($amount)
+    public function testCalculateTopUpCost(): void
     {
-        $mockFee = $this->getMockBuilder(\RebateCalculator\FeeInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['calculate'])
-            ->getMock();
+        $topUpFacility = new TopUpFacility($this->fee, 0);
 
-        $mockFee
-            ->expects($this->once())
-            ->method('calculate')
-            ->with($amount);
-
-        $this->topUpFacility = new \RebateCalculator\TopUpFacility($mockFee, 0);
-
-        $this->topUpFacility->getTopUpCost($amount);
-    }
-
-    /**
-     * Valid values for minimum top-up amount
-     *
-     * @return array
-     */
-    public function providerValidAmounts()
-    {
-        return [
-            [25, 25],
-            ['25', 25],
-            [1.234, 1.234],
-        ];
-    }
-
-    /**
-     * Invalid values for top-up amount
-     *
-     * @return array
-     */
-    public function providerInvalidAmounts()
-    {
-        return [
-            [-10],
-        ];
-    }
-
-    /**
-     * Incompatible top-up amounts vs minimum top-up amount
-     *
-     * @return array
-     */
-    public function providerInvalidMinimumAndTopUpAmounts()
-    {
-        // top-up amount, minimum top-up
-        return [
-            [10, 20],
-            [15, 50],
-        ];
+        $this->assertEquals(0, $topUpFacility->getTopUpCost(25));
     }
 }

@@ -3,69 +3,36 @@
 namespace RebateCalculator\Tests;
 
 use PHPUnit\Framework\TestCase;
+use RebateCalculator\Item;
+use RebateCalculator\PercentageRebate;
+use RebateCalculator\Store;
 
-/**
- * Class StoreTest
- */
 class StoreTest extends TestCase
 {
     /**
-     * @var \RebateCalculator\Store
-     */
-    protected $store;
-
-    /**
-     * @var \RebateCalculator\RebateInterface
-     */
-    protected $rebate;
-
-    /**
-     *  Set up a default store instance with 10% rebate
-     */
-    public function setUp(): void
-    {
-        $this->rebate = $this->getMockBuilder(\RebateCalculator\PercentageRebate::class)
-            ->setConstructorArgs([10])
-            ->getMock();
-        $this->store = new \RebateCalculator\Store("Store Name", $this->rebate);
-    }
-
-    /**
      * Test that store name is set correctly and can be fetched
-     *
-     * @param mixed $inputName the store name
-     * @param string $expectedName the actual store name
      *
      * @dataProvider providerValidNames
      */
-    public function testSetGetName($inputName, $expectedName)
+    public function testSetGetName($inputName, string $expectedName): void
     {
-        $this->store = new \RebateCalculator\Store($inputName, $this->rebate);
+        $store = new Store($inputName, new PercentageRebate(10));
 
-        $this->assertEquals($expectedName, $this->store->getName());
-        $this->assertIsString($this->store->getName());
+        $this->assertEquals($expectedName, $store->getName());
     }
 
     /**
-     * Test that the rebate will be calculated by rebate class
+     * Test that the rebate will be calculated correctly
      */
-    public function testCalculateRebate()
+    public function testCalculateRebate(): void
     {
-        $item = new \RebateCalculator\Item(200);
+        $item = new Item(200);
+        $store = new Store("Store Name", new PercentageRebate(10));
 
-        $this->rebate->expects($this->once())
-            ->method('calculate')
-            ->with($item);
-
-        $this->store->calculateRebateValue($item);
+        $this->assertEquals(20, $store->calculateRebateValue($item));
     }
 
-    /**
-     * Valid values for name
-     *
-     * @return array
-     */
-    public function providerValidNames()
+    public function providerValidNames(): array
     {
         return [
             ['Store Name', 'Store Name'],

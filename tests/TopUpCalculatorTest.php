@@ -3,36 +3,14 @@
 namespace RebateCalculator\Tests;
 
 use PHPUnit\Framework\TestCase;
+use RebateCalculator\Card;
+use RebateCalculator\FlatFee;
+use RebateCalculator\Item;
+use RebateCalculator\TopUpCalculator;
+use RebateCalculator\TopUpFacility;
 
-/**
- * Class TopUpCalculatorTest
- */
 class TopUpCalculatorTest extends TestCase
 {
-    /**
-     * @var \RebateCalculator\Card
-     */
-    protected $card;
-
-    /**
-     * @var \RebateCalculator\Item
-     */
-    protected $item;
-
-    /**
-     * Set up default card and item instances
-     */
-    public function setUp(): void
-    {
-        $this->card = $this->getMockBuilder(\RebateCalculator\Card::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->item = $this->getMockBuilder(\RebateCalculator\Item::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
     /**
      * Test that the correct required top-up is calculated based on item cost, current balance and minimum top-up
      *
@@ -43,24 +21,21 @@ class TopUpCalculatorTest extends TestCase
      *
      * @dataProvider providerCalculateTopUpRequired
      */
-    public function testCalculateTopUpRequired($cost, $balance, $minimumTopUp, $expectedTopUpRequired)
+    public function testCalculateTopUpRequired(float $cost, float $balance, float $minimumTopUp, float $expectedTopUpRequired)
     {
-        $this->card->expects($this->once())->method('getBalance')->willReturn($balance);
-        $this->card->expects($this->any())->method('getMinimumTopUp')->willReturn($minimumTopUp);
+        $card = new Card(new TopUpFacility(new FlatFee(0.0), $minimumTopUp), $balance);
+        $item = new Item($cost);
 
-        $this->item->expects($this->once())->method('getCost')->willReturn($cost);
-
-        $topUpCalculator = new \RebateCalculator\TopUpCalculator($this->card, $this->item);
+        $topUpCalculator = new TopUpCalculator($card, $item);
 
         $this->assertEquals($expectedTopUpRequired, $topUpCalculator->calculateTopUpRequired());
     }
 
     /**
      * Calculator input values and expected output
-     *
-     * @return array
      */
-    public function providerCalculateTopUpRequired() {
+    public function providerCalculateTopUpRequired(): array
+    {
         // item cost, current balance, minimum top-up, expected top-up required
         return [
             [10.0, 0.0, 25.0, 25.0],

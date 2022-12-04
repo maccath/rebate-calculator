@@ -2,76 +2,54 @@
 
 namespace RebateCalculator\Tests;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
+use RebateCalculator\FlatFee;
 
-/**
- * Class FlatFeeTest
- */
 class FlatFeeTest extends TestCase
 {
     /**
-     * @var \RebateCalculator\FlatFee
+     * Test that a negative fee amounts throw an error
      */
-    protected $fee;
-
-    /**
-     * Set up a default flat fee instance
-     */
-    public function setUp(): void
+    public function testAmountException(): void
     {
-        $this->fee = new \RebateCalculator\FlatFee(10);
-    }
+        $this->expectException(Exception::class);
 
-    /**
-     * Test that invalid fee amounts throw an error
-     *
-     * @param mixed $amount the fee amount
-     *
-     * @dataProvider providerInvalidAmounts
-     */
-    public function testAmountException($amount)
-    {
-        $this->expectException(\Exception::class);
-
-        new \RebateCalculator\FlatFee($amount);
+        new FlatFee(-10);
     }
 
     /**
      * Test that fee values are calculated correctly
      *
-     * @param mixed $amount the fee amount
-     * @param mixed $topUp the top-up amount
+     * @param float $amount the fee amount
+     * @param float $topUp the top-up amount
      * @param float $expectedResult the expected fee cost
      *
      * @dataProvider providerCalculateValues
      */
-    public function testCalculate($amount, $topUp, $expectedResult)
+    public function testCalculate(float $amount, float $topUp, float $expectedResult): void
     {
-        $this->fee = new \RebateCalculator\FlatFee($amount);
+        $fee = new FlatFee($amount);
 
-        $this->assertEquals($expectedResult, $this->fee->calculate($topUp));
+        $this->assertEquals($expectedResult, $fee->calculate($topUp));
     }
 
     /**
-     * Test that an invalid top-up amount throws an exception
-     *
-     * @param mixed $topUp the top-up amount
-     *
-     * @dataProvider providerInvalidAmounts
+     * Test that a negative top-up amount throws an exception
      */
-    public function testCalculateException($topUp)
+    public function testCalculateException(): void
     {
-        $this->expectException(\Exception::class);
+        $fee = new FlatFee(10);
 
-        $this->fee->calculate($topUp);
+        $this->expectException(Exception::class);
+
+        $fee->calculate(-10);
     }
 
     /**
      * Valid values for fee amounts
-     *
-     * @return array
      */
-    public function providerValidFeeAmounts()
+    public function providerValidFeeAmounts(): array
     {
         return [
             [25, 25],
@@ -82,32 +60,18 @@ class FlatFeeTest extends TestCase
     }
 
     /**
-     * Invalid currency amounts that should throw an exception
-     *
-     * @return array
-     */
-    public function providerInvalidAmounts()
-    {
-        return [
-            [-10],
-        ];
-    }
-
-    /**
      * Values for fee amounts, top-up values and expected fee totals
-     *
-     * @return array
      */
-    public function providerCalculateValues()
+    public function providerCalculateValues(): array
     {
         // fee amount, top-up amount, expected fee total
         return [
             [10,    25,    10],
-            ["10",  25,    10],
+            [10,  25,    10],
             [0,     25,    0],
             [1.252, 25,    1.25],
             [10,    0,     0],
-            [10,    "25",  10],
+            [10,    25,  10],
         ];
     }
 }
