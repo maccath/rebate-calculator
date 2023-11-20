@@ -8,6 +8,7 @@ use RebateCalculator\PercentageRebate;
 use RebateCalculator\Store;
 use RebateCalculator\TopUpCalculator;
 use RebateCalculator\TopUpFacility;
+use Twig\Loader\FilesystemLoader;
 
 include('vendor/autoload.php');
 
@@ -18,8 +19,7 @@ if (file_exists('config/local.config.php')) {
 }
 
 // Load Twig templating engine
-$loader = new Twig_Loader_Filesystem('templates');
-$twig = new Twig_Environment($loader, $config['twig']);
+$twig = new Twig\Environment(new FilesystemLoader('templates'), $config['twig']);
 
 $data = [
     'application' => $config['application'],
