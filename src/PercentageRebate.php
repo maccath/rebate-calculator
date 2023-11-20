@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
 use Exception;
 
 class PercentageRebate implements RebateInterface
 {
-    protected float $amount;
-
     /**
      * @throws Exception If amount is non-positive
      */
-    public function __construct(float $amount)
+    public function __construct(private readonly float $amount)
     {
         if ($amount < 0) {
             throw new Exception(
@@ -21,8 +21,6 @@ class PercentageRebate implements RebateInterface
                 )
             );
         }
-
-        $this->amount = $amount;
     }
 
     /**

@@ -1,16 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
-class Store
+final class Store
 {
-    protected string $name;
-    protected RebateInterface $rebate;
-
-    public function __construct(string $name, RebateInterface $rebate)
+    public function __construct(private readonly string $name, private readonly RebateInterface $rebate)
     {
-        $this->name = $name;
-        $this->rebate = $rebate;
     }
 
     public function getName(): string

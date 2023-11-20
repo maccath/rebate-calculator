@@ -1,16 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
-class TopUpCalculator
+final class TopUpCalculator
 {
-    private Card $card;
-    private Item $item;
-
-    public function __construct(Card $card, Item $item)
+    public function __construct(private readonly Card $card, private readonly Item $item)
     {
-        $this->card = $card;
-        $this->item = $item;
     }
 
     /**
