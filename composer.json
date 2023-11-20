@@ -1,6 +1,8 @@
 {
   "name": "maccath/rebate-calculator",
   "type": "project",
+  "description": "A cashback calculator for a pre-paid card service.",
+  "license": "MIT",
   "require": {
     "php": "^7.4",
     "twig/twig": "~1.0"
