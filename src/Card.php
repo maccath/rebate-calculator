@@ -1,22 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
 use Exception;
 
 class Card
 {
-    private float $balance;
-    private TopUpFacility $topUpFacility;
-
     /**
      * @param TopUpFacility $topUpFacility the card's top up facility
      * @param float $balance the card's current balance
      */
-    function __construct(TopUpFacility $topUpFacility, float $balance = 0.0)
+    public function __construct(private readonly TopUpFacility $topUpFacility, private float $balance = 0.0)
     {
-        $this->balance = $balance;
-        $this->topUpFacility = $topUpFacility;
     }
 
     public function getBalance(): float

@@ -1,28 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
 use Exception;
 
 class FlatFee implements FeeInterface
 {
-    private float $amount;
-
     /**
      * @throws Exception If amount is non-positive
      */
-    function __construct(float $amount)
+    public function __construct(private readonly float $amount)
     {
         if ($amount < 0) {
             throw new Exception(
                 sprintf(
                     "Fee amount (£%d) must be a positive value.",
-                    $amount
-                )
+                    $amount,
+                ),
             );
         }
-
-        $this->amount = $amount;
     }
 
     /**
@@ -36,8 +34,8 @@ class FlatFee implements FeeInterface
             throw new Exception(
                 sprintf(
                     "Top-up amount (£%d) must be a positive value.",
-                    $topUpAmount
-                )
+                    $topUpAmount,
+                ),
             );
         }
 

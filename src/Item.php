@@ -1,17 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
 use Exception;
 
 class Item
 {
-    protected float $cost;
-
     /**
      * @throws Exception If cost is non-positive
      */
-    function __construct(float $cost)
+    public function __construct(private readonly float $cost)
     {
         if ($cost < 0) {
             throw new Exception(
@@ -21,8 +21,6 @@ class Item
                 )
             );
         }
-
-        $this->cost = $cost;
     }
 
     public function getCost(): float

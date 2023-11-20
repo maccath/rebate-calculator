@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use RebateCalculator\Card;
 use RebateCalculator\FeeInterface;
 use RebateCalculator\Item;
+use RebateCalculator\PercentageRebate;
 use RebateCalculator\Store;
 use RebateCalculator\TopUpFacility;
 
@@ -93,14 +94,9 @@ class CardTest extends TestCase
     {
         $card = new Card($this->topUpFacility);
 
-        $mockStore = $this->getMockBuilder(Store::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['calculateRebateValue'])
-            ->getMock();
+        $mockStore = new Store('a store', new PercentageRebate(10));
 
         $item = new Item(200);
-
-        $mockStore->expects($this->once())->method('calculateRebateValue')->willReturn(20.0);
 
         $card->receiveRebate($item, $mockStore);
 

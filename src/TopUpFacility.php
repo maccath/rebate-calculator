@@ -1,18 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace RebateCalculator;
 
 use Exception;
 
-class TopUpFacility
+final class TopUpFacility
 {
-    private FeeInterface $fee;
-    private float $minimum;
-
     /**
      * @throws Exception if the minimum top-up amount is non-positive
      */
-    function __construct(FeeInterface $fee, float $minimum = 0.0)
+    public function __construct(private readonly FeeInterface $fee, private readonly float $minimum = 0.0)
     {
         if ($minimum < 0) {
             throw new Exception(
@@ -22,9 +21,6 @@ class TopUpFacility
                 )
             );
         }
-
-        $this->minimum = $minimum;
-        $this->fee = $fee;
     }
 
     public function getMinimum(): float
