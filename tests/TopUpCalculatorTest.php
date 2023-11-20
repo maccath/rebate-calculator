@@ -34,7 +34,7 @@ class TopUpCalculatorTest extends TestCase
     /**
      * Calculator input values and expected output
      */
-    public function providerCalculateTopUpRequired(): array
+    public static function providerCalculateTopUpRequired(): array
     {
         // item cost, current balance, minimum top-up, expected top-up required
         return [

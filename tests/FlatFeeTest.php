@@ -49,7 +49,7 @@ class FlatFeeTest extends TestCase
     /**
      * Valid values for fee amounts
      */
-    public function providerValidFeeAmounts(): array
+    public static function providerValidFeeAmounts(): array
     {
         return [
             [25, 25],
@@ -62,7 +62,7 @@ class FlatFeeTest extends TestCase
     /**
      * Values for fee amounts, top-up values and expected fee totals
      */
-    public function providerCalculateValues(): array
+    public static function providerCalculateValues(): array
     {
         // fee amount, top-up amount, expected fee total
         return [

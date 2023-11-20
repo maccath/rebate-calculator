@@ -95,7 +95,7 @@ class CardTest extends TestCase
 
         $mockStore = $this->getMockBuilder(Store::class)
             ->disableOriginalConstructor()
-            ->setMethods(['calculateRebateValue'])
+            ->onlyMethods(['calculateRebateValue'])
             ->getMock();
 
         $item = new Item(200);
@@ -110,7 +110,7 @@ class CardTest extends TestCase
     /**
      * Valid values for balances/amounts
      */
-    public function providerValidAmounts(): array
+    public static function providerValidAmounts(): array
     {
         return [
             [0, 0],
@@ -123,7 +123,7 @@ class CardTest extends TestCase
     /**
      * Valid values for top-ups
      */
-    public function providerValidTopUps(): array
+    public static function providerValidTopUps(): array
     {
         // Original balance, top-up amount, new balance
         return [

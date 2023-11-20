@@ -32,7 +32,7 @@ class StoreTest extends TestCase
         $this->assertEquals(20, $store->calculateRebateValue($item));
     }
 
-    public function providerValidNames(): array
+    public static function providerValidNames(): array
     {
         return [
             ['Store Name', 'Store Name'],

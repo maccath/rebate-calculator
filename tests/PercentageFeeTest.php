@@ -49,7 +49,7 @@ class PercentageFeeTest extends TestCase
     /**
      * Values for fee amounts, top-up values and expected fee totals
      */
-    public function providerCalculateValues(): array
+    public static function providerCalculateValues(): array
     {
         // fee amount, top-up value, expected total fee
         return [
