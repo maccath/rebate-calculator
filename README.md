@@ -5,11 +5,11 @@ You have a pre-paid debit card. The card can be topped up, and the money can be 
 This calculator helps determine whether it would be cost-effective to make any given purchase using the pre-paid card.
 
 [![GitHub Workflow](https://img.shields.io/github/actions/workflow/status/maccath/rebate-calculator/php.yml?style=for-the-badge&logo=github&logoColor=white)](https://github.com/maccath/rebate-calculator/actions)
-[![PHP](https://img.shields.io/badge/PHP_^7.4-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![PHP](https://img.shields.io/badge/PHP_^8.2-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://www.php.net/releases/8.2/)
 [![Composer](https://img.shields.io/badge/Composer-885630?style=for-the-badge&logo=composer&logoColor=white)](https://getcomposer.org)
 
 ## Requirements
-- [PHP ^7.4](https://www.php.net)
+- [PHP ^8.2](https://www.php.net/releases/8.2/)
 - [Composer](https://getcomposer.org)
 
 ## Installation
