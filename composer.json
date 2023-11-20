@@ -4,7 +4,7 @@
   "description": "A cashback calculator for a pre-paid card service.",
   "license": "MIT",
   "require": {
-    "php": "^7.4",
+    "php": "^8.2",
     "twig/twig": "~3.7"
   },
   "require-dev": {
