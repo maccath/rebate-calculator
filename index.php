@@ -58,8 +58,11 @@ try {
 
     $topUpAmount = $topUpCalculator->calculateTopUpRequired();
 
-    $topUpCost = $topUpFacility->getTopUpCost($topUpAmount);
-    $card->topUp($topUpAmount);
+    $topUpCost = 0;
+    if ($topUpAmount > 0) {
+        $topUpCost = $topUpFacility->getTopUpCost($topUpAmount);
+        $card->topUp($topUpAmount);
+    }
 
     $rebateValue = $store->calculateRebateValue($item);
 
