@@ -27,7 +27,7 @@ class PercentageRebateTest extends TestCase
         $this->assertEquals($expectedRebate, $rebate->calculate($item));
     }
 
-    public function providerCalculateValues(): array
+    public static function providerCalculateValues(): array
     {
         // rebate amount, item cost, expected rebate
         return [

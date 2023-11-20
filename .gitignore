@@ -53,8 +53,9 @@ vendor/
 
 ## Application ignores
 
-# Template cache
+# Caches
 cache/
+.phpunit.result.cache
 
 # Local configuration
 config/local.config.php
