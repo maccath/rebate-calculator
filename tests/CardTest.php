@@ -100,7 +100,7 @@ class CardTest extends TestCase
 
         $card->receiveRebate($item, $mockStore);
 
-        $this->assertEquals($card->getBalance(), 20);
+        $this->assertEquals(20, $card->getBalance());
     }
 
     /**

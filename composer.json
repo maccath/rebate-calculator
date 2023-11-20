@@ -23,7 +23,9 @@
     }
   },
   "scripts": {
-    "test": "phpunit tests"
+    "test": "phpunit tests",
+    "lint": "phpcs --standard=phpcs.xml src/",
+    "lint:fix": "phpcbf --standard=phpcs.xml src/"
   },
   "config": {
     "allow-plugins": {
